@@ -2,9 +2,11 @@
 (all)	(tutti)
 (no entries)	(nessuna voce)
 (no structure)	(nessuna struttura)
+(optional)	(facoltativo)
 --json needs a JSON object	--json richiede un oggetto JSON
 3D model	Modello 3D
 3D routing	Instradamento 3D
+3D view	Vista 3D
 A page named {} already exists	Esiste già una pagina denominata {}
 A page needs a name	Una pagina ha bisogno di un nome
 A routing path needs {} points at least	Un percorso di instradamento richiede almeno {} punti
@@ -23,6 +25,7 @@ Apply	Applica
 Approve	Approva
 Approvers	Approvatori
 Automatic	Automatico
+Automation	Automazione
 Aux	Aus.
 Below	Sotto
 Bold	Grassetto
@@ -121,9 +124,11 @@ Direction	Direzione
 Discard	Scarta
 Discard changes	Scarta le modifiche
 Display	Visualizzazione
+Documents	Documenti
 Done	Completato
 Door	Porta
 Door cutout	Foratura della porta
+Download	Scarica
 Downloading {}…	Download di {}…
 Drag to turn the model	Trascina per ruotare il modello
 EMC clearance	Distanza EMC
@@ -154,6 +159,7 @@ Fits	Compatibile con
 Fitting at the end	Raccordo alla fine
 Fitting at the start	Raccordo all'inizio
 Floor	Fondo
+Floor plan	Pianta
 Fluid device	Dispositivo fluidico
 Fluid device groups	Gruppi di dispositivi fluidici
 Fluid netlist	Netlist fluidica
@@ -214,6 +220,7 @@ Link	Link
 Linked	Collegato
 Load	Utenza
 Loaded circuits bunched together	Circuiti caricati raggruppati
+Loading…	Caricamento…
 Location	Luogo
 Location (+)	Luogo (+)
 Locked	Bloccato
@@ -248,6 +255,8 @@ Mounting holes	Fori di fissaggio
 Mounting layout {}	Layout di montaggio {}
 Mounting plate	Piastra di montaggio
 Mounting rail	Guida di montaggio
+NC contact	Contatto NC
+NO contact	Contatto NA
 Name	Nome
 Name of the block	Nome del blocco
 Name of the plot, e.g. the cadastral parcel	Nome del lotto, p. es. la particella catastale
@@ -299,6 +308,7 @@ Only rows containing this text	Solo righe che contengono questo testo
 Operating pressure	Pressione di esercizio
 Option {}: {} is not one of its choices	Opzione {}: {} non è una delle sue scelte
 Order number	Codice d'ordine
+Other	Altro
 Outer diameter	Diametro esterno
 Output	Uscita
 Overview	Panoramica
@@ -342,6 +352,7 @@ Plot	Lotto
 Plot frame	Cornice di stampa
 Plug	Connettore
 Plug diagram	Schema connettori
+Plugins	Plugin
 Plugs	Connettori
 Poles	Poli
 Ports	Porte
@@ -385,6 +396,7 @@ Rated power	Potenza nominale
 Rear wall	Parete posteriore
 Rectangle	Rettangolo
 Rectangular	Rettangolare
+Redo	Ripeti
 Refresh	Aggiorna
 Reject	Rifiuta
 Relative humidity	Umidità relativa
@@ -399,6 +411,7 @@ Remove the reference point	Rimuovi il punto di riferimento
 Report	Report
 Report blocks	Blocchi di report
 Report: {}	Report: {}
+Reports	Report
 Required	Richiesto
 Reserve	Riserva
 Reviewer	Revisore
@@ -429,6 +442,7 @@ Search parts	Cerca articoli
 Searching…	Ricerca in corso…
 Section	Sezione
 Segment	Tratto
+Select	Seleziona
 Select a part in the tree or create a new one.	Seleziona un articolo nell'albero o creane uno nuovo.
 Sensor	Sensore
 Sensors, switches, pushbuttons	Sensori, interruttori, pulsanti
@@ -448,6 +462,8 @@ Signed in as {} ({})	Accesso eseguito come {} ({})
 Signed out	Disconnesso
 Signing in…	Accesso in corso…
 Single-line / multi-line	Unifilare / multifilare
+Site	Lotto
+Site plan	Planimetria
 Size	Dimensione
 Socket side	Lato femmina
 Solenoid not linked	Bobina non collegata
@@ -493,9 +509,12 @@ Tools	Utensili
 Top	In alto
 Total	Totale
 Transformer	Trasformatore
+Tutorial	Tutorial
 Type	Tipo
 Type number	Codice tipo
 Underline	Sottolineato
+Undo	Annulla
+Unexpected argument: {}	Argomento imprevisto: {}
 Unit	Unità
 Unknown column: {}	Colonna sconosciuta: {}
 Unknown connector: {}	Connettore sconosciuto: {}
@@ -503,10 +522,12 @@ Unknown enclosure system: {}	Sistema di armadi sconosciuto: {}
 Unknown face: {}	Faccia sconosciuta: {}
 Unknown format: {}	Formato sconosciuto: {}
 Unknown function definition: {}	Definizione di funzione sconosciuta: {}
+Unknown language: {}	Lingua sconosciuta: {}
 Unknown option {}	Opzione sconosciuta {}
 Unknown parameter: {}	Parametro sconosciuto: {}
 Unknown part: {}	Articolo sconosciuto: {}
 Unknown property: {}	Proprietà sconosciuta: {}
+Unknown report: {}	Report sconosciuto: {}
 Unknown scheme: {}	Schema sconosciuto: {}
 Unknown segment	Segmento sconosciuto
 Unknown symbol {}	Simbolo sconosciuto {}

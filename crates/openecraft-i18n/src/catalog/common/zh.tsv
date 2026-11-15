@@ -2,9 +2,11 @@
 (all)	（全部）
 (no entries)	（无条目）
 (no structure)	（无结构）
+(optional)	（可选）
 --json needs a JSON object	--json 需要一个 JSON 对象
 3D model	3D 模型
 3D routing	3D 布线
+3D view	3D 视图
 A page named {} already exists	名为 {} 的页已存在
 A page needs a name	页面需要名称
 A routing path needs {} points at least	布线路径至少需要 {} 个点
@@ -23,6 +25,7 @@ Apply	应用
 Approve	批准
 Approvers	审批人
 Automatic	自动
+Automation	自动化
 Aux	辅助
 Below	下方
 Bold	粗体
@@ -119,9 +122,11 @@ Direction	方向
 Discard	放弃
 Discard changes	放弃更改
 Display	显示
+Documents	文档
 Done	完成
 Door	柜门
 Door cutout	柜门开孔
+Download	下载
 Downloading {}…	正在下载 {}…
 Drag to turn the model	拖动以旋转模型
 EMC clearance	EMC 间距
@@ -152,6 +157,7 @@ Fits	适配
 Fitting at the end	末端接头
 Fitting at the start	起始端接头
 Floor	柜底
+Floor plan	平面图
 Fluid device	流体设备
 Fluid device groups	流体设备组
 Fluid netlist	流体网络表
@@ -212,6 +218,7 @@ Link	链接
 Linked	已关联
 Load	负载
 Loaded circuits bunched together	成束敷设的带负载回路数
+Loading…	正在加载…
 Location	位置
 Location (+)	位置 (+)
 Locked	已锁定
@@ -246,6 +253,8 @@ Mounting holes	安装孔
 Mounting layout {}	安装布局 {}
 Mounting plate	安装板
 Mounting rail	安装导轨
+NC contact	常闭触点
+NO contact	常开触点
 Name	名称
 Name of the block	块名称
 Name of the plot, e.g. the cadastral parcel	场地名称，例如地籍宗地
@@ -297,6 +306,7 @@ Only rows containing this text	仅包含此文本的行
 Operating pressure	工作压力
 Option {}: {} is not one of its choices	选项 {}：{} 不是其选项值之一
 Order number	订货号
+Other	其他
 Outer diameter	外径
 Output	输出
 Overview	概览
@@ -340,6 +350,7 @@ Plot	场地
 Plot frame	图框
 Plug	插头
 Plug diagram	插头图
+Plugins	插件
 Plugs	插头
 Poles	极数
 Ports	端口
@@ -383,6 +394,7 @@ Rated power	额定功率
 Rear wall	后板
 Rectangle	矩形
 Rectangular	矩形
+Redo	重做
 Refresh	刷新
 Reject	拒绝
 Relative humidity	相对湿度
@@ -397,6 +409,7 @@ Remove the reference point	删除参考点
 Report	报表
 Report blocks	报表块
 Report: {}	报表：{}
+Reports	报表
 Required	要求
 Reserve	备用
 Reviewer	审阅者
@@ -427,6 +440,7 @@ Search parts	搜索部件
 Searching…	正在搜索…
 Section	分节
 Segment	布线段
+Select	选择
 Select a part in the tree or create a new one.	在树中选择一个部件或新建一个部件。
 Sensor	传感器
 Sensors, switches, pushbuttons	传感器、开关、按钮
@@ -446,6 +460,7 @@ Signed in as {} ({})	已作为 {} ({}) 登录
 Signed out	已注销
 Signing in…	正在登录…
 Single-line / multi-line	单线 / 多线
+Site	场地
 Size	大小
 Socket side	插孔侧
 Solenoid not linked	电磁线圈未关联
@@ -491,9 +506,12 @@ Tools	刀具
 Top	顶部
 Total	合计
 Transformer	变压器
+Tutorial	教程
 Type	类型
 Type number	型号
 Underline	下划线
+Undo	撤销
+Unexpected argument: {}	意外的参数：{}
 Unit	单位
 Unknown column: {}	未知列：{}
 Unknown connector: {}	未知接口：{}
@@ -501,10 +519,12 @@ Unknown enclosure system: {}	未知机柜系统：{}
 Unknown face: {}	未知面：{}
 Unknown format: {}	未知格式：{}
 Unknown function definition: {}	未知功能定义：{}
+Unknown language: {}	未知语言：{}
 Unknown option {}	未知选项 {}
 Unknown parameter: {}	未知参数：{}
 Unknown part: {}	未知部件：{}
 Unknown property: {}	未知属性：{}
+Unknown report: {}	未知报表：{}
 Unknown scheme: {}	未知方案：{}
 Unknown segment	未知规划段
 Unknown symbol {}	未知符号 {}

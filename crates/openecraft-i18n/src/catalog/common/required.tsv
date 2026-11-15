@@ -2,9 +2,11 @@
 (all)	(alle)	(tous)	(todos)
 (no entries)	(keine Einträge)	(aucune entrée)	(sin entradas)
 (no structure)	(keine Struktur)	(sans structure)	(sin estructura)
+(optional)	(optional)	(facultatif)	(opcional)
 --json needs a JSON object	--json erwartet ein JSON-Objekt	--json attend un objet JSON	--json necesita un objeto JSON
 3D model	3D-Modell	Modèle 3D	Modelo 3D
 3D routing	3D-Verlegung	Routage 3D	Enrutado 3D
+3D view	3D-Ansicht	Vue 3D	Vista 3D
 A device box that extends or shows a device needs the tag of that device	Eine Gerätebox, die ein Betriebsmittel erweitert oder zeigt, braucht dessen Kennzeichen	Une boîte d'appareil qui étend ou montre un appareil a besoin du repère de cet appareil	Una caja de dispositivo que amplía o muestra un dispositivo necesita la etiqueta de ese dispositivo
 A page named {} already exists	Eine Seite mit dem Namen {} existiert bereits	Une page nommée {} existe déjà	Ya existe una página llamada {}
 A page needs a name	Eine Seite braucht einen Namen	Une page doit avoir un nom	Una página necesita un nombre
@@ -25,6 +27,7 @@ Apply	Übernehmen	Appliquer	Aplicar
 Approve	Genehmigen	Approuver	Aprobar
 Approvers	Genehmiger	Approbateurs	Aprobadores
 Automatic	Automatisch	Automatique	Automático
+Automation	Automatisierung	Automatisation	Automatización
 Aux	Hilfs	Aux	Aux
 Below	Unterhalb	En dessous	Abajo
 Bold	Fett	Gras	Negrita
@@ -125,9 +128,11 @@ Direction	Richtung	Direction	Dirección
 Discard	Verwerfen	Abandonner	Descartar
 Discard changes	Änderungen verwerfen	Abandonner les modifications	Descartar los cambios
 Display	Darstellung	Affichage	Presentación
+Documents	Dokumente	Documents	Documentos
 Done	Erledigt	Terminé	Hecho
 Door	Tür	Porte	Puerta
 Door cutout	Türausschnitt	Découpe de porte	Recorte de puerta
+Download	Herunterladen	Télécharger	Descargar
 Downloading {}…	{} wird heruntergeladen…	Téléchargement de {}…	Descargando {}…
 Drag to turn the model	Ziehen, um das Modell zu drehen	Faites glisser pour tourner le modèle	Arrastre para girar el modelo
 EMC clearance	EMV-Abstand	Distance CEM	Distancia CEM
@@ -159,6 +164,7 @@ Fits	Passt zu	Compatible avec	Compatible con
 Fitting at the end	Verschraubung am Ende	Raccord à la fin	Racor al final
 Fitting at the start	Verschraubung am Anfang	Raccord au début	Racor al inicio
 Floor	Boden	Fond	Suelo
+Floor plan	Grundriss	Plan	Plano
 Fluid device	Fluidgerät	Appareil fluidique	Dispositivo de fluidos
 Fluid device groups	Fluid-Gerätegruppen	Groupes d'appareils fluidiques	Grupos de dispositivos de fluidos
 Fluid netlist	Fluid-Netzliste	Liste des réseaux fluidiques	Lista de redes de fluidos
@@ -225,6 +231,7 @@ Link	Verknüpfung	Lien	Enlace
 Linked	Verknüpft	Lié	Vinculado
 Load	Verbraucher	Charge	Carga
 Loaded circuits bunched together	Gehäufte belastete Stromkreise	Circuits chargés groupés	Circuitos cargados agrupados
+Loading…	Wird geladen…	Chargement…	Cargando…
 Location	Ort	Emplacement	Ubicación
 Location (+)	Einbauort (+)	Emplacement (+)	Ubicación (+)
 Location along the segment, 0 … 1	Position entlang des Segments, 0 … 1	Position le long du segment, 0 … 1	Posición a lo largo del segmento, 0 … 1
@@ -261,6 +268,8 @@ Mounting holes	Befestigungsbohrungen	Trous de fixation	Agujeros de fijación
 Mounting layout {}	Montageplan {}	Implantation {}	Distribución de montaje {}
 Mounting plate	Montageplatte	Plaque de montage	Placa de montaje
 Mounting rail	Tragschiene	Rail de montage	Carril de montaje
+NC contact	Öffner	Contact NF	Contacto NC
+NO contact	Schließer	Contact NO	Contacto NA
 Name	Name	Nom	Nombre
 Name of the block	Name des Blocks	Nom du bloc	Nombre del bloque
 Name of the plot, e.g. the cadastral parcel	Name des Grundstücks, z. B. das Flurstück	Nom du terrain, p. ex. la parcelle cadastrale	Nombre de la parcela, p. ej. la parcela catastral
@@ -314,6 +323,7 @@ Only rows containing this text	Nur Zeilen mit diesem Text	Seulement les lignes c
 Operating pressure	Betriebsdruck	Pression de service	Presión de servicio
 Option {}: {} is not one of its choices	Option {}: {} ist keiner ihrer Auswahlwerte	Option {} : {} ne fait pas partie de ses choix	Opción {}: {} no es una de sus opciones
 Order number	Bestellnummer	Référence de commande	Número de pedido
+Other	Sonstiges	Autre	Otro
 Outer diameter	Außendurchmesser	Diamètre extérieur	Diámetro exterior
 Output	Ausgang	Sortie	Salida
 Overview	Übersicht	Vue d'ensemble	Vista general
@@ -358,6 +368,7 @@ Plot	Grundstück	Terrain	Parcela
 Plot frame	Plotrahmen	Cadre	Marco
 Plug	Stecker	Connecteur	Conector
 Plug diagram	Steckerplan	Plan des connecteurs	Esquema de conectores
+Plugins	Plugins	Plugins	Plugins
 Plugs	Stecker	Connecteurs	Conectores
 Poles	Pole	Pôles	Polos
 Ports	Ports	Ports	Puertos
@@ -401,6 +412,7 @@ Rated power	Bemessungsleistung	Puissance assignée	Potencia nominal
 Rear wall	Rückwand	Paroi arrière	Pared trasera
 Rectangle	Rechteck	Rectangle	Rectángulo
 Rectangular	Rechteckig	Rectangulaire	Rectangular
+Redo	Wiederholen	Rétablir	Rehacer
 Refresh	Aktualisieren	Actualiser	Actualizar
 Reject	Ablehnen	Refuser	Rechazar
 Relative humidity	Relative Luftfeuchte	Humidité relative	Humedad relativa
@@ -415,6 +427,7 @@ Remove the reference point	Bezugspunkt entfernen	Supprimer le point de référen
 Report	Bericht	Rapport	Informe
 Report blocks	Auswertungsblöcke	Blocs de rapports	Bloques de informes
 Report: {}	Bericht: {}	Rapport : {}	Informe: {}
+Reports	Berichte	Rapports	Informes
 Required	Gefordert	Requis	Requerido
 Reserve	Reserve	Réserve	Reserva
 Reviewer	Prüfer	Réviseur	Revisor
@@ -445,6 +458,7 @@ Search parts	Artikel suchen	Rechercher des articles	Buscar artículos
 Searching…	Suche läuft…	Recherche…	Buscando…
 Section	Abschnitt	Section	Sección
 Segment	Abschnitt	Tronçon	Tramo
+Select	Auswählen	Sélectionner	Seleccionar
 Select a part in the tree or create a new one.	Wählen Sie einen Artikel im Baum oder legen Sie einen neuen an.	Sélectionnez un article dans l'arborescence ou créez-en un nouveau.	Selecciona un artículo en el árbol o crea uno nuevo.
 Sensor	Sensor	Capteur	Sensor
 Sensors, switches, pushbuttons	Sensorik, Schalter und Taster	Capteurs, interrupteurs, boutons-poussoirs	Sensores, conmutadores y pulsadores
@@ -464,6 +478,8 @@ Signed in as {} ({})	Angemeldet als {} ({})	Connecté en tant que {} ({})	Sesió
 Signed out	Abgemeldet	Déconnecté	Sesión cerrada
 Signing in…	Anmeldung…	Connexion…	Iniciando sesión…
 Single-line / multi-line	Einpolig / allpolig	Unifilaire / multifilaire	Unifilar / multifilar
+Site	Grundstück	Terrain	Parcela
+Site plan	Lageplan	Plan de masse	Plano de situación
 Size	Größe	Taille	Tamaño
 Socket side	Buchsenseite	Côté douille	Lado hembra
 Solenoid not linked	Magnetspule nicht verknüpft	Bobine non liée	Bobina no vinculada
@@ -510,9 +526,12 @@ Tools	Werkzeuge	Outils	Herramientas
 Top	Oben	Haut	Arriba
 Total	Gesamt	Total	Total
 Transformer	Transformator	Transformateur	Transformador
+Tutorial	Tutorial	Tutoriel	Tutorial
 Type	Typ	Type	Tipo
 Type number	Typnummer	Numéro de type	Número de tipo
 Underline	Unterstrichen	Souligné	Subrayado
+Undo	Rückgängig	Annuler	Deshacer
+Unexpected argument: {}	Unerwartetes Argument: {}	Argument inattendu : {}	Argumento inesperado: {}
 Unit	Einheit	Unité	Unidad
 Unknown	Unbekannt	Inconnu	Desconocido
 Unknown column: {}	Unbekannte Spalte: {}	Colonne inconnue : {}	Columna desconocida: {}
@@ -521,10 +540,12 @@ Unknown enclosure system: {}	Unbekanntes Gehäusesystem: {}	Système d'armoire i
 Unknown face: {}	Unbekannte Fläche: {}	Face inconnue : {}	Cara desconocida: {}
 Unknown format: {}	Unbekanntes Format: {}	Format inconnu : {}	Formato desconocido: {}
 Unknown function definition: {}	Unbekannte Funktionsdefinition: {}	Définition de fonction inconnue : {}	Definición de función desconocida: {}
+Unknown language: {}	Unbekannte Sprache: {}	Langue inconnue : {}	Idioma desconocido: {}
 Unknown option {}	Unbekannte Option {}	Option inconnue {}	Opción desconocida {}
 Unknown parameter: {}	Unbekannter Parameter: {}	Paramètre inconnu : {}	Parámetro desconocido: {}
 Unknown part: {}	Unbekannter Artikel: {}	Article inconnu : {}	Artículo desconocido: {}
 Unknown property: {}	Unbekannte Eigenschaft: {}	Propriété inconnue : {}	Propiedad desconocida: {}
+Unknown report: {}	Unbekannte Auswertung: {}	Rapport inconnu : {}	Informe desconocido: {}
 Unknown scheme: {}	Unbekanntes Schema: {}	Schéma inconnu : {}	Esquema desconocido: {}
 Unknown segment	Unbekanntes Segment	Segment inconnu	Segmento desconocido
 Unknown symbol {}	Unbekanntes Symbol {}	Symbole inconnu {}	Símbolo desconocido {}

@@ -5,6 +5,20 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.2] - unreleased
 
+- **Website with live demos:** `website/` is a page that presents the project and
+  runs it: the schematic editor and the panel in 3D as canvases, the project check,
+  the reports, a console with the commands of the command line and the exports, all
+  on one example project in the browser, in the 20 languages of the editor. It is
+  deployed as static files (`cd website && trunk build --release`) or with the Docker
+  image `ghcr.io/nilres/openecraft-website`, which serves the web editor at `/editor/`
+  as well ([website](docs/website.md)); where the links of the page lead (web editor,
+  repository, downloads, documentation, issues) is set in `config.js` or with
+  environment variables of the image (`OPENECRAFT_EDITOR_URL`, …). The 3D routing
+  of the examples comes with the page; that of a changed project is searched in a
+  worker, so the page stays usable meanwhile. The demos are the editor's own code: its
+  shell tables, document state and drawing views moved into the library crates
+  `openecraft-shell`, `openecraft-session` and `openecraft-canvas`.
+
 - **Automatic saving of shared projects**: a project opened from the project server
   is saved to it by itself, 30 seconds after a change and every 30 seconds while the
   work goes on (*Settings › Servers* or the *Project server* pane: on / off, 10 to

@@ -2,9 +2,11 @@
 (all)	(все)
 (no entries)	(нет записей)
 (no structure)	(без структуры)
+(optional)	(необязательно)
 --json needs a JSON object	--json требует объект JSON
 3D model	3D-модель
 3D routing	3D-прокладка
+3D view	3D-вид
 A page named {} already exists	Лист с именем {} уже существует
 A page needs a name	Странице нужно имя
 A routing path needs {} points at least	Пути прокладки нужно не менее {} точек
@@ -23,6 +25,7 @@ Apply	Применить
 Approve	Утвердить
 Approvers	Утверждающие
 Automatic	Автоматически
+Automation	Автоматизация
 Aux	Вспом.
 Below	Снизу
 Bold	Полужирный
@@ -121,9 +124,11 @@ Direction	Направление
 Discard	Отменить
 Discard changes	Отменить изменения
 Display	Отображение
+Documents	Документы
 Done	Выполнено
 Door	Дверь
 Door cutout	Вырез в двери
+Download	Скачать
 Downloading {}…	Скачивание {}…
 Drag to turn the model	Перетащите, чтобы повернуть модель
 EMC clearance	Зазор ЭМС
@@ -154,6 +159,7 @@ Fits	Подходит к
 Fitting at the end	Фитинг в конце
 Fitting at the start	Фитинг в начале
 Floor	Днище
+Floor plan	План помещения
 Fluid device	Устройство гидропневматики
 Fluid device groups	Группы устройств гидропневматики
 Fluid netlist	Список цепей гидропневматики
@@ -214,6 +220,7 @@ Link	Связь
 Linked	Связано
 Load	Нагрузка
 Loaded circuits bunched together	Нагруженные цепи, проложенные пучком
+Loading…	Загрузка…
 Location	Место установки
 Location (+)	Место установки (+)
 Locked	Заблокирован
@@ -248,6 +255,8 @@ Mounting holes	Крепежные отверстия
 Mounting layout {}	Монтажный план {}
 Mounting plate	Монтажная панель
 Mounting rail	Монтажная рейка
+NC contact	Размыкающий контакт
+NO contact	Замыкающий контакт
 Name	Имя
 Name of the block	Имя блока
 Name of the plot, e.g. the cadastral parcel	Название участка, напр. кадастровый участок
@@ -299,6 +308,7 @@ Only rows containing this text	Только строки с этим текст�
 Operating pressure	Рабочее давление
 Option {}: {} is not one of its choices	Параметр {}: {} не входит в его варианты выбора
 Order number	Номер для заказа
+Other	Прочее
 Outer diameter	Наружный диаметр
 Output	Выход
 Overview	Обзор
@@ -342,6 +352,7 @@ Plot	Участок
 Plot frame	Рамка листа
 Plug	Штекер
 Plug diagram	Схема штекеров
+Plugins	Плагины
 Plugs	Штекеры
 Poles	Полюсы
 Ports	Порты
@@ -385,6 +396,7 @@ Rated power	Номинальная мощность
 Rear wall	Задняя стенка
 Rectangle	Прямоугольник
 Rectangular	Прямоугольный
+Redo	Повторить
 Refresh	Обновить
 Reject	Отклонить
 Relative humidity	Относительная влажность
@@ -399,6 +411,7 @@ Remove the reference point	Удалить опорную точку
 Report	Отчёт
 Report blocks	Блоки отчётов
 Report: {}	Отчёт: {}
+Reports	Отчёты
 Required	Требуется
 Reserve	Резерв
 Reviewer	Рецензент
@@ -429,6 +442,7 @@ Search parts	Поиск изделий
 Searching…	Поиск…
 Section	Раздел
 Segment	Участок
+Select	Выбрать
 Select a part in the tree or create a new one.	Выберите изделие в дереве или создайте новое.
 Sensor	Датчик
 Sensors, switches, pushbuttons	Датчики, выключатели, кнопки
@@ -448,6 +462,8 @@ Signed in as {} ({})	Вход выполнен как {} ({})
 Signed out	Выход выполнен
 Signing in…	Вход…
 Single-line / multi-line	Однолинейная / многолинейная
+Site	Участок
+Site plan	Генплан
 Size	Размер
 Socket side	Сторона гнёзд
 Solenoid not linked	Катушка не связана
@@ -493,9 +509,12 @@ Tools	Инструменты
 Top	Сверху
 Total	Итого
 Transformer	Трансформатор
+Tutorial	Учебник
 Type	Тип
 Type number	Номер типа
 Underline	Подчеркнутый
+Undo	Отменить
+Unexpected argument: {}	Непредвиденный аргумент: {}
 Unit	Единица
 Unknown column: {}	Неизвестный столбец: {}
 Unknown connector: {}	Неизвестный коннектор: {}
@@ -503,10 +522,12 @@ Unknown enclosure system: {}	Неизвестная система корпус�
 Unknown face: {}	Неизвестная поверхность: {}
 Unknown format: {}	Неизвестный формат: {}
 Unknown function definition: {}	Неизвестное определение функции: {}
+Unknown language: {}	Неизвестный язык: {}
 Unknown option {}	Неизвестный параметр {}
 Unknown parameter: {}	Неизвестный параметр: {}
 Unknown part: {}	Неизвестное изделие: {}
 Unknown property: {}	Неизвестное свойство: {}
+Unknown report: {}	Неизвестный отчёт: {}
 Unknown scheme: {}	Неизвестная схема: {}
 Unknown segment	Неизвестный сегмент
 Unknown symbol {}	Неизвестный символ {}

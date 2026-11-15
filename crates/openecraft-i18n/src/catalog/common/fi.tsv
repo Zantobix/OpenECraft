@@ -2,9 +2,11 @@
 (all)	(kaikki)
 (no entries)	(ei merkintöjä)
 (no structure)	(ei rakennetta)
+(optional)	(valinnainen)
 --json needs a JSON object	--json vaatii JSON-objektin
 3D model	3D-malli
 3D routing	3D-reititys
+3D view	3D-näkymä
 A page named {} already exists	Sivu nimeltä {} on jo olemassa
 A page needs a name	Sivulla on oltava nimi
 A routing path needs {} points at least	Reitityspolku tarvitsee vähintään {} pistettä
@@ -23,6 +25,7 @@ Apply	Käytä
 Approve	Hyväksy
 Approvers	Hyväksyjät
 Automatic	Automaattinen
+Automation	Automaatio
 Aux	Apu
 Below	Alapuolella
 Bold	Lihavointi
@@ -121,9 +124,11 @@ Direction	Suunta
 Discard	Hylkää
 Discard changes	Hylkää muutokset
 Display	Esitys
+Documents	Dokumentit
 Done	Valmis
 Door	Ovi
 Door cutout	Oven aukko
+Download	Lataa
 Downloading {}…	Ladataan {}…
 Drag to turn the model	Käännä mallia vetämällä
 EMC clearance	EMC-etäisyys
@@ -154,6 +159,7 @@ Fits	Sopii
 Fitting at the end	Putkiliitin lopussa
 Fitting at the start	Putkiliitin alussa
 Floor	Pohja
+Floor plan	Pohjapiirros
 Fluid device	Fluidilaite
 Fluid device groups	Fluidilaiteryhmät
 Fluid netlist	Fluidiverkkoluettelo
@@ -214,6 +220,7 @@ Link	Linkki
 Linked	Linkitetty
 Load	Kuorma
 Loaded circuits bunched together	Yhteen niputetut kuormitetut piirit
+Loading…	Ladataan…
 Location	Sijainti
 Location (+)	Sijainti (+)
 Locked	Lukittu
@@ -248,6 +255,8 @@ Mounting holes	Kiinnitysreiät
 Mounting layout {}	Asennuskuva {}
 Mounting plate	Asennuslevy
 Mounting rail	Asennuskisko
+NC contact	Avautuva kosketin
+NO contact	Sulkeutuva kosketin
 Name	Nimi
 Name of the block	Lohkon nimi
 Name of the plot, e.g. the cadastral parcel	Tontin nimi, esim. kiinteistötunnus
@@ -299,6 +308,7 @@ Only rows containing this text	Vain rivit, jotka sisältävät tämän tekstin
 Operating pressure	Käyttöpaine
 Option {}: {} is not one of its choices	Vaihtoehto {}: {} ei ole sen valinnoissa
 Order number	Tilausnumero
+Other	Muu
 Outer diameter	Ulkohalkaisija
 Output	Lähtö
 Overview	Yleiskatsaus
@@ -342,6 +352,7 @@ Plot	Tontti
 Plot frame	Piirustuskehys
 Plug	Pistoliitin
 Plug diagram	Pistoliitinkaavio
+Plugins	Laajennukset
 Plugs	Pistoliittimet
 Poles	Navat
 Ports	Portit
@@ -385,6 +396,7 @@ Rated power	Mitoitusteho
 Rear wall	Takaseinä
 Rectangle	Suorakulmio
 Rectangular	Suorakulmainen
+Redo	Tee uudelleen
 Refresh	Päivitä
 Reject	Hylkää
 Relative humidity	Suhteellinen kosteus
@@ -399,6 +411,7 @@ Remove the reference point	Poista vertailupiste
 Report	Raportti
 Report blocks	Raporttilohkot
 Report: {}	Raportti: {}
+Reports	Raportit
 Required	Vaadittu
 Reserve	Varaus
 Reviewer	Tarkastaja
@@ -429,6 +442,7 @@ Search parts	Hae osia
 Searching…	Haetaan…
 Section	Osio
 Segment	Osuus
+Select	Valitse
 Select a part in the tree or create a new one.	Valitse osa puusta tai luo uusi.
 Sensor	Anturi
 Sensors, switches, pushbuttons	Anturit, kytkimet, painikkeet
@@ -448,6 +462,8 @@ Signed in as {} ({})	Kirjautunut käyttäjänä {} ({})
 Signed out	Kirjauduttu ulos
 Signing in…	Kirjaudutaan sisään…
 Single-line / multi-line	Yksinapainen / moninapainen
+Site	Tontti
+Site plan	Asemapiirros
 Size	Koko
 Socket side	Holkkipuoli
 Solenoid not linked	Magneettikelaa ei linkitetty
@@ -493,9 +509,12 @@ Tools	Työkalut
 Top	Ylhäällä
 Total	Yhteensä
 Transformer	Muuntaja
+Tutorial	Opetusohjelma
 Type	Tyyppi
 Type number	Tyyppinumero
 Underline	Alleviivaus
+Undo	Kumoa
+Unexpected argument: {}	Odottamaton argumentti: {}
 Unit	Yksikkö
 Unknown column: {}	Tuntematon sarake: {}
 Unknown connector: {}	Tuntematon konnektori: {}
@@ -503,10 +522,12 @@ Unknown enclosure system: {}	Tuntematon kotelojärjestelmä: {}
 Unknown face: {}	Tuntematon pinta: {}
 Unknown format: {}	Tuntematon muoto: {}
 Unknown function definition: {}	Tuntematon toimintomäärittely: {}
+Unknown language: {}	Tuntematon kieli: {}
 Unknown option {}	Tuntematon vaihtoehto {}
 Unknown parameter: {}	Tuntematon parametri: {}
 Unknown part: {}	Tuntematon osa: {}
 Unknown property: {}	Tuntematon ominaisuus: {}
+Unknown report: {}	Tuntematon raportti: {}
 Unknown scheme: {}	Tuntematon skeema: {}
 Unknown segment	Tuntematon segmentti
 Unknown symbol {}	Tuntematon symboli {}

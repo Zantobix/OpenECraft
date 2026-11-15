@@ -2,9 +2,11 @@
 (all)	(alle)
 (no entries)	(ingen poster)
 (no structure)	(ingen struktur)
+(optional)	(valgfri)
 --json needs a JSON object	--json kræver et JSON-objekt
 3D model	3D-model
 3D routing	3D-føring
+3D view	3D-visning
 A page named {} already exists	Der findes allerede en side med navnet {}
 A page needs a name	En side skal have et navn
 A routing path needs {} points at least	En føringsvej kræver mindst {} punkter
@@ -23,6 +25,7 @@ Apply	Anvend
 Approve	Godkend
 Approvers	Godkendere
 Automatic	Automatisk
+Automation	Automatisering
 Aux	Hjælpe
 Below	Under
 Bold	Fed
@@ -121,9 +124,11 @@ Direction	Retning
 Discard	Kassér
 Discard changes	Kassér ændringerne
 Display	Visning
+Documents	Dokumenter
 Done	Udført
 Door	Dør
 Door cutout	Dørudskæring
+Download	Download
 Downloading {}…	Downloader {}…
 Drag to turn the model	Træk for at dreje modellen
 EMC clearance	EMC-afstand
@@ -154,6 +159,7 @@ Fits	Passer til
 Fitting at the end	Fitting i slutningen
 Fitting at the start	Fitting i starten
 Floor	Bund
+Floor plan	Plantegning
 Fluid device	Fluidenhed
 Fluid device groups	Fluidenhedsgrupper
 Fluid netlist	Fluidnetliste
@@ -214,6 +220,7 @@ Link	Link
 Linked	Tilknyttet
 Load	Belastning
 Loaded circuits bunched together	Belastede kredse samlet i bundt
+Loading…	Indlæser…
 Location	Placering
 Location (+)	Placering (+)
 Locked	Låst
@@ -248,6 +255,8 @@ Mounting holes	Monteringshuller
 Mounting layout {}	Monteringslayout {}
 Mounting plate	Monteringsplade
 Mounting rail	Monteringsskinne
+NC contact	Brydekontakt
+NO contact	Sluttekontakt
 Name	Navn
 Name of the block	Blokkens navn
 Name of the plot, e.g. the cadastral parcel	Grundens navn, f.eks. matriklen
@@ -299,6 +308,7 @@ Only rows containing this text	Kun rækker, der indeholder denne tekst
 Operating pressure	Driftstryk
 Option {}: {} is not one of its choices	Indstillingen {}: {} er ikke en af dens valgmuligheder
 Order number	Bestillingsnummer
+Other	Andet
 Outer diameter	Udvendig diameter
 Output	Udgang
 Overview	Oversigt
@@ -342,6 +352,7 @@ Plot	Grund
 Plot frame	Plotramme
 Plug	Stik
 Plug diagram	Stikdiagram
+Plugins	Plugins
 Plugs	Stik
 Poles	Poler
 Ports	Porte
@@ -385,6 +396,7 @@ Rated power	Mærkeeffekt
 Rear wall	Bagvæg
 Rectangle	Rektangel
 Rectangular	Rektangulær
+Redo	Annuller fortryd
 Refresh	Opdater
 Reject	Afvis
 Relative humidity	Relativ luftfugtighed
@@ -399,6 +411,7 @@ Remove the reference point	Fjern referencepunktet
 Report	Rapport
 Report blocks	Rapportblokke
 Report: {}	Rapport: {}
+Reports	Rapporter
 Required	Påkrævet
 Reserve	Reserve
 Reviewer	Korrekturlæser
@@ -429,6 +442,7 @@ Search parts	Søg efter artikler
 Searching…	Søger…
 Section	Afsnit
 Segment	Afsnit
+Select	Vælg
 Select a part in the tree or create a new one.	Vælg en artikel i træet, eller opret en ny.
 Sensor	Sensor
 Sensors, switches, pushbuttons	Sensorer, afbrydere, trykknapper
@@ -448,6 +462,8 @@ Signed in as {} ({})	Logget på som {} ({})
 Signed out	Logget af
 Signing in…	Logger på…
 Single-line / multi-line	Enstreget / flerstreget
+Site	Grund
+Site plan	Situationsplan
 Size	Størrelse
 Socket side	Bøsningsside
 Solenoid not linked	Magnetspole ikke tilknyttet
@@ -493,9 +509,12 @@ Tools	Værktøjer
 Top	Øverst
 Total	I alt
 Transformer	Transformer
+Tutorial	Selvstudium
 Type	Type
 Type number	Typenummer
 Underline	Understreget
+Undo	Fortryd
+Unexpected argument: {}	Uventet argument: {}
 Unit	Enhed
 Unknown column: {}	Ukendt kolonne: {}
 Unknown connector: {}	Ukendt connector: {}
@@ -503,10 +522,12 @@ Unknown enclosure system: {}	Ukendt kapslingssystem: {}
 Unknown face: {}	Ukendt flade: {}
 Unknown format: {}	Ukendt format: {}
 Unknown function definition: {}	Ukendt funktionsdefinition: {}
+Unknown language: {}	Ukendt sprog: {}
 Unknown option {}	Ukendt indstilling {}
 Unknown parameter: {}	Ukendt parameter: {}
 Unknown part: {}	Ukendt artikel: {}
 Unknown property: {}	Ukendt egenskab: {}
+Unknown report: {}	Ukendt rapport: {}
 Unknown scheme: {}	Ukendt skema: {}
 Unknown segment	Ukendt segment
 Unknown symbol {}	Ukendt symbol {}

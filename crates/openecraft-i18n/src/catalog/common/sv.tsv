@@ -2,9 +2,11 @@
 (all)	(alla)
 (no entries)	(inga poster)
 (no structure)	(ingen struktur)
+(optional)	(valfritt)
 --json needs a JSON object	--json kräver ett JSON-objekt
 3D model	3D-modell
 3D routing	3D-dragning
+3D view	3D-vy
 A page named {} already exists	Det finns redan en sida med namnet {}
 A page needs a name	En sida behöver ett namn
 A routing path needs {} points at least	En dragningsväg kräver minst {} punkter
@@ -23,6 +25,7 @@ Apply	Verkställ
 Approve	Godkänn
 Approvers	Godkännare
 Automatic	Automatisk
+Automation	Automatisering
 Aux	Hjälp
 Below	Nedanför
 Bold	Fet
@@ -121,9 +124,11 @@ Direction	Riktning
 Discard	Ignorera
 Discard changes	Släng ändringarna
 Display	Visning
+Documents	Dokument
 Done	Klar
 Door	Dörr
 Door cutout	Dörrurtag
+Download	Ladda ned
 Downloading {}…	Laddar ned {}…
 Drag to turn the model	Dra för att vrida modellen
 EMC clearance	EMC-avstånd
@@ -154,6 +159,7 @@ Fits	Passar till
 Fitting at the end	Koppling i slutet
 Fitting at the start	Koppling i början
 Floor	Golv
+Floor plan	Planritning
 Fluid device	Fluidapparat
 Fluid device groups	Fluidapparatgrupper
 Fluid netlist	Fluidnätlista
@@ -214,6 +220,7 @@ Link	Länk
 Linked	Länkad
 Load	Last
 Loaded circuits bunched together	Belastade kretsar förlagda tillsammans
+Loading…	Läser in…
 Location	Placering
 Location (+)	Placering (+)
 Locked	Låst
@@ -248,6 +255,8 @@ Mounting holes	Fästhål
 Mounting layout {}	Monteringslayout {}
 Mounting plate	Monteringsplåt
 Mounting rail	Monteringsskena
+NC contact	Brytande kontakt
+NO contact	Slutande kontakt
 Name	Namn
 Name of the block	Blockets namn
 Name of the plot, e.g. the cadastral parcel	Tomtens namn, t.ex. fastighetsbeteckningen
@@ -299,6 +308,7 @@ Only rows containing this text	Endast rader som innehåller den här texten
 Operating pressure	Drifttryck
 Option {}: {} is not one of its choices	Alternativ {}: {} är inte ett av dess val
 Order number	Beställningsnummer
+Other	Övrigt
 Outer diameter	Ytterdiameter
 Output	Utgång
 Overview	Översikt
@@ -342,6 +352,7 @@ Plot	Tomt
 Plot frame	Ritningsram
 Plug	Kontaktdon
 Plug diagram	Kontaktdonsschema
+Plugins	Plugins
 Plugs	Kontaktdon
 Poles	Poler
 Ports	Portar
@@ -385,6 +396,7 @@ Rated power	Märkeffekt
 Rear wall	Bakvägg
 Rectangle	Rektangel
 Rectangular	Rektangulär
+Redo	Gör om
 Refresh	Uppdatera
 Reject	Avvisa
 Relative humidity	Relativ luftfuktighet
@@ -399,6 +411,7 @@ Remove the reference point	Ta bort referenspunkten
 Report	Rapport
 Report blocks	Rapportblock
 Report: {}	Rapport: {}
+Reports	Rapporter
 Required	Krävs
 Reserve	Reserv
 Reviewer	Granskare
@@ -429,6 +442,7 @@ Search parts	Sök artiklar
 Searching…	Söker…
 Section	Avsnitt
 Segment	Avsnitt
+Select	Markera
 Select a part in the tree or create a new one.	Välj en artikel i trädet eller skapa en ny.
 Sensor	Givare
 Sensors, switches, pushbuttons	Givare, brytare, tryckknappar
@@ -448,6 +462,8 @@ Signed in as {} ({})	Inloggad som {} ({})
 Signed out	Utloggad
 Signing in…	Loggar in…
 Single-line / multi-line	Enlinje / flerlinje
+Site	Tomt
+Site plan	Situationsplan
 Size	Storlek
 Socket side	Hylssida
 Solenoid not linked	Magnetspole inte länkad
@@ -493,9 +509,12 @@ Tools	Verktyg
 Top	Överkant
 Total	Totalt
 Transformer	Transformator
+Tutorial	Handledning
 Type	Typ
 Type number	Typnummer
 Underline	Understruken
+Undo	Ångra
+Unexpected argument: {}	Oväntat argument: {}
 Unit	Enhet
 Unknown column: {}	Okänd kolumn: {}
 Unknown connector: {}	Okänd anslutning: {}
@@ -503,10 +522,12 @@ Unknown enclosure system: {}	Okänt kapslingssystem: {}
 Unknown face: {}	Okänd yta: {}
 Unknown format: {}	Okänt format: {}
 Unknown function definition: {}	Okänd funktionsdefinition: {}
+Unknown language: {}	Okänt språk: {}
 Unknown option {}	Okänt alternativ {}
 Unknown parameter: {}	Okänd parameter: {}
 Unknown part: {}	Okänd artikel: {}
 Unknown property: {}	Okänd egenskap: {}
+Unknown report: {}	Okänd rapport: {}
 Unknown scheme: {}	Okänt schema: {}
 Unknown segment	Okänt segment
 Unknown symbol {}	Okänd symbol {}

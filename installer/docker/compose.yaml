@@ -9,7 +9,9 @@
 # OPENECRAFT_ADMIN_PASSWORD (OPENECRAFT_PROJECT_ADMIN_USER / _PASSWORD for the project
 # server) create an administrator account, or reset its password, at every start. The
 # web editor is on http://127.0.0.1:8080; in it the servers are http://127.0.0.1:8090 and
-# http://127.0.0.1:8091, as the browser reaches them.
+# http://127.0.0.1:8091, as the browser reaches them. The website with its live demos
+# (docs/website.md) is on http://127.0.0.1:8088; it brings a web editor of its own at
+# /editor/, so a public site needs only this service.
 services:
   parts-server:
     image: ghcr.io/nilres/openecraft-parts-server:${OPENECRAFT_TAG:-latest}
@@ -42,6 +44,21 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:8080:8080"
+
+  website:
+    image: ghcr.io/nilres/openecraft-website:${OPENECRAFT_TAG:-latest}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8088:8080"
+    # Where the links of the page lead (docs/website.md): the web editor (a folder
+    # beside the page or an address), the repository, and optionally the downloads,
+    # the documentation folder and the issues, which default to those of the repository.
+    environment:
+      OPENECRAFT_EDITOR_URL: ${OPENECRAFT_EDITOR_URL:-editor/}
+      OPENECRAFT_REPOSITORY_URL: ${OPENECRAFT_REPOSITORY_URL:-https://github.com/nilres/OpenECraft}
+      OPENECRAFT_DOWNLOADS_URL: ${OPENECRAFT_DOWNLOADS_URL:-}
+      OPENECRAFT_DOCUMENTATION_URL: ${OPENECRAFT_DOCUMENTATION_URL:-}
+      OPENECRAFT_ISSUES_URL: ${OPENECRAFT_ISSUES_URL:-}
 
 volumes:
   parts:
