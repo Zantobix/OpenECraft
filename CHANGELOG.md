@@ -45,6 +45,25 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
   `OPENECRAFT_LEGAL_…` of the Docker image; the footer then links to it, labelled in
   the language of the page ([website](docs/website.md#legal-notice)). The image
   writes `config.js` with a start script, so any character is allowed in a setting.
+- **Privacy notice, licenses and disclaimers on the website:** the footer links a
+  privacy notice (what the page does: no cookies, no tracking, nothing sent; the
+  operator adds the hosting and the server logs with `legal.privacy` /
+  `OPENECRAFT_LEGAL_PRIVACY`) and the license files of OpenECraft, its fonts and its
+  libraries, and says that OpenECraft is not affiliated with the owners of the
+  product names it mentions and comes without warranty. The page has a Content
+  Security Policy that keeps it to its own address, the Docker image sends
+  `Referrer-Policy` and `X-Frame-Options`
+  ([website](docs/website.md#privacy-notice-licenses-and-disclaimers)). The image
+  sends the WebAssembly compressed by its build instead of compressing it for every
+  visitor, and the page has an icon for the home screen of iPhones.
+- **Website shown before its demos are loaded, and in every language for search
+  engines:** the page shows a picture of the first sheet and loads the 40 MB module
+  afterwards (at the first scroll, click or key, or when the browser has time). The
+  build writes the page in every language beside the English one (`de.html`, …) with
+  translated title and description; with the public address the pages name each
+  other (`hreflang`) and the sitemap lists them. The image logs visits without whole
+  IP addresses, and links to the page are previewed with the name and a screenshot
+  ([website](docs/website.md#search-engines-and-link-previews)).
 - **Website for search engines and link previews:** the page has Open Graph and
   Twitter card tags, structured data (`SoftwareApplication`), a translated title,
   texts for the pictures of the gallery, which are WebP files of a fourteenth of the

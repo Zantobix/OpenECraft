@@ -324,6 +324,19 @@ jobs:
           curl -fsS http://127.0.0.1:8088/robots.txt | grep -qx 'Sitemap: https://site.example/openecraft/sitemap.xml'
           curl -fsS http://127.0.0.1:8088/sitemap.xml | grep -qF '<loc>https://site.example/openecraft/</loc>'
           curl -fsS http://127.0.0.1:8088/index.html | grep -qF 'rel="canonical"'
+          # The page in the other languages, each with its own address and the others'.
+          grep -qF '<link rel="alternate" hreflang="de" href="https://site.example/openecraft/de.html" />' site.html
+          curl -fsS http://127.0.0.1:8088/de.html -o de.html
+          grep -qF '<html lang="de">' de.html
+          grep -qF '<link rel="canonical" href="https://site.example/openecraft/de.html" />' de.html
+          curl -fsS http://127.0.0.1:8088/sitemap.xml | grep -qF '<loc>https://site.example/openecraft/ja.html</loc>'
+          # The module is named in the page and loaded by its script; the first sheet is a picture.
+          grep -q 'window.OPENECRAFT_MODULE = \["./openecraft-website-[0-9a-f]*\.js", "./openecraft-website-[0-9a-f]*_bg\.wasm"\]' site.html
+          if grep -q 'rel="modulepreload"' site.html; then exit 1; fi
+          curl -fsS -o /dev/null http://127.0.0.1:8088/sheet.svg
+          # The log has no whole address of a visitor.
+          docker logs site 2>&1 | grep -q '"GET /de.html HTTP/1.1" 200'
+          if docker logs site 2>&1 | grep 'GET /de.html' | grep -vqE '^[0-9]+\.[0-9]+\.[0-9]+\.0 '; then exit 1; fi
           # The routings of the examples come with the page.
           curl -fsS http://127.0.0.1:8088/routing/index.json | grep -q '"conveyor.json"'
           curl -fsS http://127.0.0.1:8088/routing/conveyor.json | grep -q '"routing"'
@@ -331,9 +344,14 @@ jobs:
           test -n "$wasm"
           curl -fsS -o /dev/null -w '%{content_type}\n' "http://127.0.0.1:8088/$wasm" | tee type.txt
           grep -qx 'application/wasm' type.txt
-          for file in site.js icon.svg images/schematic.webp social.jpg LICENSE-MIT THIRD-PARTY-LICENSES.html; do
+          for file in site.js icon.svg apple-touch-icon.png images/schematic.webp social.jpg LICENSE-MIT THIRD-PARTY-LICENSES.html; do
             curl -fsS -o /dev/null "http://127.0.0.1:8088/$file"
           done
+          # The WebAssembly is sent as the build of the image compressed it.
+          curl -fsS -o wasm.gz -D headers.txt -H 'Accept-Encoding: gzip' "http://127.0.0.1:8088/$wasm"
+          grep -qi '^content-encoding: gzip' headers.txt
+          gzip -t wasm.gz
+          curl -fsS http://127.0.0.1:8088/config.js | grep -q 'editor: "https://editor.example/"'
           curl -fsS http://127.0.0.1:8088/editor/ | grep -q openecraft_canvas
           docker logs site
           docker stop site

@@ -84,11 +84,17 @@ EXPOSE 8080
 
 # The website (website/, docs/website.md): the page with its live demos, and the web
 # editor built once more with relative addresses for the folder /editor/ beside it.
+# The WebAssembly, the scripts and the other big texts get a compressed copy beside
+# them, which nginx sends as it is (gzip_static of website.conf) instead of
+# compressing 40 MB for every visitor; config.js is written at every start.
 FROM web-build AS website-build
 RUN cd website \
     && trunk build --release \
     && cd ../openecraft \
-    && trunk build --release --public-url ./ --dist /src/target/website-editor
+    && trunk build --release --public-url ./ --dist /src/target/website-editor \
+    && find /src/website/dist /src/target/website-editor -type f \
+        \( -name '*.wasm' -o -name '*.js' -o -name '*.css' -o -name '*.json' -o -name '*.svg' -o -name 'THIRD-PARTY-LICENSES.html' \) \
+        ! -name config.js -exec gzip -9 -k {} +
 
 # Static files served by nginx as an unprivileged user on port 8080: the website at /,
 # the web editor at /editor/. Where the links of the page lead and the legal notice
@@ -112,7 +118,8 @@ ENV OPENECRAFT_SITE_URL= \
     OPENECRAFT_LEGAL_REGISTER= \
     OPENECRAFT_LEGAL_VAT_ID= \
     OPENECRAFT_LEGAL_RESPONSIBLE= \
-    OPENECRAFT_LEGAL_TEXT=
+    OPENECRAFT_LEGAL_TEXT= \
+    OPENECRAFT_LEGAL_PRIVACY=
 COPY installer/docker/website.conf /etc/nginx/templates/default.conf.template
 COPY --chmod=0755 installer/docker/website-config.sh /docker-entrypoint.d/40-openecraft-website-config.sh
 COPY --chmod=0755 installer/docker/website-site.sh /docker-entrypoint.d/41-openecraft-website-site.sh
