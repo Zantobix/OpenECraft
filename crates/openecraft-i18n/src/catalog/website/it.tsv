@@ -6,7 +6,6 @@ A look inside	Uno sguardo all'interno
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	Un database di articoli con dati di montaggio e modelli 3D, importazioni da EDZ, BMEcat e STEP, condiviso tramite il server degli articoli.
 A schematic page of the demo project, drawn by OpenECraft	Una pagina di schema del progetto demo, disegnata da OpenECraft
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Circa 330 simboli IEC 60617, set NFPA, GB, GOST e JIS, fluidica, P&ID e piani di installazione, e un editor per i propri simboli.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Come per ogni sito web, il server che fornisce questa pagina riceve l'indirizzo IP del vostro dispositivo per poter rispondere.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Distinta base, schemi di morsetti, cavi e connettori come pagine sempre aggiornate, moduli disegnati in proprio e una verifica del progetto che segue ogni modifica.
 Built for scripts and AI agents	Fatto per script e agenti IA
 Click to explore the panel	Fare clic per esplorare il quadro
@@ -22,8 +21,6 @@ Download the latest release	Scarica l'ultima versione
 Drag to turn, pinch with two fingers to zoom.	Trascinare per ruotare, pizzicare con due dita per lo zoom.
 Drag to turn, scroll to zoom.	Trascinare per ruotare, scorrere per lo zoom.
 Drawings	Disegni
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal e altri nomi sono marchi dei rispettivi proprietari. OpenECraft è un progetto indipendente.
-Email	E-mail
 Enclosure climate with a heat map of the mounting plate	Clima dell'armadio con mappa termica della piastra di montaggio
 Engineering calculations	Calcoli tecnici
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Ogni operazione su un progetto è un comando: dalla riga di comando, per gli agenti IA tramite il server MCP e per i plugin. Provatene alcuni sul progetto qui sopra.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Schema morsetti grafico
 In the browser	Nel browser
 Installation guide	Guida all'installazione
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Programmi di installazione per Windows, pacchetti Linux e un'immagine disco per macOS, con aggiornamenti automatici.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Non è affiliato, approvato o sponsorizzato dai proprietari di questi nomi.
 Lamp	Lampada
-Legal notice	Note legali
 Licenses	Licenze
 Live demo	Demo dal vivo
 Menu	Menu
@@ -59,7 +54,6 @@ Open and extensible	Aperto ed estensibile
 Open source electrical CAE	CAE elettrico open source
 Open source under the MIT and Apache-2.0 licenses.	Open source con licenze MIT e Apache-2.0.
 Open the web editor	Apri l'editor web
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft è fornito senza garanzia. I suoi calcoli e le sue verifiche supportano la progettazione; una persona qualificata deve verificare i risultati rispetto alle norme e ai regolamenti applicabili.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft è open source con licenza MIT o Apache License 2.0, a vostra scelta. Contiene caratteri e librerie di terzi con le rispettive licenze.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft progetta impianti elettrici: schemi orientati ai dispositivi, report sempre aggiornati, layout del quadro con cablatura instradata e la documentazione per il cliente. Un'unica base di codice per Windows, Linux, macOS e il browser.
 OpenECraft – open source electrical CAE	OpenECraft – CAE elettrico open source
@@ -68,19 +62,14 @@ PLC and automation	PLC e automazione
 Panel layout in 3D	Layout del quadro in 3D
 Parts and data portal	Articoli e portale dati
 Parts server, project server and the web editor as Docker images for your own network.	Server degli articoli, server di progetto e l'editor web come immagini Docker per la vostra rete.
-Phone	Telefono
 Planning	Pianificazione
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Circuiti pneumatici e idraulici collegati alla parte elettrica, cablaggi con esportazione KBL e tavole di cablaggio.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Potenziali con colori e sezioni, cavi con anime, numerazione automatica di conduttori, dispositivi e pagine.
-Privacy	Privacy
 Project check	Verifica del progetto
 Push button	Pulsante
-Register entry	Iscrizione al registro
 Report a problem	Segnala un problema
 Reports and checks	Report e verifiche
 Reports that write themselves	Report che si scrivono da soli
-Represented by	Rappresentato da
-Responsible for the content	Responsabile dei contenuti
 Screenshot of a graphical terminal diagram	Screenshot di uno schema morsetti grafico
 Screenshot of a pneumatic circuit linked to the schematic	Screenshot di un circuito pneumatico collegato allo schema
 Screenshot of the heat map of a mounting plate	Screenshot della mappa termica di una piastra di montaggio
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	L'assistente di cablatura mostra 
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Questi sono i comandi della riga di comando e del server MCP, eseguiti sul progetto della demo qui sopra.
 Third-party licenses	Licenze di terze parti
 This page is drawn right now by the editor's own code, running in your browser.	Questa pagina viene disegnata in questo momento dal codice stesso dell'editor, in esecuzione nel vostro browser.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Questa pagina non imposta cookie, non usa tracciamento e non carica nulla da altri server.
 Tip: delete a wire and see the check react. Undo brings it back.	Suggerimento: eliminate un conduttore e osservate la reazione della verifica. Annulla lo ripristina.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Per mostrare più rapidamente un esempio la volta successiva, il browser conserva nella cache la cablatura calcolata. Non viene memorizzato altro; cancellando i dati del sito nel browser viene rimossa.
 Try it: the schematic editor, live	Provate: l'editor di schemi, dal vivo
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Due armadi affiancati con gui
 Type a command, or help	Digitare un comando, oppure help
 Type help for the commands, or pick one on the right.	Digitate help per i comandi, oppure sceglietene uno a destra.
 Unknown command: {}	Comando sconosciuto: {}
-VAT ID	Partita IVA
 Wires, cables, potentials	Conduttori, cavi, potenziali
 Wiring and harnesses	Cablaggio e fasci di cavi
 Written in Rust. Clone the repository and run it.	Scritto in Rust. Clonate il repository ed eseguitelo.

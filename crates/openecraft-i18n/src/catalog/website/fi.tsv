@@ -6,7 +6,6 @@ A look inside	Kurkistus sisään
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	Osatietokanta asennustietoineen ja 3D-malleineen, tuonti EDZ-, BMEcat- ja STEP-muodoista, jaettuna osapalvelimen kautta.
 A schematic page of the demo project, drawn by OpenECraft	Esimerkkiprojektin piirikaaviosivu OpenECraftin piirtämänä
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Noin 330 IEC 60617 -symbolia, NFPA-, GB-, GOST- ja JIS-sarjat, fluiditekniikka, P&ID ja asennuspiirustukset sekä editori omille symboleille.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Kuten kaikilla verkkosivustoilla, tämän sivun toimittava palvelin saa laitteesi IP-osoitteen voidakseen vastata.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Osaluettelo sekä riviliitin-, kaapeli- ja pistoliitinkaaviot ajan tasalla pysyvinä sivuina, itse piirretyt lomakkeet ja projektin tarkistus, joka seuraa jokaista muutosta.
 Built for scripts and AI agents	Tehty skripteille ja tekoälyagenteille
 Click to explore the panel	Tutki kaappia napsauttamalla
@@ -22,8 +21,6 @@ Download the latest release	Lataa uusin versio
 Drag to turn, pinch with two fingers to zoom.	Käännä vetämällä, zoomaa nipistämällä kahdella sormella.
 Drag to turn, scroll to zoom.	Käännä vetämällä, zoomaa vierittämällä.
 Drawings	Piirustukset
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal ja muut nimet ovat omistajiensa tavaramerkkejä. OpenECraft on itsenäinen projekti.
-Email	Sähköposti
 Enclosure climate with a heat map of the mounting plate	Kotelon ilmasto ja asennuslevyn lämpökartta
 Engineering calculations	Tekniset laskelmat
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Jokainen projektiin kohdistuva toiminto on komento: komentorivillä, tekoälyagenteille MCP-palvelimen kautta ja laajennuksille. Kokeile muutamaa yllä olevaan projektiin.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Graafinen riviliitinkaavio
 In the browser	Selaimessa
 Installation guide	Asennusopas
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Asennusohjelmat Windowsille, Linux-paketit ja macOS-levykuva, automaattisin päivityksin.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Se ei ole näiden nimien omistajien yhteistyökumppani, hyväksymä eikä sponsoroima.
 Lamp	Merkkivalo
-Legal notice	Oikeudelliset tiedot
 Licenses	Lisenssit
 Live demo	Live-demo
 Menu	Valikko
@@ -59,7 +54,6 @@ Open and extensible	Avoin ja laajennettava
 Open source electrical CAE	Avoimen lähdekoodin sähkö-CAE
 Open source under the MIT and Apache-2.0 licenses.	Avointa lähdekoodia MIT- ja Apache-2.0-lisensseillä.
 Open the web editor	Avaa verkkoeditori
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft toimitetaan ilman takuuta. Sen laskelmat ja tarkistukset tukevat suunnittelua; pätevän henkilön on varmistettava tulokset sovellettavien standardien ja määräysten mukaan.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft on avointa lähdekoodia MIT-lisenssillä tai Apache License 2.0 -lisenssillä valintasi mukaan. Se sisältää muiden fontteja ja kirjastoja niiden omilla lisensseillä.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft suunnittelee sähköjärjestelmät: laitekeskeiset piirikaaviot, ajan tasalla pysyvät raportit, kaappiasennus reititettyine johdotuksineen ja dokumentaatio asiakkaalle. Yksi koodikanta Windowsille, Linuxille, macOS:lle ja selaimelle.
 OpenECraft – open source electrical CAE	OpenECraft – avoimen lähdekoodin sähkö-CAE
@@ -68,19 +62,14 @@ PLC and automation	PLC ja automaatio
 Panel layout in 3D	Kaappiasennus 3D:nä
 Parts and data portal	Osat ja dataportaali
 Parts server, project server and the web editor as Docker images for your own network.	Osapalvelin, projektipalvelin ja verkkoeditori Docker-levykuvina omaan verkkoosi.
-Phone	Puhelin
 Planning	Suunnittelu
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Sähköihin linkitetyt pneumaattiset ja hydrauliset piirit, johtosarjat KBL-vienteineen ja kokoonpanolaudat.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Potentiaalit väreineen ja poikkipintoineen, kaapelit johtimineen, johtojen, laitteiden ja sivujen automaattinen numerointi.
-Privacy	Tietosuoja
 Project check	Projektin tarkistus
 Push button	Painike
-Register entry	Rekisterimerkintä
 Report a problem	Ilmoita ongelmasta
 Reports and checks	Raportit ja tarkistukset
 Reports that write themselves	Raportit, jotka kirjoittavat itsensä
-Represented by	Edustaja
-Responsible for the content	Sisällöstä vastaa
 Screenshot of a graphical terminal diagram	Kuvakaappaus graafisesta riviliitinkaaviosta
 Screenshot of a pneumatic circuit linked to the schematic	Kuvakaappaus piirikaavioon linkitetystä pneumaattisesta piiristä
 Screenshot of the heat map of a mounting plate	Kuvakaappaus asennuslevyn lämpökartasta
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Johdotusavustaja näyttää seura
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Nämä ovat komentorivin ja MCP-palvelimen komennot, jotka suoritetaan yllä olevan demon projektiin.
 Third-party licenses	Kolmansien osapuolten lisenssit
 This page is drawn right now by the editor's own code, running in your browser.	Tämän sivun piirtää juuri nyt editorin oma koodi, joka toimii selaimessasi.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Tämä sivu ei aseta evästeitä, ei käytä seurantaa eikä lataa mitään muilta palvelimilta.
 Tip: delete a wire and see the check react. Undo brings it back.	Vinkki: poista johto ja katso tarkistuksen reaktio. Kumoa palauttaa sen.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Jotta esimerkki näkyisi seuraavalla kerralla nopeammin, selain säilyttää sille laskemansa johdotuksen välimuistissaan. Mitään muuta ei tallenneta; sivuston tietojen tyhjentäminen selaimessa poistaa sen.
 Try it: the schematic editor, live	Kokeile: piirikaavioeditori, livenä
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Kaksi rinnakkain asennettua k
 Type a command, or help	Kirjoita komento tai help
 Type help for the commands, or pick one on the right.	Kirjoita help nähdäksesi komennot tai valitse jokin oikealta.
 Unknown command: {}	Tuntematon komento: {}
-VAT ID	ALV-tunniste
 Wires, cables, potentials	Johdot, kaapelit, potentiaalit
 Wiring and harnesses	Johdotus ja johtosarjat
 Written in Rust. Clone the repository and run it.	Kirjoitettu Rustilla. Kloonaa tietovarasto ja suorita se.

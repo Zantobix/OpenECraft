@@ -6,7 +6,6 @@ A look inside	Погляд зсередини
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	База виробів із монтажними даними та 3D-моделями, імпорт з EDZ, BMEcat і STEP, спільний доступ через сервер виробів.
 A schematic page of the demo project, drawn by OpenECraft	Сторінка схеми демонстраційного проєкту, намальована OpenECraft
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Близько 330 символів IEC 60617, набори NFPA, GB, ГОСТ і JIS, гідропневматика, P&ID і плани встановлення, а також редактор власних символів.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Як і на будь-якому сайті, сервер, що віддає цю сторінку, отримує IP-адресу вашого пристрою, щоб відповісти.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Специфікація, схеми клем, кабелів і штекерів у вигляді оновлюваних сторінок, власні намальовані форми та перевірка проєкту, яка стежить за кожною зміною.
 Built for scripts and AI agents	Створено для скриптів і ШІ-агентів
 Click to explore the panel	Клацніть, щоб оглянути шафу
@@ -22,8 +21,6 @@ Download the latest release	Завантажити останню версію
 Drag to turn, pinch with two fingers to zoom.	Перетягування обертає, зведення двох пальців масштабує.
 Drag to turn, scroll to zoom.	Перетягування обертає, прокручування масштабує.
 Drawings	Креслення
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal та інші назви є торговельними марками їхніх власників. OpenECraft — незалежний проєкт.
-Email	Ел. пошта
 Enclosure climate with a heat map of the mounting plate	Клімат шафи з тепловою картою монтажної панелі
 Engineering calculations	Інженерні розрахунки
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Кожна операція над проєктом — це команда: у командному рядку, для ШІ-агентів через сервер MCP і для плагінів. Спробуйте кілька на проєкті вище.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Графічна схема клем
 In the browser	У браузері
 Installation guide	Посібник зі встановлення
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Інсталятори для Windows, пакунки для Linux і образ диска для macOS, з автоматичними оновленнями.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Він не пов'язаний із власниками цих назв, не схвалений і не спонсорується ними.
 Lamp	Лампа
-Legal notice	Вихідні дані
 Licenses	Ліцензії
 Live demo	Жива демонстрація
 Menu	Меню
@@ -59,7 +54,6 @@ Open and extensible	Відкритий і розширюваний
 Open source electrical CAE	Електротехнічна CAE з відкритим вихідним кодом
 Open source under the MIT and Apache-2.0 licenses.	Відкритий вихідний код за ліцензіями MIT і Apache-2.0.
 Open the web editor	Відкрити вебредактор
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft надається без гарантій. Його розрахунки та перевірки допомагають у проєктуванні; кваліфікований фахівець має перевірити результати на відповідність чинним стандартам і нормам.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft — програма з відкритим вихідним кодом за ліцензією MIT або Apache License 2.0, на ваш вибір. Вона містить шрифти та бібліотеки інших авторів за їхніми власними ліцензіями.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft проєктує електроустановки: схеми, орієнтовані на пристрої, оновлювані звіти, компонування шафи з прокладеною проводкою та документація для замовника. Єдина кодова база для Windows, Linux, macOS і браузера.
 OpenECraft – open source electrical CAE	OpenECraft – електротехнічна CAE з відкритим вихідним кодом
@@ -68,19 +62,14 @@ PLC and automation	ПЛК та автоматизація
 Panel layout in 3D	Компонування шафи в 3D
 Parts and data portal	Вироби та портал даних
 Parts server, project server and the web editor as Docker images for your own network.	Сервер виробів, сервер проєктів і вебредактор у вигляді образів Docker для вашої мережі.
-Phone	Телефон
 Planning	Планування
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Пневматичні та гідравлічні схеми, пов'язані з електричною частиною, джгути з експортом KBL і складальні плази.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Потенціали з кольорами та перерізами, кабелі з жилами, автоматична нумерація проводів, пристроїв і сторінок.
-Privacy	Конфіденційність
 Project check	Перевірка проєкту
 Push button	Кнопка
-Register entry	Запис у реєстрі
 Report a problem	Повідомити про проблему
 Reports and checks	Звіти та перевірки
 Reports that write themselves	Звіти, які пишуть себе самі
-Represented by	Представник
-Responsible for the content	Відповідальний за зміст
 Screenshot of a graphical terminal diagram	Знімок екрана графічної схеми клем
 Screenshot of a pneumatic circuit linked to the schematic	Знімок екрана пневматичної схеми, пов'язаної зі схемою
 Screenshot of the heat map of a mounting plate	Знімок екрана теплової карти монтажної панелі
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Помічник з монтаж�
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Це команди командного рядка та сервера MCP, які виконуються над проєктом демонстрації вище.
 Third-party licenses	Ліцензії третіх сторін
 This page is drawn right now by the editor's own code, running in your browser.	Цю сторінку просто зараз малює власний код редактора, що працює у вашому браузері.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Ця сторінка не встановлює файли cookie, не використовує відстеження й нічого не завантажує з інших серверів.
 Tip: delete a wire and see the check react. Undo brings it back.	Порада: видаліть провід і подивіться, як відреагує перевірка. Скасування поверне його.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Щоб наступного разу показати приклад швидше, браузер зберігає в кеші розраховану для нього проводку. Більше нічого не зберігається; очищення даних сайту в браузері видаляє її.
 Try it: the schematic editor, live	Спробуйте: редактор схем, наживо
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Два зістиковані
 Type a command, or help	Введіть команду або help
 Type help for the commands, or pick one on the right.	Введіть help, щоб побачити команди, або виберіть одну праворуч.
 Unknown command: {}	Невідома команда: {}
-VAT ID	Номер платника ПДВ
 Wires, cables, potentials	Проводи, кабелі, потенціали
 Wiring and harnesses	Монтаж і джгути
 Written in Rust. Clone the repository and run it.	Написано на Rust. Клонуйте репозиторій і запустіть.

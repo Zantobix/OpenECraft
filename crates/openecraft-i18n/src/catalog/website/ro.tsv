@@ -6,7 +6,6 @@ A look inside	O privire în interior
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	O bază de date de articole cu date de montaj și modele 3D, importuri din EDZ, BMEcat și STEP, partajată prin serverul de articole.
 A schematic page of the demo project, drawn by OpenECraft	O pagină de schemă a proiectului demonstrativ, desenată de OpenECraft
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Aproximativ 330 de simboluri IEC 60617, seturi NFPA, GB, GOST și JIS, tehnică fluidică, P&ID și planuri de instalații, plus un editor pentru propriile simboluri.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Ca la orice site web, serverul care livrează această pagină primește adresa IP a dispozitivului dvs. pentru a putea răspunde.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Listă de materiale, scheme de borne, de cabluri și de conectori ca pagini mereu actualizate, formulare desenate de dvs. și o verificare a proiectului care urmărește fiecare modificare.
 Built for scripts and AI agents	Creat pentru scripturi și agenți IA
 Click to explore the panel	Faceți clic pentru a explora tabloul
@@ -22,8 +21,6 @@ Download the latest release	Descărcați cea mai recentă versiune
 Drag to turn, pinch with two fingers to zoom.	Trageți pentru a roti, ciupiți cu două degete pentru a mări.
 Drag to turn, scroll to zoom.	Trageți pentru a roti, derulați pentru a mări.
 Drawings	Desene
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal și alte denumiri sunt mărci ale proprietarilor lor. OpenECraft este un proiect independent.
-Email	E-mail
 Enclosure climate with a heat map of the mounting plate	Climatul carcasei cu o hartă termică a plăcii de montaj
 Engineering calculations	Calcule de inginerie
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Fiecare operație asupra unui proiect este o comandă: în linia de comandă, pentru agenții IA prin serverul MCP și pentru pluginuri. Încercați câteva pe proiectul de mai sus.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Schemă de borne grafică
 In the browser	În browser
 Installation guide	Ghid de instalare
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Programe de instalare pentru Windows, pachete Linux și o imagine de disc pentru macOS, cu actualizări automate.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Nu este afiliat, aprobat sau sponsorizat de proprietarii acestor denumiri.
 Lamp	Lampă
-Legal notice	Informații legale
 Licenses	Licențe
 Live demo	Demonstrație live
 Menu	Meniu
@@ -59,7 +54,6 @@ Open and extensible	Deschis și extensibil
 Open source electrical CAE	CAE electric open source
 Open source under the MIT and Apache-2.0 licenses.	Open source sub licențele MIT și Apache-2.0.
 Open the web editor	Deschideți editorul web
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft este oferit fără garanție. Calculele și verificările sale sprijină proiectarea; o persoană calificată trebuie să verifice rezultatele în raport cu standardele și reglementările aplicabile.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft este open source sub licența MIT sau Apache License 2.0, la alegerea dvs. Conține fonturi și biblioteci ale altora, sub propriile lor licențe.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft proiectează instalații electrice: scheme orientate pe dispozitive, rapoarte mereu actualizate, amplasare în tablou cu cablare rutată și documentația pentru client. O singură bază de cod pentru Windows, Linux, macOS și browser.
 OpenECraft – open source electrical CAE	OpenECraft – CAE electric open source
@@ -68,19 +62,14 @@ PLC and automation	PLC și automatizare
 Panel layout in 3D	Amplasare în tablou în 3D
 Parts and data portal	Articole și portal de date
 Parts server, project server and the web editor as Docker images for your own network.	Server de articole, server de proiecte și editorul web ca imagini Docker pentru propria rețea.
-Phone	Telefon
 Planning	Planificare
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Circuite pneumatice și hidraulice legate de partea electrică, cablaje cu export KBL și planșe de asamblare.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Potențiale cu culori și secțiuni, cabluri cu fire, numerotare automată a conductoarelor, dispozitivelor și paginilor.
-Privacy	Confidențialitate
 Project check	Verificarea proiectului
 Push button	Buton
-Register entry	Înregistrare în registru
 Report a problem	Raportați o problemă
 Reports and checks	Rapoarte și verificări
 Reports that write themselves	Rapoarte care se scriu singure
-Represented by	Reprezentat de
-Responsible for the content	Responsabil pentru conținut
 Screenshot of a graphical terminal diagram	Captură de ecran a unei scheme de borne grafice
 Screenshot of a pneumatic circuit linked to the schematic	Captură de ecran a unui circuit pneumatic legat de schemă
 Screenshot of the heat map of a mounting plate	Captură de ecran a hărții termice a unei plăci de montaj
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Asistentul de cablare arată urm�
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Acestea sunt comenzile liniei de comandă și ale serverului MCP, rulate pe proiectul demonstrației de mai sus.
 Third-party licenses	Licențe terțe
 This page is drawn right now by the editor's own code, running in your browser.	Această pagină este desenată chiar acum de codul propriu al editorului, care rulează în browserul dvs.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Această pagină nu setează cookie-uri, nu folosește urmărire și nu încarcă nimic de pe alte servere.
 Tip: delete a wire and see the check react. Undo brings it back.	Sfat: ștergeți un conductor și urmăriți reacția verificării. Anulare îl aduce înapoi.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Pentru a afișa mai repede un exemplu data viitoare, browserul păstrează în memoria cache cablarea calculată pentru el. Nimic altceva nu este stocat; ștergerea datelor site-ului din browser o elimină.
 Try it: the schematic editor, live	Încercați: editorul de scheme, live
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Două carcase alăturate cu �
 Type a command, or help	Tastați o comandă sau help
 Type help for the commands, or pick one on the right.	Tastați help pentru comenzi sau alegeți una din dreapta.
 Unknown command: {}	Comandă necunoscută: {}
-VAT ID	Cod de TVA
 Wires, cables, potentials	Conductoare, cabluri, potențiale
 Wiring and harnesses	Cablare și fascicule de cabluri
 Written in Rust. Clone the repository and run it.	Scris în Rust. Clonați depozitul și rulați-l.

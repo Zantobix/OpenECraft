@@ -6,7 +6,6 @@ A look inside	Spojrzenie do środka
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	Baza artykułów z danymi montażowymi i modelami 3D, import z EDZ, BMEcat i STEP, udostępniana przez serwer artykułów.
 A schematic page of the demo project, drawn by OpenECraft	Strona schematu projektu demonstracyjnego, narysowana przez OpenECraft
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Około 330 symboli IEC 60617, zestawy NFPA, GB, GOST i JIS, technika płynowa, P&ID i plany instalacji oraz edytor własnych symboli.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Jak w przypadku każdej witryny, serwer dostarczający tę stronę otrzymuje adres IP Twojego urządzenia, aby móc odpowiedzieć.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Zestawienie materiałów, schematy zacisków, kabli i wtyków jako strony aktualizowane na bieżąco, własne rysowane formularze i kontrola projektu, która śledzi każdą zmianę.
 Built for scripts and AI agents	Stworzony dla skryptów i agentów AI
 Click to explore the panel	Kliknij, aby obejrzeć szafę
@@ -22,8 +21,6 @@ Download the latest release	Pobierz najnowszą wersję
 Drag to turn, pinch with two fingers to zoom.	Przeciągnij, aby obrócić, rozsuń dwa palce, aby powiększyć.
 Drag to turn, scroll to zoom.	Przeciągnij, aby obrócić, przewiń, aby powiększyć.
 Drawings	Rysunki
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal i inne nazwy są znakami towarowymi ich właścicieli. OpenECraft jest niezależnym projektem.
-Email	E-mail
 Enclosure climate with a heat map of the mounting plate	Klimat szafy z mapą cieplną płyty montażowej
 Engineering calculations	Obliczenia inżynierskie
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Każda operacja na projekcie jest poleceniem: w wierszu poleceń, dla agentów AI przez serwer MCP i dla wtyczek. Wypróbuj kilka na projekcie powyżej.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Graficzny schemat zacisków
 In the browser	W przeglądarce
 Installation guide	Instrukcja instalacji
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Instalatory dla Windows, pakiety dla Linuksa i obraz dysku dla macOS, z automatycznymi aktualizacjami.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Nie jest powiązany z właścicielami tych nazw ani przez nich zatwierdzony lub sponsorowany.
 Lamp	Lampka
-Legal notice	Nota prawna
 Licenses	Licencje
 Live demo	Demo na żywo
 Menu	Menu
@@ -59,7 +54,6 @@ Open and extensible	Otwarty i rozszerzalny
 Open source electrical CAE	Elektryczny CAE open source
 Open source under the MIT and Apache-2.0 licenses.	Open source na licencjach MIT i Apache-2.0.
 Open the web editor	Otwórz edytor internetowy
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft jest dostarczany bez gwarancji. Jego obliczenia i kontrole wspomagają projektowanie; wykwalifikowana osoba musi sprawdzić wyniki pod kątem obowiązujących norm i przepisów.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft jest oprogramowaniem open source na licencji MIT lub Apache License 2.0, do wyboru. Zawiera czcionki i biblioteki innych autorów na ich własnych licencjach.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft służy do projektowania instalacji elektrycznych: schematy zorientowane na urządzenia, raporty aktualizowane na bieżąco, zabudowa szafy z poprowadzonym okablowaniem i dokumentacja dla klienta. Jedna baza kodu dla Windows, Linuksa, macOS i przeglądarki.
 OpenECraft – open source electrical CAE	OpenECraft – elektryczny CAE open source
@@ -68,19 +62,14 @@ PLC and automation	PLC i automatyka
 Panel layout in 3D	Zabudowa szafy w 3D
 Parts and data portal	Artykuły i portal danych
 Parts server, project server and the web editor as Docker images for your own network.	Serwer artykułów, serwer projektów i edytor internetowy jako obrazy Docker dla własnej sieci.
-Phone	Telefon
 Planning	Planowanie
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Układy pneumatyczne i hydrauliczne powiązane z częścią elektryczną, wiązki przewodów z eksportem KBL i tablice montażowe.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Potencjały z kolorami i przekrojami, kable z żyłami, automatyczna numeracja przewodów, urządzeń i stron.
-Privacy	Prywatność
 Project check	Kontrola projektu
 Push button	Przycisk
-Register entry	Wpis do rejestru
 Report a problem	Zgłoś problem
 Reports and checks	Raporty i kontrole
 Reports that write themselves	Raporty, które piszą się same
-Represented by	Reprezentowany przez
-Responsible for the content	Odpowiedzialny za treść
 Screenshot of a graphical terminal diagram	Zrzut ekranu graficznego schematu zacisków
 Screenshot of a pneumatic circuit linked to the schematic	Zrzut ekranu układu pneumatycznego powiązanego ze schematem
 Screenshot of the heat map of a mounting plate	Zrzut ekranu mapy cieplnej płyty montażowej
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Asystent okablowania pokazuje nas
 These are the commands of the command line and the MCP server, run on the project of the demo above.	To są polecenia wiersza poleceń i serwera MCP, wykonywane na projekcie z dema powyżej.
 Third-party licenses	Licencje stron trzecich
 This page is drawn right now by the editor's own code, running in your browser.	Ta strona jest właśnie rysowana przez kod samego edytora, działający w Twojej przeglądarce.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Ta strona nie zapisuje plików cookie, nie stosuje śledzenia i nie ładuje niczego z innych serwerów.
 Tip: delete a wire and see the check react. Undo brings it back.	Wskazówka: usuń przewód i zobacz reakcję kontroli. Cofnij go przywraca.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Aby następnym razem szybciej pokazać przykład, przeglądarka przechowuje obliczone dla niego okablowanie w pamięci podręcznej. Nic więcej nie jest zapisywane; wyczyszczenie danych witryny w przeglądarce je usuwa.
 Try it: the schematic editor, live	Wypróbuj: edytor schematów, na żywo
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Dwie zestawione obudowy z szy
 Type a command, or help	Wpisz polecenie lub help
 Type help for the commands, or pick one on the right.	Wpisz help, aby zobaczyć polecenia, lub wybierz jedno po prawej.
 Unknown command: {}	Nieznane polecenie: {}
-VAT ID	NIP UE
 Wires, cables, potentials	Przewody, kable, potencjały
 Wiring and harnesses	Okablowanie i wiązki
 Written in Rust. Clone the repository and run it.	Napisany w Rust. Sklonuj repozytorium i uruchom.

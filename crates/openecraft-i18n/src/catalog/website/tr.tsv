@@ -6,7 +6,6 @@ A look inside	İçeriden bir bakış
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	Montaj verileri ve 3D modeller içeren bir parça veritabanı, EDZ, BMEcat ve STEP içe aktarımları, parça sunucusu üzerinden paylaşım.
 A schematic page of the demo project, drawn by OpenECraft	Demo projesinin OpenECraft tarafından çizilmiş bir şema sayfası
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Yaklaşık 330 IEC 60617 sembolü, NFPA, GB, GOST ve JIS setleri, akışkan gücü, P&ID ve tesisat planları ile kendi sembolleriniz için bir düzenleyici.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Her web sitesinde olduğu gibi, bu sayfayı sunan sunucu yanıt verebilmek için cihazınızın IP adresini alır.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Malzeme listesi, klemens, kablo ve fiş şemaları güncel kalan sayfalar olarak, kendi çizdiğiniz formlar ve her değişikliği izleyen bir proje kontrolü.
 Built for scripts and AI agents	Betikler ve yapay zeka ajanları için tasarlandı
 Click to explore the panel	Panoyu keşfetmek için tıklayın
@@ -22,8 +21,6 @@ Download the latest release	Son sürümü indir
 Drag to turn, pinch with two fingers to zoom.	Döndürmek için sürükleyin, yakınlaştırmak için iki parmakla kıstırın.
 Drag to turn, scroll to zoom.	Döndürmek için sürükleyin, yakınlaştırmak için kaydırın.
 Drawings	Çizimler
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal ve diğer adlar sahiplerinin ticari markalarıdır. OpenECraft bağımsız bir projedir.
-Email	E-posta
 Enclosure climate with a heat map of the mounting plate	Montaj plakasının ısı haritasıyla pano iklimi
 Engineering calculations	Mühendislik hesapları
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Bir proje üzerindeki her işlem bir komuttur: komut satırında, yapay zeka ajanları için MCP sunucusu üzerinden ve eklentiler için. Yukarıdaki projede birkaçını deneyin.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Grafik klemens şeması
 In the browser	Tarayıcıda
 Installation guide	Kurulum kılavuzu
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Windows için yükleyiciler, Linux paketleri ve bir macOS disk görüntüsü, otomatik güncellemelerle.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Bu adların sahipleriyle bağlantılı değildir, onlar tarafından onaylanmamış ve desteklenmemiştir.
 Lamp	Lamba
-Legal notice	Künye
 Licenses	Lisanslar
 Live demo	Canlı demo
 Menu	Menü
@@ -59,7 +54,6 @@ Open and extensible	Açık ve genişletilebilir
 Open source electrical CAE	Açık kaynaklı elektrik CAE
 Open source under the MIT and Apache-2.0 licenses.	MIT ve Apache-2.0 lisansları altında açık kaynak.
 Open the web editor	Web düzenleyiciyi aç
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft garantisiz sunulur. Hesapları ve kontrolleri planlamayı destekler; sonuçları geçerli standartlara ve yönetmeliklere göre yetkin bir kişinin doğrulaması gerekir.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft, tercihinize göre MIT lisansı veya Apache License 2.0 altında açık kaynaklıdır. Başkalarına ait yazı tiplerini ve kitaplıkları kendi lisanslarıyla içerir.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft elektrik tesislerini planlar: cihaz odaklı şemalar, güncel kalan raporlar, yönlendirilmiş kablolamayla pano yerleşimi ve müşteri için belgeler. Windows, Linux, macOS ve tarayıcı için tek bir kod tabanı.
 OpenECraft – open source electrical CAE	OpenECraft – açık kaynaklı elektrik CAE
@@ -68,19 +62,14 @@ PLC and automation	PLC ve otomasyon
 Panel layout in 3D	3D pano yerleşimi
 Parts and data portal	Parçalar ve veri portalı
 Parts server, project server and the web editor as Docker images for your own network.	Kendi ağınız için Docker imajları olarak parça sunucusu, proje sunucusu ve web düzenleyici.
-Phone	Telefon
 Planning	Planlama
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Elektrik tarafına bağlı pnömatik ve hidrolik devreler, KBL dışa aktarımlı kablo demetleri ve montaj tahtaları.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Renkleri ve kesitleriyle potansiyeller, damarlı kablolar, tellerin, cihazların ve sayfaların otomatik numaralandırılması.
-Privacy	Gizlilik
 Project check	Proje kontrolü
 Push button	Buton
-Register entry	Sicil kaydı
 Report a problem	Sorun bildir
 Reports and checks	Raporlar ve kontroller
 Reports that write themselves	Kendi kendini yazan raporlar
-Represented by	Temsilci
-Responsible for the content	İçerikten sorumlu
 Screenshot of a graphical terminal diagram	Grafik klemens şemasının ekran görüntüsü
 Screenshot of a pneumatic circuit linked to the schematic	Şemaya bağlı pnömatik devrenin ekran görüntüsü
 Screenshot of the heat map of a mounting plate	Bir montaj plakasının ısı haritasının ekran görüntüsü
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Kablolama yardımcısı sıradaki
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Bunlar komut satırının ve MCP sunucusunun komutlarıdır; yukarıdaki demonun projesinde çalıştırılır.
 Third-party licenses	Üçüncü taraf lisansları
 This page is drawn right now by the editor's own code, running in your browser.	Bu sayfa şu anda, tarayıcınızda çalışan düzenleyicinin kendi koduyla çiziliyor.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Bu sayfa çerez kullanmaz, izleme yapmaz ve başka sunuculardan hiçbir şey yüklemez.
 Tip: delete a wire and see the check react. Undo brings it back.	İpucu: bir teli silin ve kontrolün tepkisini görün. Geri Al onu geri getirir.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Bir örneği bir dahaki sefere daha hızlı göstermek için tarayıcınız, onun için hesapladığı kablolamayı önbelleğinde tutar. Başka hiçbir şey saklanmaz; tarayıcıda site verilerini temizlemek onu siler.
 Try it: the schematic editor, live	Deneyin: şema düzenleyici, canlı
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Raylar, kanallar ve baralarla
 Type a command, or help	Bir komut veya help yazın
 Type help for the commands, or pick one on the right.	Komutlar için help yazın veya sağdan birini seçin.
 Unknown command: {}	Bilinmeyen komut: {}
-VAT ID	KDV numarası
 Wires, cables, potentials	Teller, kablolar, potansiyeller
 Wiring and harnesses	Kablolama ve kablo demetleri
 Written in Rust. Clone the repository and run it.	Rust ile yazıldı. Depoyu klonlayın ve çalıştırın.

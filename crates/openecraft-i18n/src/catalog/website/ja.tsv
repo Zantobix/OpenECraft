@@ -6,7 +6,6 @@ A look inside	中をのぞく
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	取付データと 3D モデルを備えた部品データベース。EDZ、BMEcat、STEP からインポートでき、部品サーバーで共有できます。
 A schematic page of the demo project, drawn by OpenECraft	OpenECraft が描画したデモプロジェクトの回路図ページ
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	約 330 個の IEC 60617 シンボル、NFPA、GB、GOST、JIS のセット、流体技術、P&ID、設備図、独自シンボル用のエディター。
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	すべてのウェブサイトと同様に、このページを配信するサーバーは、応答するためにお使いのデバイスの IP アドレスを受け取ります。
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	部品表、端子図、ケーブル図、プラグ図を常に最新のページとして作成。独自に描いた帳票と、すべての変更に追従するプロジェクトチェック。
 Built for scripts and AI agents	スクリプトと AI エージェントのために
 Click to explore the panel	クリックして盤を見る
@@ -22,8 +21,6 @@ Download the latest release	最新リリースをダウンロード
 Drag to turn, pinch with two fingers to zoom.	ドラッグで回転、2 本指のピンチでズーム。
 Drag to turn, scroll to zoom.	ドラッグで回転、スクロールでズーム。
 Drawings	図面
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN、TIA Portal、その他の名称は各所有者の商標です。OpenECraft は独立したプロジェクトです。
-Email	メール
 Enclosure climate with a heat map of the mounting plate	取付板のヒートマップ付きの盤内気候
 Engineering calculations	エンジニアリング計算
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	プロジェクトに対するすべての操作はコマンドです。コマンドラインで、AI エージェントは MCP サーバー経由で、そしてプラグインから使えます。上のプロジェクトでいくつか試してください。
@@ -43,9 +40,7 @@ Graphical terminal diagram	グラフィカルな端子図
 In the browser	ブラウザーで
 Installation guide	インストールガイド
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Windows 用インストーラー、Linux パッケージ、macOS ディスクイメージ。自動更新付き。
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	これらの名称の所有者と提携しておらず、承認や後援も受けていません。
 Lamp	ランプ
-Legal notice	法的表示
 Licenses	ライセンス
 Live demo	ライブデモ
 Menu	メニュー
@@ -59,7 +54,6 @@ Open and extensible	オープンで拡張可能
 Open source electrical CAE	オープンソースの電気 CAE
 Open source under the MIT and Apache-2.0 licenses.	MIT および Apache-2.0 ライセンスのオープンソース。
 Open the web editor	ウェブエディターを開く
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft は無保証で提供されます。計算とチェックは設計を支援するものであり、結果は有資格者が適用される規格と規制に照らして確認する必要があります。
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft は MIT ライセンスまたは Apache License 2.0 のいずれかを選べるオープンソースです。他者のフォントとライブラリを、それぞれのライセンスのもとで含みます。
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft は電気設備を設計します。デバイス指向の回路図、常に最新のレポート、配線ルート付きの盤レイアウト、顧客向けドキュメント。Windows、Linux、macOS、ブラウザーを 1 つのコードベースで。
 OpenECraft – open source electrical CAE	OpenECraft – オープンソースの電気 CAE
@@ -68,19 +62,14 @@ PLC and automation	PLC と自動化
 Panel layout in 3D	3D の盤レイアウト
 Parts and data portal	部品とデータポータル
 Parts server, project server and the web editor as Docker images for your own network.	部品サーバー、プロジェクトサーバー、ウェブエディターを、自社ネットワーク用の Docker イメージとして。
-Phone	電話
 Planning	計画
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	電気とリンクした空気圧回路と油圧回路、KBL エクスポート付きのハーネスと布線板。
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	色と断面積を持つ電位、芯線を持つケーブル、電線、デバイス、ページの自動番号付け。
-Privacy	プライバシー
 Project check	プロジェクトチェック
 Push button	押しボタン
-Register entry	登記
 Report a problem	問題を報告
 Reports and checks	レポートとチェック
 Reports that write themselves	自動で書かれるレポート
-Represented by	代表者
-Responsible for the content	コンテンツ担当者
 Screenshot of a graphical terminal diagram	グラフィカルな端子図のスクリーンショット
 Screenshot of a pneumatic circuit linked to the schematic	回路図とリンクした空気圧回路のスクリーンショット
 Screenshot of the heat map of a mounting plate	取付板のヒートマップのスクリーンショット
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	配線アシスタントが次の
 These are the commands of the command line and the MCP server, run on the project of the demo above.	これらはコマンドラインと MCP サーバーのコマンドで、上のデモのプロジェクトに対して実行されます。
 Third-party licenses	サードパーティライセンス
 This page is drawn right now by the editor's own code, running in your browser.	このページは今、お使いのブラウザーで動作するエディター自身のコードによって描画されています。
-This page sets no cookies, uses no tracking and loads nothing from other servers.	このページは Cookie を設定せず、トラッキングを使わず、他のサーバーから何も読み込みません。
 Tip: delete a wire and see the check react. Undo brings it back.	ヒント：電線を削除して、チェックの反応を見てください。元に戻すと復元されます。
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	次回、例をより速く表示するため、ブラウザーは計算した配線をキャッシュに保持します。ほかには何も保存されません。ブラウザーでサイトデータを消去すると削除されます。
 Try it: the schematic editor, live	お試しください：回路図エディター、ライブ
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	レール、ダクト、ブ�
 Type a command, or help	コマンドまたは help を入力
 Type help for the commands, or pick one on the right.	help と入力するとコマンドが表示されます。右から選ぶこともできます。
 Unknown command: {}	不明なコマンド：{}
-VAT ID	付加価値税番号
 Wires, cables, potentials	電線、ケーブル、電位
 Wiring and harnesses	配線とハーネス
 Written in Rust. Clone the repository and run it.	Rust で書かれています。リポジトリをクローンして実行してください。

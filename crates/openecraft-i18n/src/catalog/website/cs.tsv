@@ -6,7 +6,6 @@ A look inside	Pohled dovnitř
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	Databáze artiklů s montážními daty a 3D modely, importy z EDZ, BMEcat a STEP, sdílená přes server artiklů.
 A schematic page of the demo project, drawn by OpenECraft	Stránka schématu ukázkového projektu, nakreslená aplikací OpenECraft
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Přibližně 330 symbolů IEC 60617, sady NFPA, GB, GOST a JIS, tekutinová technika, P&ID a instalační plány a editor vlastních symbolů.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Jako u každého webu obdrží server, který tuto stránku doručuje, IP adresu vašeho zařízení, aby mohl odpovědět.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Kusovník, schémata svorkovnic, kabelů a konektorů jako průběžně aktualizované stránky, vlastní kreslené formuláře a kontrola projektu, která sleduje každou změnu.
 Built for scripts and AI agents	Stvořeno pro skripty a agenty AI
 Click to explore the panel	Klikněte a prozkoumejte rozváděč
@@ -22,8 +21,6 @@ Download the latest release	Stáhnout nejnovější verzi
 Drag to turn, pinch with two fingers to zoom.	Tažením otáčíte, sevřením dvou prstů přibližujete.
 Drag to turn, scroll to zoom.	Tažením otáčíte, posouváním přibližujete.
 Drawings	Výkresy
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal a další názvy jsou ochranné známky svých vlastníků. OpenECraft je nezávislý projekt.
-Email	E-mail
 Enclosure climate with a heat map of the mounting plate	Klima skříně s tepelnou mapou montážní desky
 Engineering calculations	Technické výpočty
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Každá operace s projektem je příkaz: na příkazovém řádku, pro agenty AI přes server MCP i pro pluginy. Vyzkoušejte některé na projektu výše.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Grafické schéma svorkovnice
 In the browser	V prohlížeči
 Installation guide	Průvodce instalací
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Instalátory pro Windows, balíčky pro Linux a obraz disku pro macOS, s automatickými aktualizacemi.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Není spojen s vlastníky těchto názvů ani jimi není schválen nebo sponzorován.
 Lamp	Kontrolka
-Legal notice	Právní informace
 Licenses	Licence
 Live demo	Živá ukázka
 Menu	Nabídka
@@ -59,7 +54,6 @@ Open and extensible	Otevřený a rozšiřitelný
 Open source electrical CAE	Open source elektrotechnické CAE
 Open source under the MIT and Apache-2.0 licenses.	Open source pod licencemi MIT a Apache-2.0.
 Open the web editor	Otevřít webový editor
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft je poskytován bez záruky. Jeho výpočty a kontroly podporují projektování; výsledky musí kvalifikovaná osoba ověřit podle platných norem a předpisů.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft je open source pod licencí MIT nebo Apache License 2.0, podle vaší volby. Obsahuje písma a knihovny jiných autorů pod jejich vlastními licencemi.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft projektuje elektrická zařízení: schémata orientovaná na přístroje, průběžně aktualizované výkazy, rozvržení rozváděče s vedeným zapojením a dokumentaci pro zákazníka. Jedna kódová základna pro Windows, Linux, macOS a prohlížeč.
 OpenECraft – open source electrical CAE	OpenECraft – open source elektrotechnické CAE
@@ -68,19 +62,14 @@ PLC and automation	PLC a automatizace
 Panel layout in 3D	Rozvržení rozváděče ve 3D
 Parts and data portal	Artikly a datový portál
 Parts server, project server and the web editor as Docker images for your own network.	Server artiklů, projektový server a webový editor jako obrazy Docker pro vaši vlastní síť.
-Phone	Telefon
 Planning	Plánování
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Pneumatické a hydraulické obvody propojené s elektrickou částí, kabelové svazky s exportem KBL a montážní desky svazků.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Potenciály s barvami a průřezy, kabely s žilami, automatické číslování vodičů, přístrojů a stránek.
-Privacy	Ochrana soukromí
 Project check	Kontrola projektu
 Push button	Tlačítko
-Register entry	Zápis v rejstříku
 Report a problem	Nahlásit problém
 Reports and checks	Výkazy a kontroly
 Reports that write themselves	Výkazy, které se píší samy
-Represented by	Zastoupen
-Responsible for the content	Odpovědný za obsah
 Screenshot of a graphical terminal diagram	Snímek obrazovky grafického schématu svorkovnice
 Screenshot of a pneumatic circuit linked to the schematic	Snímek obrazovky pneumatického obvodu propojeného se schématem
 Screenshot of the heat map of a mounting plate	Snímek obrazovky tepelné mapy montážní desky
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Asistent zapojování ukazuje dal
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Toto jsou příkazy příkazového řádku a serveru MCP, spouštěné na projektu ukázky výše.
 Third-party licenses	Licence třetích stran
 This page is drawn right now by the editor's own code, running in your browser.	Tuto stránku právě teď kreslí vlastní kód editoru, který běží ve vašem prohlížeči.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Tato stránka neukládá žádné soubory cookie, nepoužívá sledování a nenačítá nic z jiných serverů.
 Tip: delete a wire and see the check react. Undo brings it back.	Tip: smažte vodič a sledujte reakci kontroly. Zpět jej vrátí.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	Aby se příklad příště zobrazil rychleji, uchovává prohlížeč ve své mezipaměti zapojení, které pro něj vypočítal. Nic dalšího se neukládá; vymazáním dat webu v prohlížeči se odstraní.
 Try it: the schematic editor, live	Vyzkoušejte: editor schémat, naživo
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Dvě sestavené skříně s l
 Type a command, or help	Zadejte příkaz, nebo help
 Type help for the commands, or pick one on the right.	Zadejte help pro seznam příkazů, nebo některý vyberte vpravo.
 Unknown command: {}	Neznámý příkaz: {}
-VAT ID	DIČ
 Wires, cables, potentials	Vodiče, kabely, potenciály
 Wiring and harnesses	Zapojení a kabelové svazky
 Written in Rust. Clone the repository and run it.	Napsáno v jazyce Rust. Naklonujte repozitář a spusťte jej.

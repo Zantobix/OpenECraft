@@ -6,7 +6,6 @@ A look inside	一探究竟
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	带安装数据和 3D 模型的部件数据库，可从 EDZ、BMEcat 和 STEP 导入，并通过部件服务器共享。
 A schematic page of the demo project, drawn by OpenECraft	由 OpenECraft 绘制的演示项目原理图页面
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	约 330 个 IEC 60617 符号，NFPA、GB、GOST 和 JIS 符号集，流体动力、P&ID 和安装图，以及用于自定义符号的编辑器。
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	与所有网站一样，提供本页面的服务器会收到您设备的 IP 地址以便作出响应。
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	物料清单、端子图、电缆图和插头图作为实时页面，自绘表格，以及跟随每次更改的项目检查。
 Built for scripts and AI agents	为脚本和 AI 智能体而生
 Click to explore the panel	单击以浏览机柜
@@ -22,8 +21,6 @@ Download the latest release	下载最新版本
 Drag to turn, pinch with two fingers to zoom.	拖动旋转，双指捏合缩放。
 Drag to turn, scroll to zoom.	拖动旋转，滚动缩放。
 Drawings	图纸
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN、TIA Portal 和其他名称是其所有者的商标。OpenECraft 是一个独立项目。
-Email	电子邮件
 Enclosure climate with a heat map of the mounting plate	机柜气候和安装板的热分布图
 Engineering calculations	工程计算
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	对项目的每个操作都是一条命令：可在命令行中使用，AI 智能体可通过 MCP 服务器使用，插件也可使用。在上面的项目中试几条吧。
@@ -43,9 +40,7 @@ Graphical terminal diagram	图形化端子图
 In the browser	在浏览器中
 Installation guide	安装指南
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	适用于 Windows 的安装程序、Linux 软件包和 macOS 磁盘映像，支持自动更新。
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	它与这些名称的所有者没有关联，也未获其认可或赞助。
 Lamp	指示灯
-Legal notice	法定信息
 Licenses	许可证
 Live demo	在线演示
 Menu	菜单
@@ -59,7 +54,6 @@ Open and extensible	开放且可扩展
 Open source electrical CAE	开源电气 CAE
 Open source under the MIT and Apache-2.0 licenses.	基于 MIT 和 Apache-2.0 许可证开源。
 Open the web editor	打开网页版编辑器
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft 不提供任何担保。其计算和检查用于辅助设计；必须由具备资质的人员对照适用的标准和法规核实结果。
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft 是开源软件，可任选 MIT 许可证或 Apache License 2.0。它包含他人的字体和库，这些内容适用各自的许可证。
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft 用于规划电气系统：面向设备的原理图、实时报表、带布线的机柜布局以及交付客户的文档。一套代码适用于 Windows、Linux、macOS 和浏览器。
 OpenECraft – open source electrical CAE	OpenECraft – 开源电气 CAE
@@ -68,19 +62,14 @@ PLC and automation	PLC 与自动化
 Panel layout in 3D	3D 机柜布局
 Parts and data portal	部件和数据门户
 Parts server, project server and the web editor as Docker images for your own network.	部件服务器、项目服务器和网页版编辑器以 Docker 镜像提供，可用于您自己的网络。
-Phone	电话
 Planning	规划
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	与电气部分关联的气动和液压回路，带 KBL 导出的线束和线束装配板。
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	带颜色和截面积的电位，带线芯的电缆，导线、设备和页面的自动编号。
-Privacy	隐私
 Project check	项目检查
 Push button	按钮
-Register entry	注册登记
 Report a problem	报告问题
 Reports and checks	报表和检查
 Reports that write themselves	自动生成的报表
-Represented by	代表人
-Responsible for the content	内容管理人
 Screenshot of a graphical terminal diagram	图形化端子图的截图
 Screenshot of a pneumatic circuit linked to the schematic	与原理图关联的气动回路的截图
 Screenshot of the heat map of a mounting plate	安装板热分布图的截图
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	接线助手以 3D 显示下一�
 These are the commands of the command line and the MCP server, run on the project of the demo above.	这些是命令行和 MCP 服务器的命令，在上面演示的项目上运行。
 Third-party licenses	第三方许可证
 This page is drawn right now by the editor's own code, running in your browser.	此页面正由编辑器自身的代码在您的浏览器中实时绘制。
-This page sets no cookies, uses no tracking and loads nothing from other servers.	本页面不设置 Cookie，不使用跟踪，也不从其他服务器加载任何内容。
 Tip: delete a wire and see the check react. Undo brings it back.	提示：删除一根导线，看看检查如何反应。撤销可将其恢复。
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	为了下次更快地显示示例，浏览器会把为它计算出的接线保存在缓存中。不会存储其他任何内容；清除浏览器中的网站数据即可将其删除。
 Try it: the schematic editor, live	试一试：实时原理图编辑器
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	两个并柜机柜，带导�
 Type a command, or help	输入命令，或输入 help
 Type help for the commands, or pick one on the right.	输入 help 查看命令，或在右侧选择一条。
 Unknown command: {}	未知命令：{}
-VAT ID	增值税号
 Wires, cables, potentials	导线、电缆、电位
 Wiring and harnesses	接线与线束
 Written in Rust. Clone the repository and run it.	使用 Rust 编写。克隆仓库并运行即可。

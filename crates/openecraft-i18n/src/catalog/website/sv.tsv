@@ -6,7 +6,6 @@ A look inside	En titt på insidan
 A parts database with mounting data and 3D models, imports from EDZ, BMEcat and STEP, shared through the parts server.	En artikeldatabas med monteringsdata och 3D-modeller, import från EDZ, BMEcat och STEP, delad via artikelservern.
 A schematic page of the demo project, drawn by OpenECraft	En schemasida ur demoprojektet, ritad av OpenECraft
 About 330 IEC 60617 symbols, NFPA, GB, GOST and JIS sets, fluid power, P&ID and installation plans, and an editor for your own symbols.	Omkring 330 IEC 60617-symboler, uppsättningar enligt NFPA, GB, GOST och JIS, fluidteknik, P&ID och installationsritningar samt en editor för egna symboler.
-As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Som på alla webbplatser får servern som levererar sidan din enhets IP-adress för att kunna svara.
 Bill of materials, terminal, cable and plug diagrams as live pages, own drawn forms and a project check that follows every change.	Stycklista, plint-, kabel- och kontaktdonsscheman som sidor som hålls aktuella, egna ritade formulär och en projektkontroll som följer varje ändring.
 Built for scripts and AI agents	Byggd för skript och AI-agenter
 Click to explore the panel	Klicka för att utforska skåpet
@@ -22,8 +21,6 @@ Download the latest release	Ladda ner den senaste versionen
 Drag to turn, pinch with two fingers to zoom.	Dra för att vrida, nyp med två fingrar för att zooma.
 Drag to turn, scroll to zoom.	Dra för att vrida, rulla för att zooma.
 Drawings	Ritningar
-EPLAN, TIA Portal and other names are trademarks of their owners. OpenECraft is an independent project.	EPLAN, TIA Portal och andra namn är varumärken som tillhör sina ägare. OpenECraft är ett fristående projekt.
-Email	E-post
 Enclosure climate with a heat map of the mounting plate	Skåpklimat med en värmekarta över monteringsplåten
 Engineering calculations	Tekniska beräkningar
 Every operation on a project is a command: on the command line, for AI agents through the MCP server, and for plugins. Try some on the project above.	Varje åtgärd i ett projekt är ett kommando: på kommandoraden, för AI-agenter via MCP-servern och för plugins. Prova några på projektet ovan.
@@ -43,9 +40,7 @@ Graphical terminal diagram	Grafiskt plintschema
 In the browser	I webbläsaren
 Installation guide	Installationsguide
 Installers for Windows, Linux packages and a macOS disk image, with automatic updates.	Installationsprogram för Windows, Linux-paket och en skivavbild för macOS, med automatiska uppdateringar.
-It is not affiliated with, endorsed by or sponsored by the owners of these names.	Det är inte anslutet till, godkänt av eller sponsrat av ägarna till dessa namn.
 Lamp	Lampa
-Legal notice	Juridisk information
 Licenses	Licenser
 Live demo	Livedemo
 Menu	Meny
@@ -59,7 +54,6 @@ Open and extensible	Öppen och utbyggbar
 Open source electrical CAE	Elektrisk CAE med öppen källkod
 Open source under the MIT and Apache-2.0 licenses.	Öppen källkod under licenserna MIT och Apache-2.0.
 Open the web editor	Öppna webbeditorn
-OpenECraft comes without warranty. Its calculations and checks support the planning; a qualified person has to verify the results against the standards and regulations that apply.	OpenECraft levereras utan garanti. Dess beräkningar och kontroller stöder projekteringen; en kvalificerad person måste kontrollera resultaten mot gällande standarder och föreskrifter.
 OpenECraft is open source under the MIT license or the Apache License 2.0, at your choice. It contains fonts and libraries of others under their own licenses.	OpenECraft är öppen källkod under MIT-licensen eller Apache License 2.0, efter eget val. Det innehåller typsnitt och bibliotek från andra under deras egna licenser.
 OpenECraft plans electrical systems: device-oriented schematics, live reports, panel layout with routed wiring and the documentation for the customer. One code base for Windows, Linux, macOS and the browser.	OpenECraft projekterar elanläggningar: apparatorienterade scheman, rapporter som hålls aktuella, skåplayout med dragna ledningar och dokumentationen till kunden. En kodbas för Windows, Linux, macOS och webbläsaren.
 OpenECraft – open source electrical CAE	OpenECraft – elektrisk CAE med öppen källkod
@@ -68,19 +62,14 @@ PLC and automation	PLC och automation
 Panel layout in 3D	Skåplayout i 3D
 Parts and data portal	Artiklar och dataportal
 Parts server, project server and the web editor as Docker images for your own network.	Artikelserver, projektserver och webbeditorn som Docker-avbilder för ditt eget nätverk.
-Phone	Telefon
 Planning	Planering
 Pneumatic and hydraulic circuits linked to the electrics, wire harnesses with KBL export and nailboards.	Pneumatiska och hydrauliska kretsar kopplade till elen, kabelstammar med KBL-export och formbrädor.
 Potentials with colours and cross-sections, cables with cores, automatic wire, device and page numbering.	Potentialer med färger och areor, kablar med ledare, automatisk numrering av ledningar, apparater och sidor.
-Privacy	Integritet
 Project check	Projektkontroll
 Push button	Tryckknapp
-Register entry	Registrering
 Report a problem	Rapportera ett problem
 Reports and checks	Rapporter och kontroller
 Reports that write themselves	Rapporter som skriver sig själva
-Represented by	Företrädd av
-Responsible for the content	Ansvarig för innehållet
 Screenshot of a graphical terminal diagram	Skärmbild av ett grafiskt plintschema
 Screenshot of a pneumatic circuit linked to the schematic	Skärmbild av en pneumatisk krets kopplad till schemat
 Screenshot of the heat map of a mounting plate	Skärmbild av värmekartan över en monteringsplåt
@@ -111,7 +100,6 @@ The wiring assistant shows the next wire in 3D	Inkopplingsassistenten visar näs
 These are the commands of the command line and the MCP server, run on the project of the demo above.	Det här är kommandoradens och MCP-serverns kommandon, körda på demons projekt ovan.
 Third-party licenses	Tredjepartslicenser
 This page is drawn right now by the editor's own code, running in your browser.	Den här sidan ritas just nu av editorns egen kod, som körs i din webbläsare.
-This page sets no cookies, uses no tracking and loads nothing from other servers.	Den här sidan sätter inga kakor, använder ingen spårning och läser inte in något från andra servrar.
 Tip: delete a wire and see the check react. Undo brings it back.	Tips: ta bort en ledning och se kontrollen reagera. Ångra tar tillbaka den.
 To show an example faster the next time, your browser keeps the wiring it calculated for it in its cache. Nothing else is stored; clearing the site data of the browser removes it.	För att visa ett exempel snabbare nästa gång sparar webbläsaren den inkoppling den beräknat för det i sin cache. Inget annat lagras; den tas bort när du rensar webbplatsens data i webbläsaren.
 Try it: the schematic editor, live	Prova: schemaeditorn, live
@@ -121,7 +109,6 @@ Two bayed enclosures with rails, ducts and busbars	Två sammanbyggda kapslingar 
 Type a command, or help	Skriv ett kommando, eller help
 Type help for the commands, or pick one on the right.	Skriv help för kommandona, eller välj ett till höger.
 Unknown command: {}	Okänt kommando: {}
-VAT ID	Momsregistreringsnummer
 Wires, cables, potentials	Ledningar, kablar, potentialer
 Wiring and harnesses	Kabeldragning och kablage
 Written in Rust. Clone the repository and run it.	Skrivet i Rust. Klona kodförrådet och kör det.
