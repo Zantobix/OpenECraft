@@ -24,6 +24,9 @@ cargo clippy -p openecraft -p openecraft-parts-manager -p openecraft-website --t
 - Parts manager: `cargo run -p openecraft-parts-manager`; web: `cd parts-manager && trunk serve` (http://127.0.0.1:8082)
 - Command line / MCP server: `cargo run -p openecraft-cli -- help`, `cargo run -p openecraft-cli -- mcp`
 - Web: `cd openecraft && trunk serve` (dev server on http://127.0.0.1:8080), `cd openecraft && trunk build --release`
+  (a release build of a page – editor, parts manager, website – uses the cargo profile
+  `web`, optimised for size: `data-cargo-profile-release` in its `index.html`; the
+  desktop builds keep `release`, optimised for speed)
 - Website: `cd website && trunk serve --release` (http://127.0.0.1:8084), `cd website && trunk build --release`
   (`docs/website.md`); `cargo run -p openecraft-website` shows its demos in a window
 - Windows installer: `powershell -ExecutionPolicy Bypass -File installer/windows/build.ps1`
@@ -183,6 +186,12 @@ complex shaping (Arabic, Hebrew, Indic scripts, Thai) cannot be drawn by egui.
   part data and log messages.
 - Language choice: stored by the apps (`language` key), otherwise the OS / browser
   language if supported, otherwise English (`openecraft_i18n::init`).
+- The web editor is built without the catalogs of the 16 further languages (feature
+  `lazy` of `openecraft-i18n`) and fetches the file of a language when it is used
+  (`i18n/<code>.tsv` beside the page, written by a hook of `openecraft/Trunk.toml`;
+  `openecraft_ui::io::load_language`); until then `lang()` stays the language before.
+  Code that generates text in another language than the editor's (`with_lang`) has
+  to ask for its catalog first.
 
 ## Unit tests – mandatory layout
 

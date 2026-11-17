@@ -66,7 +66,7 @@ deleted in the schematic shows in the check, in the reports and in the next expo
   canvases in a window, `cargo run -p openecraft-website -- call state` prints an
   answer as the page gets it, `… -- export pdf` writes the file of an exporter.
 
-The module is 40 MB (15 MB compressed), so the page is shown first: trunk only names
+The module is 28 MB (10 MB compressed; a release build is optimised for size, profile `web`), so the page is shown first: trunk only names
 the module in the page (`pattern_script` of `Trunk.toml`) and `site.js` loads it when
 the visitor scrolls, clicks or types, and otherwise once the page is there and the
 browser has time. A visitor who asked the browser to save data gets it only with the
@@ -260,11 +260,14 @@ of the public address, `robots.txt` and `sitemap.xml` (`website-site.sh`) and it
 site from `installer/docker/website.conf` (mount your own at
 `/etc/nginx/templates/default.conf.template`; it answers `/config.js`, `/index.html`,
 `/robots.txt` and `/sitemap.xml` with the files of `/tmp/openecraft/`);
-put a TLS reverse proxy in front of it for a public site. The WebAssembly (40 MB,
-15 MB compressed), the scripts and the routings have a compressed copy from the
-build of the image, which nginx sends as it is (`gzip_static`), also to a reverse
+put a TLS reverse proxy in front of it for a public site. The WebAssembly (28 MB,
+10 MB compressed), the scripts and the routings have a compressed copy from the
+build of the image (`installer/docker/compress.sh`), which nginx sends as it is
+(`gzip_static`), also to a reverse
 proxy speaking HTTP/1.0 (the default of nginx's `proxy_pass`) and with
-`Vary: Accept-Encoding`; a server of your own should compress them once as well
+`Vary: Accept-Encoding`; the WebAssembly and its script, of the page and of the web
+editor, have a Brotli copy as well, a good third smaller, for the browsers that ask
+for it (over HTTPS only). A server of your own should compress them once as well
 instead of for every visitor. The log of the
 visits (the output of the container) has no whole address of a visitor: nginx leaves
 out the last part of an IPv4 address and all but the first three groups of an IPv6
