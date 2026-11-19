@@ -18,6 +18,7 @@ cd "$work"
 
 docker run -d --name "$name" -p "$port:8080" -e OPENECRAFT_EDITOR_URL=https://editor.example/ \
   -e OPENECRAFT_SITE_URL=https://site.example/openecraft \
+  -e OPENECRAFT_STARS=1234 -e OPENECRAFT_CONTRIBUTORS=56 -e OPENECRAFT_NUMBERS_INTERVAL=0 \
   -e OPENECRAFT_LEGAL_NAME='ACME "Tools" GmbH' -e OPENECRAFT_LEGAL_ADDRESS='Street 1 | 12345 City' "$image" > /dev/null
 for _ in $(seq 30); do curl -fs "$url/" > /dev/null && break; sleep 1; done
 curl -fsS "$url/" -o site.html || { docker logs "$name"; exit 1; }
@@ -30,6 +31,10 @@ grep -q 'repository: "https://github.com/' config.js
 grep -qF 'name: "ACME \"Tools\" GmbH",' config.js
 grep -qF 'address: "Street 1 | 12345 City",' config.js
 if command -v node > /dev/null; then node --check config.js; fi
+# The numbers of the project the image starts with; it can ask GitHub for newer ones.
+curl -fsS "$url/numbers.js" | grep -qxF 'window.OPENECRAFT_NUMBERS = { stars: 1234, contributors: 56 };'
+grep -qF '<script src="numbers.js"></script>' site.html
+docker exec "$name" sh -c 'command -v curl' > /dev/null
 # The tags of the public address, robots.txt and the sitemap.
 grep -qF '<link rel="canonical" href="https://site.example/openecraft/" />' site.html
 grep -qF '<meta property="og:image" content="https://site.example/openecraft/social.jpg" />' site.html
@@ -49,6 +54,31 @@ grep -qF '<link rel="alternate" hreflang="de" href="https://site.example/openecr
 curl -fsS "$url/compare/de.html" | grep -qF '<link rel="canonical" href="https://site.example/openecraft/compare/de.html" />'
 curl -fsS "$url/sitemap.xml" | grep -qF '<loc>https://site.example/openecraft/education/fr.html</loc>'
 test "$(curl -s -o /dev/null -w '%{http_code}' "$url/compare")" = 301
+# The pages the build writes: two folders deep, in their languages, with their tags.
+curl -fsS "$url/symbols/contacts/" -o symbols.html
+grep -qF '<link rel="canonical" href="https://site.example/openecraft/symbols/contacts/" />' symbols.html
+grep -qF '<link rel="alternate" hreflang="de" href="https://site.example/openecraft/symbols/contacts/de.html" />' symbols.html
+curl -fsS "$url/symbols/contacts/de.html" | grep -qF '<html lang="de">'
+test "$(curl -s -o /dev/null -w '%{http_code}' "$url/symbols/contacts")" = 301
+curl -fsS -o /dev/null "$url/symbols/art/no.svg"
+curl -fsS "$url/examples/conveyor/" | grep -qF 'page-1.svg'
+curl -fsS -o /dev/null "$url/examples/conveyor/page-1.svg"
+curl -fsS "$url/examples/conveyor/conveyor.pdf" | head -c 4 | grep -q '%PDF'
+curl -fsS "$url/faq/" | grep -qF '"@type": "FAQPage"'
+curl -fsS "$url/how-to/wire-list/fr.html" | grep -qF '<html lang="fr">'
+curl -fsS "$url/compare/eplan-alternative/" | grep -qF '<link rel="canonical" href="https://site.example/openecraft/compare/eplan-alternative/" />'
+curl -fsS "$url/sitemap.xml" | grep -qF '<loc>https://site.example/openecraft/symbols/contacts/ko.html</loc>'
+# The documentation and the news are in English only: no other languages named.
+curl -fsS "$url/docs/tutorial/" -o tutorial.html
+grep -qF '<link rel="canonical" href="https://site.example/openecraft/docs/tutorial/" />' tutorial.html
+if grep -q 'hreflang=' tutorial.html; then exit 1; fi
+curl -fsS "$url/sitemap.xml" | grep -qF '<loc>https://site.example/openecraft/docs/tutorial/</loc>'
+curl -fsS "$url/news/" | grep -qF 'feed.xml'
+curl -fsS "$url/news/feed.xml" | grep -qF '<feed xml:base="https://site.example/openecraft/news/" xmlns="http://www.w3.org/2005/Atom">'
+# The tools get the module from the script of the build.
+curl -fsS "$url/tools/voltage-drop-calculator/" | grep -qF 'data-tool="voltage_drop"'
+curl -fsS "$url/build.js" | grep -q '"module":\["openecraft-website-[0-9a-f]*\.js","openecraft-website-[0-9a-f]*_bg\.wasm"\]'
+curl -fsS -o /dev/null "$url/tools.js"
 # The module is named in the page and loaded by its script; the first sheet is a picture.
 grep -q 'window.OPENECRAFT_MODULE = \["./openecraft-website-[0-9a-f]*\.js", "./openecraft-website-[0-9a-f]*_bg\.wasm"\]' site.html
 if grep -q 'rel="modulepreload"' site.html; then exit 1; fi

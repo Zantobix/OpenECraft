@@ -5,6 +5,21 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.3] - unreleased
 
+- **A website with more to find:** the build of the website now writes a page for
+  every category of the symbol library with the drawings of its symbols, a page for
+  every example project with its sheets, its PDF and a link into the live demo, the
+  documentation (tutorial, installation, features, command line, plugins, servers)
+  and the release notes with an Atom feed (`news/feed.xml`), beside new pages with
+  questions and answers, guides (terminal diagram, wire list, bill of materials, DXF
+  and DWG export) and comparisons with single products. Three tools run in the
+  browser with the code of the editor, nothing is uploaded: a voltage drop
+  calculator, a DXF and DWG viewer and converter (SVG, PDF, DXF, DWG) and a viewer
+  for EDZ and other parts files (CSV, JSON). *Copy link* in the demos writes an
+  address that opens an example at a page, a place of the panel or a report
+  (`?example=conveyor&page=3#studio`), and the first screen shows a screen recording of the
+  demos when the build is given one, and the stars and contributors of the repository,
+  which the Docker image of the website asks GitHub for every hour. New crate `openecraft-site`
+  ([website](docs/website.md#pages-the-build-writes)).
 - **The public parts server is preset:** the editor's data portal, the parts manager
   and the command line connect to
   [parts-server.openecraft.org](https://parts-server.openecraft.org) until another
