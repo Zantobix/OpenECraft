@@ -5,6 +5,11 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.3] - unreleased
 
+- **The public parts server is preset:** the editor's data portal, the parts manager
+  and the command line connect to
+  [parts-server.openecraft.org](https://parts-server.openecraft.org) until another
+  server is entered (before: `http://127.0.0.1:8090`); the privacy notices name it
+  ([public parts server](docs/parts-server.md#public-parts-server)).
 - **Reports found by their standards:** the filter of the *Reports* pane (and of the
   website, `list_reports` with `search`) also finds a report by the standards it
   follows, ignoring spaces and dashes: `VDE 0100 600` or `IEC 60364-6` find the
