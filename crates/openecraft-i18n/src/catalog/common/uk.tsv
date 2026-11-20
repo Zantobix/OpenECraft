@@ -19,6 +19,7 @@ Accessory	Аксесуар
 Add	Додати
 Add a PDF of all pages	Додати PDF усіх сторінок
 Add an item	Додати пункт
+Add cable glands for new cables	Додавати кабельні вводи для нових кабелів
 Add to favorites	Додати до вибраного
 Address	Адреса
 Administrator	Адміністратор
@@ -66,6 +67,7 @@ Channel	Канал
 Characteristic	Характеристика
 Check settings	Параметри перевірки
 Checks	Перевірки
+Circuit	Коло
 Circuits	Кола
 Class	Клас
 Classes	Класи
@@ -127,6 +129,7 @@ Description	Опис
 Designation	Позначення
 Device	Пристрій
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Пристрій (фотоелектричний генератор), до якого належать модулі; його вироби тоді враховують їх у специфікації
+Device connection box three-phase	Приєднувальна коробка приладу трифазна
 Device connection point	Точка підключення пристрою
 Device description	Опис пристрою
 Device tag	Позначення пристрою
@@ -240,10 +243,11 @@ Internal (bottom)	Внутрішній (знизу)
 Interruption point	Точка розриву
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Він не пов'язаний із власниками цих назв, не схвалений і не спонсорується ними.
 Italic	Курсив
-Items	Елементи
 Its MPP tracker (input), from 1	Його MPP-трекер (вхід), з 1
 Job	Завдання
 Jumper	Перемичка
+Junction box with terminals	Відгалужувальна коробка з клемами
+Junction box with terminals three-phase	Відгалужувальна коробка з клемами трифазна
 Key	Ключ
 Kind	Вид
 Language	Мова

@@ -19,6 +19,7 @@ Accessory	Toebehoren
 Add	Toevoegen
 Add a PDF of all pages	Een PDF van alle pagina's toevoegen
 Add an item	Punt toevoegen
+Add cable glands for new cables	Kabelwartels voor nieuwe kabels toevoegen
 Add to favorites	Toevoegen aan favorieten
 Address	Adres
 Administrator	Beheerder
@@ -66,6 +67,7 @@ Channel	Kanaal
 Characteristic	Karakteristiek
 Check settings	Controle-instellingen
 Checks	Controles
+Circuit	Stroomkring
 Circuits	Stroomkringen
 Class	Klasse
 Classes	Klassen
@@ -127,6 +129,7 @@ Description	Beschrijving
 Designation	Benaming
 Device	Apparaat
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Apparaat (PV-generator) waartoe de modules behoren; zijn artikelen tellen ze dan in de stuklijst
+Device connection box three-phase	Apparaataansluitdoos driefasig
 Device connection point	Apparaataansluitpunt
 Device description	Apparaatbeschrijving
 Device tag	Apparaataanduiding
@@ -240,10 +243,11 @@ Internal (bottom)	Intern (onder)
 Interruption point	Onderbrekingspunt
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Het is niet verbonden met, goedgekeurd door of gesponsord door de eigenaren van deze namen.
 Italic	Cursief
-Items	Elementen
 Its MPP tracker (input), from 1	Zijn MPP-tracker (ingang), vanaf 1
 Job	Opdracht
 Jumper	Brug
+Junction box with terminals	Aftakdoos met klemmen
+Junction box with terminals three-phase	Aftakdoos met klemmen driefasig
 Key	Sleutel
 Kind	Soort
 Language	Taal

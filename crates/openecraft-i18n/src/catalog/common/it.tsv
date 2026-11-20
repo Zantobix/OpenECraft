@@ -19,6 +19,7 @@ Accessory	Accessorio
 Add	Aggiungi
 Add a PDF of all pages	Aggiungi un PDF di tutte le pagine
 Add an item	Aggiungi una voce
+Add cable glands for new cables	Aggiungi pressacavi per i cavi nuovi
 Add to favorites	Aggiungi ai preferiti
 Address	Indirizzo
 Administrator	Amministratore
@@ -66,6 +67,7 @@ Channel	Canale
 Characteristic	Caratteristica
 Check settings	Impostazioni della verifica
 Checks	Verifiche
+Circuit	Circuito
 Circuits	Circuiti
 Class	Classe
 Classes	Classi
@@ -127,6 +129,7 @@ Description	Descrizione
 Designation	Designazione
 Device	Dispositivo
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Dispositivo (generatore fotovoltaico) a cui appartengono i moduli; i suoi articoli li contano allora nella distinta base
+Device connection box three-phase	Scatola di collegamento apparecchio trifase
 Device connection point	Punto di connessione del dispositivo
 Device description	Descrizione dispositivo
 Device tag	Sigla dispositivo
@@ -240,10 +243,11 @@ Internal (bottom)	Interno (sotto)
 Interruption point	Punto di interruzione
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Non è affiliato, approvato o sponsorizzato dai proprietari di questi nomi.
 Italic	Corsivo
-Items	Elementi
 Its MPP tracker (input), from 1	Il suo inseguitore MPP (ingresso), da 1
 Job	Commessa
 Jumper	Ponticello
+Junction box with terminals	Scatola di derivazione con morsetti
+Junction box with terminals three-phase	Scatola di derivazione con morsetti trifase
 Key	Chiave
 Kind	Tipo
 Language	Lingua

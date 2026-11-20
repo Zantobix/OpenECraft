@@ -19,6 +19,7 @@ Accessory	付属品
 Add	追加
 Add a PDF of all pages	全ページの PDF を追加
 Add an item	項目を追加
+Add cable glands for new cables	新しいケーブルにケーブルグランドを追加
 Add to favorites	お気に入りに追加
 Address	アドレス
 Administrator	管理者
@@ -64,6 +65,7 @@ Channel	チャンネル
 Characteristic	特性
 Check settings	チェックの設定
 Checks	チェック
+Circuit	回路
 Circuits	回路
 Class	クラス
 Classes	クラス
@@ -125,6 +127,7 @@ Description	説明
 Designation	名称
 Device	デバイス
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	モジュールが属する機器（PV発電機）。その部品が部品表でモジュールを数えます
+Device connection box three-phase	三相機器接続ボックス
 Device connection point	機器接続ポイント
 Device description	デバイス記述
 Device tag	デバイスタグ
@@ -238,10 +241,11 @@ Internal (bottom)	内部 (下)
 Interruption point	中断ポイント
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	これらの名称の所有者と提携しておらず、承認や後援も受けていません。
 Italic	斜体
-Items	アイテム
 Its MPP tracker (input), from 1	そのMPPトラッカー（入力）、1から
 Job	ジョブ
 Jumper	ジャンパー
+Junction box with terminals	端子付きジャンクションボックス
+Junction box with terminals three-phase	端子付き三相ジャンクションボックス
 Key	キー
 Kind	種類
 Language	言語

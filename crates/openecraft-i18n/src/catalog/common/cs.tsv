@@ -19,6 +19,7 @@ Accessory	Příslušenství
 Add	Přidat
 Add a PDF of all pages	Přidat PDF všech stránek
 Add an item	Přidat bod
+Add cable glands for new cables	Přidávat kabelové vývodky pro nové kabely
 Add to favorites	Přidat k oblíbeným
 Address	Adresa
 Administrator	Správce
@@ -66,6 +67,7 @@ Channel	Kanál
 Characteristic	Charakteristika
 Check settings	Nastavení kontroly
 Checks	Kontroly
+Circuit	Obvod
 Circuits	Obvody
 Class	Třída
 Classes	Třídy
@@ -127,6 +129,7 @@ Description	Popis
 Designation	Označení
 Device	Přístroj
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Zařízení (FV generátor), ke kterému moduly patří; jeho díly je pak počítají v kusovníku
+Device connection box three-phase	Přípojná krabice spotřebiče třífázová
 Device connection point	Připojovací bod zařízení
 Device description	Popis zařízení
 Device tag	Označení přístroje
@@ -240,10 +243,11 @@ Internal (bottom)	Interní (dole)
 Interruption point	Bod přerušení
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Není spojen s vlastníky těchto názvů ani jimi není schválen nebo sponzorován.
 Italic	Kurzíva
-Items	Prvky
 Its MPP tracker (input), from 1	Jeho MPP tracker (vstup), od 1
 Job	Zakázka
 Jumper	Propojka
+Junction box with terminals	Odbočná krabice se svorkami
+Junction box with terminals three-phase	Odbočná krabice se svorkami třífázová
 Key	Klíč
 Kind	Druh
 Language	Jazyk

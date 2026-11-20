@@ -19,6 +19,7 @@ Accessory	Tillbehör
 Add	Lägg till
 Add a PDF of all pages	Lägg till en PDF med alla sidor
 Add an item	Lägg till en punkt
+Add cable glands for new cables	Lägg till kabelförskruvningar för nya kablar
 Add to favorites	Lägg till i favoriter
 Address	Adress
 Administrator	Administratör
@@ -66,6 +67,7 @@ Channel	Kanal
 Characteristic	Karakteristik
 Check settings	Kontrollinställningar
 Checks	Kontroller
+Circuit	Krets
 Circuits	Kretsar
 Class	Klass
 Classes	Klasser
@@ -127,6 +129,7 @@ Description	Beskrivning
 Designation	Beteckning
 Device	Apparat
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Enhet (solcellsgenerator) som modulerna tillhör; dess artiklar räknar dem då i materiallistan
+Device connection box three-phase	Apparatanslutningsdosa trefas
 Device connection point	Apparatanslutningspunkt
 Device description	Enhetsbeskrivning
 Device tag	Apparatbeteckning
@@ -240,10 +243,11 @@ Internal (bottom)	Intern (nedan)
 Interruption point	Avbrottspunkt
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Det är inte anslutet till, godkänt av eller sponsrat av ägarna till dessa namn.
 Italic	Kursiv
-Items	Objekt
 Its MPP tracker (input), from 1	Dess MPP-spårare (ingång), från 1
 Job	Order
 Jumper	Bygel
+Junction box with terminals	Kopplingsdosa med plintar
+Junction box with terminals three-phase	Kopplingsdosa med plintar trefas
 Key	Nyckel
 Kind	Typ
 Language	Språk

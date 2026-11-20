@@ -19,6 +19,7 @@ Accessory	부속품
 Add	추가
 Add a PDF of all pages	모든 페이지의 PDF 추가
 Add an item	항목 추가
+Add cable glands for new cables	새 케이블에 케이블 글랜드 추가
 Add to favorites	즐겨찾기에 추가
 Address	주소
 Administrator	관리자
@@ -64,6 +65,7 @@ Channel	채널
 Characteristic	특성
 Check settings	검사 설정
 Checks	검사
+Circuit	회로
 Circuits	회로
 Class	클래스
 Classes	클래스
@@ -125,6 +127,7 @@ Description	설명
 Designation	명칭
 Device	장치
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	모듈이 속한 장치(태양광 발전기); 그 부품이 자재 명세서에서 모듈을 셉니다
+Device connection box three-phase	3상 기기 연결 박스
 Device connection point	장치 연결 지점
 Device description	장치 설명
 Device tag	장치 태그
@@ -238,10 +241,11 @@ Internal (bottom)	내부(아래)
 Interruption point	중단점
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	이 이름들의 소유자와 제휴하지 않았으며 그들의 승인이나 후원을 받지 않았습니다.
 Italic	기울임꼴
-Items	항목
 Its MPP tracker (input), from 1	해당 MPP 트래커 (입력), 1부터
 Job	작업
 Jumper	점퍼
+Junction box with terminals	단자가 있는 정션 박스
+Junction box with terminals three-phase	단자가 있는 3상 정션 박스
 Key	키
 Kind	종류
 Language	언어

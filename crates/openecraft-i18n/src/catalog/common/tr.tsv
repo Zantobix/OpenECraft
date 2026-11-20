@@ -19,6 +19,7 @@ Accessory	Aksesuar
 Add	Ekle
 Add a PDF of all pages	Tüm sayfaların PDF'ini ekle
 Add an item	Madde ekle
+Add cable glands for new cables	Yeni kablolar için kablo rakorları ekle
 Add to favorites	Sık kullanılanlara ekle
 Address	Adres
 Administrator	Yönetici
@@ -66,6 +67,7 @@ Channel	Kanal
 Characteristic	Karakteristik
 Check settings	Kontrol ayarları
 Checks	Kontroller
+Circuit	Devre
 Circuits	Devreler
 Class	Sınıf
 Classes	Sınıflar
@@ -127,6 +129,7 @@ Description	Açıklama
 Designation	Tanım
 Device	Cihaz
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Modüllerin ait olduğu cihaz (PV jeneratörü); parçaları onları malzeme listesinde sayar
+Device connection box three-phase	Üç fazlı cihaz bağlantı kutusu
 Device connection point	Cihaz bağlantı noktası
 Device description	Cihaz tanımı
 Device tag	Cihaz etiketi
@@ -240,10 +243,11 @@ Internal (bottom)	Dahili (alt)
 Interruption point	Kesinti noktası
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Bu adların sahipleriyle bağlantılı değildir, onlar tarafından onaylanmamış ve desteklenmemiştir.
 Italic	İtalik
-Items	Öğeler
 Its MPP tracker (input), from 1	MPP izleyicisi (giriş), 1'den itibaren
 Job	İş emri
 Jumper	Köprü
+Junction box with terminals	Klemensli buat
+Junction box with terminals three-phase	Üç fazlı klemensli buat
 Key	Anahtar
 Kind	Tür
 Language	Dil

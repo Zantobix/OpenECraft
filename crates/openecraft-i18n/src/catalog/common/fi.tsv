@@ -19,6 +19,7 @@ Accessory	Tarvike
 Add	Lisää
 Add a PDF of all pages	Lisää kaikista sivuista PDF
 Add an item	Lisää kohta
+Add cable glands for new cables	Lisää kaapeliläpiviennit uusille kaapeleille
 Add to favorites	Lisää suosikkeihin
 Address	Osoite
 Administrator	Järjestelmänvalvoja
@@ -66,6 +67,7 @@ Channel	Kanava
 Characteristic	Ominaiskäyrä
 Check settings	Tarkistusasetukset
 Checks	Tarkistukset
+Circuit	Virtapiiri
 Circuits	Virtapiirit
 Class	Luokka
 Classes	Luokat
@@ -127,6 +129,7 @@ Description	Kuvaus
 Designation	Nimitys
 Device	Laite
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Laite (aurinkosähkögeneraattori), johon moduulit kuuluvat; sen osat laskevat ne silloin osaluetteloon
+Device connection box three-phase	Laitteen liitäntärasia kolmivaiheinen
 Device connection point	Laitteen liitäntäpiste
 Device description	Laitekuvaus
 Device tag	Laitetunnus
@@ -240,10 +243,11 @@ Internal (bottom)	Sisäinen (alhaalla)
 Interruption point	Katkospiste
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Se ei ole näiden nimien omistajien yhteistyökumppani, hyväksymä eikä sponsoroima.
 Italic	Kursivointi
-Items	Kohteet
 Its MPP tracker (input), from 1	Sen MPP-seurain (tulo), alkaen 1
 Job	Työ
 Jumper	Silta
+Junction box with terminals	Jakorasia liittimillä
+Junction box with terminals three-phase	Jakorasia liittimillä kolmivaiheinen
 Key	Avain
 Kind	Laji
 Language	Kieli

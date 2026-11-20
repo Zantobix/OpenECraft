@@ -19,6 +19,7 @@ Accessory	Tilbehør
 Add	Tilføj
 Add a PDF of all pages	Tilføj en PDF med alle sider
 Add an item	Tilføj et punkt
+Add cable glands for new cables	Tilføj kabelforskruninger til nye kabler
 Add to favorites	Føj til favoritter
 Address	Adresse
 Administrator	Administrator
@@ -66,6 +67,7 @@ Channel	Kanal
 Characteristic	Karakteristik
 Check settings	Kontrolindstillinger
 Checks	Kontroller
+Circuit	Kreds
 Circuits	Kredse
 Class	Klasse
 Classes	Klasser
@@ -127,6 +129,7 @@ Description	Beskrivelse
 Designation	Betegnelse
 Device	Enhed
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Enhed (solcellegenerator), som modulerne hører til; dens dele tæller dem så i styklisten
+Device connection box three-phase	Apparattilslutningsdåse trefaset
 Device connection point	Enhedstilslutningspunkt
 Device description	Enhedsbeskrivelse
 Device tag	Enhedsmærkning
@@ -240,10 +243,11 @@ Internal (bottom)	Intern (nederst)
 Interruption point	Afbrydelsespunkt
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Det er ikke tilknyttet, godkendt af eller sponsoreret af ejerne af disse navne.
 Italic	Kursiv
-Items	Elementer
 Its MPP tracker (input), from 1	Dens MPP-tracker (indgang), fra 1
 Job	Ordre
 Jumper	Bro
+Junction box with terminals	Samledåse med klemmer
+Junction box with terminals three-phase	Samledåse med klemmer trefaset
 Key	Nøgle
 Kind	Type
 Language	Sprog

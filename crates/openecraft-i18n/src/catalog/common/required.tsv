@@ -21,6 +21,7 @@ Actuator	Stellantrieb	Actionneur	Actuador
 Add	Hinzufügen	Ajouter	Añadir
 Add a PDF of all pages	Ein PDF aller Seiten hinzufügen	Ajouter un PDF de toutes les pages	Añadir un PDF de todas las páginas
 Add an item	Punkt hinzufügen	Ajouter un point	Añadir un punto
+Add cable glands for new cables	Kabelverschraubungen für neue Kabel hinzufügen	Ajouter des presse-étoupes pour les nouveaux câbles	Añadir prensaestopas para cables nuevos
 Add to favorites	Zu Favoriten hinzufügen	Ajouter aux favoris	Añadir a favoritos
 Address	Adresse	Adresse	Dirección
 Administrator	Administrator	Administrateur	Administrador
@@ -70,7 +71,7 @@ Channel	Kanal	Canal	Canal
 Characteristic	Charakteristik	Caractéristique	Característica
 Check settings	Prüfeinstellungen	Réglages de vérification	Ajustes de comprobación
 Checks	Prüfungen	Vérifications	Comprobaciones
-Circuit {} exists already	Stromkreis {} existiert bereits	Le circuit {} existe déjà	El circuito {} ya existe
+Circuit	Stromkreis	Circuit	Circuito
 Circuits	Stromkreise	Circuits	Circuitos
 Class	Klasse	Classe	Clase
 Classes	Klassen	Classes	Clases
@@ -133,6 +134,7 @@ Description	Beschreibung	Description	Descripción
 Designation	Bezeichnung	Désignation	Designación
 Device	Betriebsmittel	Appareil	Dispositivo
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Betriebsmittel (PV-Generator), zu dem die Module gehören; seine Artikel zählen sie dann in der Stückliste	Appareil (générateur photovoltaïque) auquel appartiennent les modules ; ses articles les comptent alors dans la nomenclature	Dispositivo (generador fotovoltaico) al que pertenecen los módulos; sus artículos los cuentan entonces en la lista de materiales
+Device connection box three-phase	Geräteanschlussdose dreiphasig	Boîte de raccordement d'appareil triphasée	Caja de conexión de aparato trifásica
 Device connection point	Geräteanschlusspunkt	Point de connexion d'appareil	Punto de conexión del dispositivo
 Device description	Gerätebeschreibung	Description d'appareil	Descripción de dispositivo
 Device tag	Betriebsmittelkennzeichen	Repère d'appareil	Designación de dispositivo
@@ -253,10 +255,11 @@ Interruption point	Unterbrechungspunkt	Point d'interruption	Punto de interrupci�
 Inverter	Wechselrichter	Onduleur	Inversor
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Es steht in keiner Verbindung zu den Inhabern dieser Namen und wird von ihnen weder unterstützt noch gefördert.	Il n'est ni affilié aux propriétaires de ces noms, ni approuvé ou parrainé par eux.	No está afiliado a los propietarios de estos nombres ni cuenta con su aprobación o patrocinio.
 Italic	Kursiv	Italique	Cursiva
-Items	Elemente	Éléments	Elementos
 Its MPP tracker (input), from 1	Sein MPP-Tracker (Eingang), ab 1	Son tracker MPP (entrée), à partir de 1	Su seguidor MPP (entrada), desde 1
 Job	Auftrag	Ordre	Trabajo
 Jumper	Brücke	Pont	Puente
+Junction box with terminals	Abzweigdose mit Klemmen	Boîte de dérivation avec bornes	Caja de derivación con bornes
+Junction box with terminals three-phase	Abzweigdose mit Klemmen dreiphasig	Boîte de dérivation avec bornes triphasée	Caja de derivación con bornes trifásica
 Key	Schlüssel	Clé	Clave
 Kind	Art	Type	Tipo
 Language	Sprache	Langue	Idioma
@@ -363,6 +366,7 @@ No plug {}	Kein Stecker {}	Aucun connecteur {}	No hay conector {}
 No protective measure of its own	Keine eigene Schutzmaßnahme	Pas de mesure de protection propre	Sin medida de protección propia
 No report block named {}	Kein Auswertungsblock namens {}	Aucun bloc de rapports nommé {}	Ningún bloque de informes llamado {}
 No segment {}	Kein Segment {}	Aucun segment {}	No hay ningún segmento {}
+No socket outlet, switch or light {}	Keine Steckdose, kein Schalter und keine Leuchte {}	Aucune prise, aucun interrupteur ni luminaire {}	Ninguna toma, interruptor ni luminaria {}
 No station {}	Keine Station {}	Pas de station {}	No hay estación {}
 No such PV array	Keine solche PV-Anlage	Pas de tel champ photovoltaïque	No existe tal campo fotovoltaico
 No such level	Keine solche Ebene	Niveau introuvable	No existe ese nivel
@@ -654,6 +658,7 @@ Unit	Einheit	Unité	Unidad
 Unknown	Unbekannt	Inconnu	Desconocido
 Unknown column: {}	Unbekannte Spalte: {}	Colonne inconnue : {}	Columna desconocida: {}
 Unknown connector: {}	Unbekannter Konnektor: {}	Connecteur inconnu : {}	Conector desconocido: {}
+Unknown device or part: {}	Unbekanntes Gerät oder unbekannter Artikel: {}	Appareil ou article inconnu : {}	Equipo o artículo desconocido: {}
 Unknown enclosure system: {}	Unbekanntes Gehäusesystem: {}	Système d'armoire inconnu : {}	Sistema de armario desconocido: {}
 Unknown face: {}	Unbekannte Fläche: {}	Face inconnue : {}	Cara desconocida: {}
 Unknown field: {}	Unbekanntes Feld: {}	Champ inconnu : {}	Campo desconocido: {}

@@ -19,6 +19,7 @@ Accessory	Tartozék
 Add	Hozzáadás
 Add a PDF of all pages	PDF hozzáadása az összes oldalról
 Add an item	Pont hozzáadása
+Add cable glands for new cables	Kábeltömszelencék hozzáadása az új kábelekhez
 Add to favorites	Hozzáadás a kedvencekhez
 Address	Cím
 Administrator	Rendszergazda
@@ -66,6 +67,7 @@ Channel	Csatorna
 Characteristic	Jelleggörbe
 Check settings	Ellenőrzési beállítások
 Checks	Ellenőrzések
+Circuit	Áramkör
 Circuits	Áramkörök
 Class	Osztály
 Classes	Osztályok
@@ -127,6 +129,7 @@ Description	Leírás
 Designation	Megnevezés
 Device	Készülék
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Eszköz (PV-generátor), amelyhez a modulok tartoznak; alkatrészei ekkor számolják őket az anyagjegyzékben
+Device connection box three-phase	Háromfázisú készülékcsatlakozó doboz
 Device connection point	Eszköz csatlakozási pontja
 Device description	Eszközleírás
 Device tag	Készülékazonosító
@@ -240,10 +243,11 @@ Internal (bottom)	Belső (alul)
 Interruption point	Megszakítási pont
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Nem áll kapcsolatban e nevek tulajdonosaival, azok nem hagyták jóvá és nem támogatják.
 Italic	Dőlt
-Items	Elemek
 Its MPP tracker (input), from 1	Az MPP-követője (bemenet), 1-től
 Job	Megbízás
 Jumper	Áthidalás
+Junction box with terminals	Kötődoboz kapcsokkal
+Junction box with terminals three-phase	Háromfázisú kötődoboz kapcsokkal
 Key	Kulcs
 Kind	Fajta
 Language	Nyelv

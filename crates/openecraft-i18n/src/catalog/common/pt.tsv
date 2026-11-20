@@ -19,6 +19,7 @@ Accessory	Acessório
 Add	Adicionar
 Add a PDF of all pages	Adicionar um PDF de todas as páginas
 Add an item	Adicionar um item
+Add cable glands for new cables	Adicionar prensa-cabos para cabos novos
 Add to favorites	Adicionar aos favoritos
 Address	Endereço
 Administrator	Administrador
@@ -66,6 +67,7 @@ Channel	Canal
 Characteristic	Característica
 Check settings	Configurações de verificação
 Checks	Verificações
+Circuit	Circuito
 Circuits	Circuitos
 Class	Classe
 Classes	Classes
@@ -127,6 +129,7 @@ Description	Descrição
 Designation	Designação
 Device	Dispositivo
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Dispositivo (gerador fotovoltaico) ao qual os módulos pertencem; suas peças então os contam na lista de materiais
+Device connection box three-phase	Caixa de ligação de aparelho trifásica
 Device connection point	Ponto de conexão do dispositivo
 Device description	Descrição de dispositivo
 Device tag	Identificador de dispositivo
@@ -240,10 +243,11 @@ Internal (bottom)	Interno (embaixo)
 Interruption point	Ponto de interrupção
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Ele não é afiliado, endossado nem patrocinado pelos proprietários desses nomes.
 Italic	Itálico
-Items	Itens
 Its MPP tracker (input), from 1	O seu rastreador MPP (entrada), a partir de 1
 Job	Ordem de serviço
 Jumper	Ponte
+Junction box with terminals	Caixa de derivação com bornes
+Junction box with terminals three-phase	Caixa de derivação com bornes trifásica
 Key	Chave
 Kind	Tipo
 Language	Idioma

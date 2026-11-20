@@ -19,6 +19,7 @@ Accessory	Принадлежность
 Add	Добавить
 Add a PDF of all pages	Добавить PDF всех листов
 Add an item	Добавить пункт
+Add cable glands for new cables	Добавлять кабельные вводы для новых кабелей
 Add to favorites	Добавить в избранное
 Address	Адрес
 Administrator	Администратор
@@ -66,6 +67,7 @@ Channel	Канал
 Characteristic	Характеристика
 Check settings	Настройки проверки
 Checks	Проверки
+Circuit	Цепь
 Circuits	Цепи
 Class	Класс
 Classes	Классы
@@ -127,6 +129,7 @@ Description	Описание
 Designation	Обозначение
 Device	Устройство
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Устройство (фотоэлектрический генератор), к которому относятся модули; его изделия тогда учитывают их в спецификации
+Device connection box three-phase	Соединительная коробка для подключения прибора трёхфазная
 Device connection point	Точка подключения устройства
 Device description	Описание устройства
 Device tag	Обозначение устройства
@@ -240,10 +243,11 @@ Internal (bottom)	Внутренняя (снизу)
 Interruption point	Точка разрыва
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Он не связан с владельцами этих названий, не одобрен и не спонсируется ими.
 Italic	Курсив
-Items	Элементы
 Its MPP tracker (input), from 1	Его MPP-трекер (вход), с 1
 Job	Задание
 Jumper	Перемычка
+Junction box with terminals	Распределительная коробка с клеммами
+Junction box with terminals three-phase	Распределительная коробка с клеммами трёхфазная
 Key	Ключ
 Kind	Вид
 Language	Язык

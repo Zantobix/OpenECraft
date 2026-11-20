@@ -19,6 +19,7 @@ Accessory	Akcesorium
 Add	Dodaj
 Add a PDF of all pages	Dodaj PDF wszystkich stron
 Add an item	Dodaj punkt
+Add cable glands for new cables	Dodawaj dławnice dla nowych kabli
 Add to favorites	Dodaj do ulubionych
 Address	Adres
 Administrator	Administrator
@@ -66,6 +67,7 @@ Channel	Kanał
 Characteristic	Charakterystyka
 Check settings	Ustawienia kontroli
 Checks	Kontrole
+Circuit	Obwód
 Circuits	Obwody
 Class	Klasa
 Classes	Klasy
@@ -127,6 +129,7 @@ Description	Opis
 Designation	Oznaczenie
 Device	Urządzenie
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Urządzenie (generator PV), do którego należą moduły; jego części liczą je wtedy w zestawieniu materiałów
+Device connection box three-phase	Puszka przyłączeniowa urządzenia trójfazowa
 Device connection point	Punkt przyłączeniowy urządzenia
 Device description	Opis urządzenia
 Device tag	Oznaczenie urządzenia
@@ -240,10 +243,11 @@ Internal (bottom)	Wewnętrzny (dół)
 Interruption point	Punkt przerwania
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Nie jest powiązany z właścicielami tych nazw ani przez nich zatwierdzony lub sponsorowany.
 Italic	Kursywa
-Items	Elementy
 Its MPP tracker (input), from 1	Jego tracker MPP (wejście), od 1
 Job	Zlecenie
 Jumper	Mostek
+Junction box with terminals	Puszka rozgałęźna z zaciskami
+Junction box with terminals three-phase	Puszka rozgałęźna z zaciskami trójfazowa
 Key	Klucz
 Kind	Rodzaj
 Language	Język

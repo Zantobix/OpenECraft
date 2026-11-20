@@ -19,6 +19,7 @@ Accessory	Accesoriu
 Add	Adăugare
 Add a PDF of all pages	Adăugare PDF cu toate paginile
 Add an item	Adaugă un punct
+Add cable glands for new cables	Adaugă presetupe pentru cablurile noi
 Add to favorites	Adăugare la favorite
 Address	Adresă
 Administrator	Administrator
@@ -66,6 +67,7 @@ Channel	Canal
 Characteristic	Caracteristică
 Check settings	Setări de verificare
 Checks	Verificări
+Circuit	Circuit
 Circuits	Circuite
 Class	Clasă
 Classes	Clase
@@ -127,6 +129,7 @@ Description	Descriere
 Designation	Denumire
 Device	Dispozitiv
 Device (PV generator) the modules belong to; its parts then count them in the bill of materials	Dispozitivul (generator fotovoltaic) căruia îi aparțin modulele; piesele lui le numără atunci în lista de materiale
+Device connection box three-phase	Doză de conectare a aparatului trifazată
 Device connection point	Punct de conexiune al dispozitivului
 Device description	Descriere de dispozitiv
 Device tag	Identificator de dispozitiv
@@ -240,10 +243,11 @@ Internal (bottom)	Intern (jos)
 Interruption point	Punct de întrerupere
 It is not affiliated with, endorsed by or sponsored by the owners of these names.	Nu este afiliat, aprobat sau sponsorizat de proprietarii acestor denumiri.
 Italic	Cursiv
-Items	Elemente
 Its MPP tracker (input), from 1	Urmăritorul său MPP (intrare), de la 1
 Job	Comandă de lucru
 Jumper	Punte
+Junction box with terminals	Doză de derivație cu cleme
+Junction box with terminals three-phase	Doză de derivație cu cleme trifazată
 Key	Cheie
 Kind	Tip
 Language	Limbă
