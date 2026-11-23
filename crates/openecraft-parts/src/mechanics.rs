@@ -183,6 +183,125 @@ pub const BAYING_KIT: &str = "GEN.TS-BAY";
 /// Standoff raising a mounting rail above the plate (one per fixing point).
 pub const RAIL_STANDOFF: &str = "GEN.RAIL-STANDOFF";
 
+/// The profile of a mounting rail (EN 60715).
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum RailProfile {
+    /// Top-hat rail (TS 35, TS 15), its web slotted where it is perforated.
+    TopHat { perforated: bool },
+    /// G rail (G 32).
+    G,
+}
+
+impl RailProfile {
+    /// The profile of a mounting rail part, by its number and description.
+    pub fn of(p: &crate::Part) -> RailProfile {
+        let text = format!("{} {}", p.number, p.description).to_uppercase();
+        if text.contains("G 32") || text.contains("G32") {
+            RailProfile::G
+        } else {
+            RailProfile::TopHat { perforated: text.contains("PERFORATED") }
+        }
+    }
+}
+
+/// Slots of a perforated top-hat rail: length along the rail, width across it and the
+/// distance between them.
+pub const RAIL_SLOT: (f32, f32, f32) = (15.0, 5.2, 25.0);
+
+/// The middles of the slots of a perforated rail `len` long: one every
+/// [`RAIL_SLOT`] distance from half of it in from the start, as far as they fit.
+pub fn rail_slots(len: f32) -> Vec<f32> {
+    let (slot, _, pitch) = RAIL_SLOT;
+    let mut out = Vec::new();
+    let mut at = pitch / 2.0;
+    while at + slot / 2.0 <= len - 1.0 {
+        out.push(at);
+        at += pitch;
+    }
+    out
+}
+
+/// Sheet thickness of a rail of the size.
+fn rail_thickness(width: f32, depth: f32) -> f32 {
+    (if depth >= 12.0 { 1.5 } else { 1.0f32 }).min(width / 12.0).min(depth / 4.0)
+}
+
+/// The web of a top-hat rail across it: the flanges 4 mm wide on a 35 mm rail, the web
+/// 27 mm.
+fn top_hat_web(width: f32) -> (f32, f32) {
+    let f = (width * 4.0 / 35.0).max(2.5).min(width / 3.0);
+    (f, width - f)
+}
+
+/// Where the heads of the screws or rivets of a rail lie: across it between its walls
+/// (from, to) and the front of its web out of the mounting surface.
+pub fn rail_web(profile: RailProfile, width: f32, depth: f32) -> (f32, f32, f32) {
+    let t = rail_thickness(width, depth);
+    match profile {
+        RailProfile::TopHat { .. } => {
+            let (w0, w1) = top_hat_web(width);
+            (w0 + t, w1 - t, t)
+        }
+        RailProfile::G => (t, width - t, t),
+    }
+}
+
+/// A mounting rail as boxes `(min, max)` in its own coordinates: along it from 0 to
+/// `len`, across it from 0 to `width`, out of the mounting surface from 0 to `depth`.
+/// A top-hat rail has its web on the mounting surface (slotted when perforated), the
+/// walls up from it and the flanges the devices snap onto in front; a G rail its wide
+/// back, the high side with its lip over the back and the low side with its hook.
+pub fn rail_boxes(profile: RailProfile, len: f32, width: f32, depth: f32) -> Vec<([f32; 3], [f32; 3])> {
+    let mut out = Vec::new();
+    if len <= 0.0 || width <= 0.0 || depth <= 0.0 {
+        return out;
+    }
+    let mut add = |a: (f32, f32), c: (f32, f32), z: (f32, f32)| {
+        if a.1 - a.0 > 1e-3 && c.1 - c.0 > 1e-3 && z.1 - z.0 > 1e-3 {
+            out.push(([a.0, c.0, z.0], [a.1, c.1, z.1]));
+        }
+    };
+    let t = rail_thickness(width, depth);
+    match profile {
+        RailProfile::TopHat { perforated } => {
+            let (w0, w1) = top_hat_web(width);
+            let (_, sw, _) = RAIL_SLOT;
+            let sw = sw.min((w1 - w0) * 0.4);
+            let slots = if perforated { rail_slots(len) } else { Vec::new() };
+            if slots.is_empty() {
+                add((0.0, len), (w0, w1), (0.0, t));
+            } else {
+                // Beside the slots the whole length, between them the bridges.
+                let (s0, s1) = (width / 2.0 - sw / 2.0, width / 2.0 + sw / 2.0);
+                add((0.0, len), (w0, s0), (0.0, t));
+                add((0.0, len), (s1, w1), (0.0, t));
+                let half = RAIL_SLOT.0 / 2.0;
+                let mut from = 0.0;
+                for s in slots {
+                    add((from, s - half), (s0, s1), (0.0, t));
+                    from = s + half;
+                }
+                add((from, len), (s0, s1), (0.0, t));
+            }
+            for (wall, flange) in [((w0, w0 + t), (0.0, w0 + t)), ((w1 - t, w1), (w1 - t, width))] {
+                add((0.0, len), wall, (t, depth - t));
+                add((0.0, len), flange, (depth - t, depth));
+            }
+        }
+        RailProfile::G => {
+            // The back, the high side with its lip over it, the low side with its hook.
+            let low = depth * 0.55;
+            let lip = (width * 0.16).max(2.0 * t);
+            add((0.0, len), (0.0, width), (0.0, t));
+            add((0.0, len), (0.0, t), (t, depth - t));
+            add((0.0, len), (0.0, lip), (depth - t, depth));
+            add((0.0, len), (width - t, width), (t, low - t));
+            add((0.0, len), (width - lip * 0.8, width), (low - t, low));
+        }
+    }
+    out
+}
+
 /// Thread sizes of the fasteners in the catalog: (thread, screw length).
 pub const THREADS: &[(&str, u32)] = &[("M3", 8), ("M4", 10), ("M5", 12), ("M6", 16), ("M8", 20), ("M10", 25)];
 
@@ -207,6 +326,23 @@ pub fn washer_number(thread: &str) -> String {
 
 pub fn rivet_nut_number(thread: &str) -> String {
     format!("GEN.RIVNUT-{thread}")
+}
+
+/// The blind rivet set where a screw of the thread would go (a 4.8 mm rivet for M5):
+/// its diameter and length (mm) and the diameter of its hole.
+pub fn rivet_size(thread: &str) -> Option<(f32, u32, f32)> {
+    Some(match thread {
+        "M3" => (3.2, 8, 3.3),
+        "M4" => (4.0, 10, 4.2),
+        "M5" => (4.8, 10, 5.0),
+        "M6" | "M8" | "M10" => (6.4, 12, 6.6),
+        _ => return None,
+    })
+}
+
+pub fn rivet_number(thread: &str) -> Option<String> {
+    let (d, len, _) = rivet_size(thread)?;
+    Some(format!("GEN.RIVET-{d}X{len}"))
 }
 
 /// Subgroups of the enclosure accessories (placed in the panel layout without a device

@@ -1141,6 +1141,8 @@ pub enum Fastening {
     Clip,
     /// Glued (self-adhesive ducts and bases).
     Adhesive,
+    /// Blind rivet through the item into a plain hole (rails).
+    Rivet,
 }
 
 /// Parametric position of an item on its face.
