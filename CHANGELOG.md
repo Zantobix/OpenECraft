@@ -5,6 +5,10 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **Typing the length of a rail or duct:** the length of a mounting rail or cable duct
+  and of a wall in the panel layout is applied when the field is left or Enter is
+  pressed, no longer at every key, and a length below the cross-section no longer turns
+  the rail or duct round (typing `100` gave 10 mm, [#259](https://github.com/nilres/OpenECraft/issues/259)).
 - **Semiconductor components:** diodes, LEDs, transistors, thyristors, triacs, optocouplers
   and the bridge rectifier have a category of their own in the Insert center and the
   function definitions instead of being listed under *Passive components*; the diode of
