@@ -5,6 +5,10 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **Colours of part models in the glTF export:** a part's 3D model painted in several
+  colours keeps them in the glTF file, a primitive with its material per colour,
+  instead of one colour for the whole device; the drives of machines keep theirs too
+  ([#290](https://github.com/nilres/OpenECraft/issues/290)).
 - **Thermal simulation of an open mounting assembly:** an assembly without enclosure
   walls is no longer calculated as a closed box. Its plate stands in the room air: the
   heat map has only the plumes rising above the devices, no warmer inside air and no
