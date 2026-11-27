@@ -5,6 +5,12 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **Insert center finds abbreviations:** the search also finds symbols, macros, devices
+  and unplaced functions by common abbreviations and synonyms of their names, such as
+  `RCD`, `RCCB` or `FI` for the residual current device, `MCB` or `LS` for the circuit
+  breaker, `SPD`, `PSU`, `PLC` or `VFD`, also in translated names and part descriptions
+  (*Fehlerstromschutzschalter*); the tooltip of an entry lists its keywords
+  ([#273](https://github.com/nilres/OpenECraft/issues/273)).
 - **Devices on the door shown in 3D:** *Show in 3D view* centres the view on a device
   on the door where the opened door holds it, also in the mounting assistant. Fixed:
   the door opened, but the view was centred on where the device is with the door closed.
