@@ -5,6 +5,10 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **DXF downloads out of the search index:** the Docker image of the website sends
+  the DXF drawings of the symbols with `X-Robots-Tag: noindex`; a search engine
+  fetched each one and listed it as a page it does not index
+  ([website](docs/website.md#docker-image)).
 - **Insert center finds abbreviations:** the search also finds symbols, macros, devices
   and unplaced functions by common abbreviations and synonyms of their names, such as
   `RCD`, `RCCB` or `FI` for the residual current device, `MCB` or `LS` for the circuit
