@@ -983,6 +983,7 @@ impl PanelUi {
     }
 
     /// The door of the 3D view is still turning to where it is to be.
+    #[cfg(test)]
     fn door_turning(&self) -> bool {
         let target = if self.door_open { self.prefs_3d.door_open_angle() } else { 0.0 };
         (self.door_angle - target).abs() > 1e-3
