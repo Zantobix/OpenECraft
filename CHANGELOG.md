@@ -5,6 +5,9 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **Devices on the door shown in 3D:** *Show in 3D view* centres the view on a device
+  on the door where the opened door holds it, also in the mounting assistant. Fixed:
+  the door opened, but the view was centred on where the device is with the door closed.
 - **Colours of part models in the glTF export:** a part's 3D model painted in several
   colours keeps them in the glTF file, a primitive with its material per colour,
   instead of one colour for the whole device; the drives of machines keep theirs too
