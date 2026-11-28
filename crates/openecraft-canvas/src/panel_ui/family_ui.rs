@@ -4,6 +4,7 @@
 //! ([`openecraft_core::families`]).
 
 use super::PanelUi;
+use openecraft_core::panel;
 use egui::RichText;
 use openecraft_core::families;
 use openecraft_core::installation as inst;
@@ -60,6 +61,68 @@ pub(super) fn text_field(ui: &mut egui::Ui, prj: &Project, family: &str, text: &
         });
     }
     take
+}
+
+/// The room item of device `tag` (its id), if it is a socket outlet, switch, light or
+/// box placed in a room.
+pub fn item_of_device(prj: &Project, tag: &str) -> Option<u64> {
+    if tag.is_empty() {
+        return None;
+    }
+    panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].items.iter().find(|i| i.tag == tag).map(|i| i.id))
+}
+
+/// Submenu *Device family* of a context menu for room item `id`: a submenu per option
+/// with its values (values without a variant disabled) and one with the suggested texts.
+/// The values or text picked are set (`installation::set_family`); the answer for the
+/// status line, `None` when nothing was picked or the item is no device of a family.
+pub fn family_menu(ui: &mut egui::Ui, prj: &mut Project, id: u64) -> Option<String> {
+    let it = prj.layout.enclosures.iter().find_map(|e| e.item(id).cloned())?;
+    inst::find_part(prj, &it.part).and_then(inst::kind_of)?;
+    let current = families::of_item(prj, &it);
+    let mut next: Option<FamilyChoice> = None;
+    ui.menu_button(tr("Device family"), |ui| {
+        if current.family.is_empty() {
+            ui.weak(tr("None"));
+        }
+        for (of, o) in families::options(prj, &current.family) {
+            let value = current.values.get(&o.key).and_then(|v| o.choices.iter().find(|c| &c.key == v)).map(|c| families::name_of(of, &c.name)).unwrap_or_default();
+            ui.menu_button(format!("{}: {}", families::name_of(of, &o.name), value), |ui| {
+                for ch in &o.choices {
+                    let on = current.values.get(&o.key) == Some(&ch.key);
+                    let ok = families::reachable(prj, &current.family, &current.values, &o.key, &ch.key);
+                    if ui.add_enabled(ok, egui::Button::selectable(on, families::name_of(of, &ch.name))).clicked() && !on {
+                        let mut v = current.values.clone();
+                        v.insert(o.key.clone(), ch.key.clone());
+                        let only = BTreeMap::from([(o.key.clone(), ch.key.clone())]);
+                        let values = if families::resolve(prj, &current.family, &v).is_ok() { v } else { only };
+                        next = Some(FamilyChoice { values, ..current.clone() });
+                        ui.close();
+                    }
+                }
+            });
+        }
+        let texts = if current.family.is_empty() { Vec::new() } else { families::texts(prj, &current.family) };
+        ui.menu_button(tr("Text at the symbol"), |ui| {
+            if ui.add_enabled(!current.text.is_empty(), egui::Button::new(tr("No text"))).clicked() {
+                next = Some(FamilyChoice { text: String::new(), ..current.clone() });
+                ui.close();
+            }
+            for t in texts {
+                if ui.add(egui::Button::selectable(current.text == t, &t)).clicked() && current.text != t {
+                    next = Some(FamilyChoice { text: t.clone(), ..current.clone() });
+                    ui.close();
+                }
+            }
+        });
+    });
+    let c = next?;
+    Some(match inst::set_family(prj, id, c) {
+        Ok(ch) if !ch.kept.is_empty() => tr_fmt!("Now {}; its schematic symbol stays: the variant has another number of connection points", ch.part),
+        Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
+        Ok(_) => tr("Text at the symbol changed").to_string(),
+        Err(e) => e,
+    })
 }
 
 impl PanelUi {

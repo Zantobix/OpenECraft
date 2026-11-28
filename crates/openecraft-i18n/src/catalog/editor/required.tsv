@@ -1626,6 +1626,7 @@ No stations: add one or use the automatic configuration.	Keine Stationen: Legen 
 No string yet: the modules are not connected.	Noch kein String: die Module sind nicht verschaltet.	Pas encore de chaîne : les modules ne sont pas raccordés.	Aún no hay ningún string: los módulos no están conectados.
 No subprojects were taken out of this project.	Aus diesem Projekt wurden keine Teilprojekte ausgelagert.	Aucun sous-projet n'a été extrait de ce projet.	No se ha extraído ningún subproyecto de este proyecto.
 No terminal strips: place terminals in a schematic first.	Keine Klemmenleisten: Platzieren Sie zuerst Klemmen in einem Schaltplan.	Aucun bornier : placez d'abord des bornes dans un schéma.	No hay regletas de bornes: coloca primero bornes en un esquema.
+No text	Kein Text	Pas de texte	Sin texto
 No user symbols yet. Create one or copy a built-in symbol.	Noch keine Benutzersymbole. Erstellen Sie eines oder kopieren Sie ein eingebautes Symbol.	Aucun symbole utilisateur pour l'instant. Créez-en un ou copiez un symbole intégré.	Aún no hay símbolos de usuario. Crea uno o copia un símbolo incorporado.
 Node	Knoten	Nœud	Nodo
 Nodes	Knoten	Nœuds	Nodos
@@ -2575,6 +2576,7 @@ Terms separated by ';': key=value (equal), key~text (contains) or text found any
 Test connection	Verbindung testen	Tester la connexion	Probar conexión
 Test joints	Trennstellen	Bornes de contrôle	Puntos de seccionamiento
 Text at the symbol	Text am Symbol	Texte au symbole	Texto en el símbolo
+Text at the symbol changed	Text am Symbol geändert	Texte au symbole modifié	Texto en el símbolo cambiado
 Text offset	Textversatz	Décalage du texte	Desplazamiento del texto
 Text size	Textgröße	Taille du texte	Tamaño del texto
 The EPLAN Data Portal only offers searching and reading parts: open the data portal window to add its parts.	Das EPLAN Data Portal bietet nur das Suchen und Lesen von Artikeln: Öffnen Sie das Datenportal-Fenster, um seine Artikel zu übernehmen.	L'EPLAN Data Portal permet seulement de rechercher et de lire des articles : ouvrez la fenêtre du portail de données pour ajouter ses articles.	El EPLAN Data Portal solo permite buscar y leer artículos: abra la ventana del portal de datos para añadir sus artículos.

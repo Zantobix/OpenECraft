@@ -22,7 +22,7 @@ use std::sync::Arc;
 use view3d::default_cam;
 
 mod accessory_drop;
-mod family_ui;
+pub mod family_ui;
 mod gpu3d;
 mod nav3d;
 mod new_enclosure;
@@ -1201,6 +1201,13 @@ impl PanelUi {
     }
 
     fn item_menu(&mut self, ui: &mut egui::Ui, prj: &mut Project, ei: usize, an: &Analysis) {
+        if let [id] = self.selection.iter().copied().collect::<Vec<_>>()[..] {
+            if prj.layout.enclosures.get(ei).is_some_and(|e| e.is_room()) {
+                if let Some(status) = family_ui::family_menu(ui, prj, id) {
+                    self.status = status;
+                }
+            }
+        }
         self.control_menu(ui, prj, an);
         self.fittings_menu(ui, prj, ei);
         let any = !self.selection.is_empty();

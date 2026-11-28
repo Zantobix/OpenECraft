@@ -105,3 +105,14 @@ fn project_families_go_into_property_libraries() {
     let it = PanelItem::default();
     assert!(!serde_json::to_string(&it).unwrap().contains("family"));
 }
+
+#[test]
+fn a_derived_family_takes_the_names_in_the_language_shown() {
+    let prj = Project::default();
+    let f = openecraft_i18n::with_lang(openecraft_i18n::Lang::De, || derive(&prj, builtin_family("socket.schuko").unwrap()));
+    assert_eq!(f.options[0].name, "Dosen");
+    assert_eq!(f.options[0].choices[1].name, "Zweifach");
+    assert!(!f.builtin);
+    // Its names are its own now: shown as they are in any language.
+    assert_eq!(openecraft_i18n::with_lang(openecraft_i18n::Lang::Fr, || name_of(&f, &f.options[0].name)), "Dosen");
+}

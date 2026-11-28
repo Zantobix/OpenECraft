@@ -148,7 +148,14 @@ fn read_only(ui: &mut egui::Ui, prj: &Project, f: &DeviceFamily) {
     ui.label(RichText::new(tr("Variants")).strong());
     egui::Grid::new("family_variants_ro").striped(true).num_columns(3).show(ui, |ui| {
         for v in &f.variants {
-            ui.label(v.when.iter().map(|(k, x)| format!("{k}={x}")).collect::<Vec<_>>().join(", "));
+            let when: Vec<String> = families::options(prj, &f.key)
+                .into_iter()
+                .filter_map(|(of, o)| {
+                    let c = o.choices.iter().find(|c| v.when.get(&o.key) == Some(&c.key))?;
+                    Some(format!("{}: {}", families::name_of(of, &o.name), families::name_of(of, &c.name)))
+                })
+                .collect();
+            ui.label(when.join(", "));
             ui.label(&v.part);
             ui.label(plan_symbol_name(prj, v));
             ui.end_row();
@@ -268,7 +275,7 @@ fn editor(ui: &mut egui::Ui, prj: &Project, d: &mut DeviceFamily, texts: &mut St
                 });
             }
             let known = openecraft_core::installation::find_part(prj, &v.part).is_some();
-            let r = ui.add(egui::TextEdit::singleline(&mut v.part).desired_width(150.0));
+            let r = ui.add_sized([170.0, 20.0], egui::TextEdit::singleline(&mut v.part));
             if !known {
                 r.on_hover_text(tr("Unknown part"));
             }

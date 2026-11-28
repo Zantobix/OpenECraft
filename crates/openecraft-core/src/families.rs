@@ -433,7 +433,18 @@ pub fn derive(prj: &Project, from: &DeviceFamily) -> DeviceFamily {
         n += 1;
         key = format!("{base}{n}");
     }
-    DeviceFamily { key, name: title(from), builtin: false, ..from.clone() }
+    // The names of a built-in family become the project's own texts in the language shown.
+    let mut f = from.clone();
+    if from.builtin {
+        for o in &mut f.options {
+            o.name = translated(&o.name);
+            for c in &mut o.choices {
+                c.name = translated(&c.name);
+            }
+        }
+        f.texts = f.texts.iter().map(|t| translated(t)).collect();
+    }
+    DeviceFamily { key, name: title(from), builtin: false, ..f }
 }
 
 #[cfg(test)]

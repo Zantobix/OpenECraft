@@ -594,9 +594,16 @@ impl App {
                 self.cmd_button(ui, Cmd::RenameCable);
                 ui.separator();
             }
-            if self.selected_tag().is_some() {
+            if let Some(tag) = self.selected_tag() {
                 for c in [Cmd::Properties, Cmd::RenameDevice, Cmd::PartSelection].into_iter().filter(|c| shown(*c)) {
                     self.cmd_button(ui, c);
+                }
+                // A socket outlet, switch, light or box in a room: its variant and text.
+                if let Some(id) = openecraft_canvas::panel_ui::family_ui::item_of_device(&self.session.prj, &tag).filter(|_| editable) {
+                    if let Some(status) = openecraft_canvas::panel_ui::family_ui::family_menu(ui, &mut self.session.prj, id) {
+                        let ctx = ui.ctx().clone();
+                        self.notify(&ctx, status);
+                    }
                 }
                 // A device placed in a cabinet or room: there in the layout or in 3D.
                 let placed: Vec<Cmd> = [Cmd::ShowInLayout, Cmd::ShowIn3d].into_iter().filter(|c| self.cmd_enabled(*c)).collect();
