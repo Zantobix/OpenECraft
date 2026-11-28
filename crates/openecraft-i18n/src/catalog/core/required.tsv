@@ -595,8 +595,8 @@ Exports the project and page metadata with the revisions; imports document numbe
 Exports the wires with cut length, stripping and ferrules for wire processing machines; imports the processing feedback as wiring marks	Exportiert die Drähte mit Schnittlänge, Abisolierung und Aderendhülsen für Drahtkonfektionierautomaten; importiert die Rückmeldung der Bearbeitung als Verdrahtungsmarkierungen	Exporte les fils avec longueur de coupe, dénudage et embouts pour les machines de traitement de fils ; importe le retour de traitement comme marques de câblage	Exporta los cables con longitud de corte, pelado y punteras para máquinas de procesado de cables; importa la respuesta del procesado como marcas de cableado
 External	Extern	Externe	Externo
 External cable	Kabel extern	Câble externe	Cable externo
-External connection point	Anschluss extern	Point de raccordement externe	Punto de conexión externo
 External location	Ort extern	Emplacement externe	Ubicación externa
+External point	Anschluss extern	Point externe	Punto externo
 External target	Externes Ziel	Cible externe	Destino externo
 Fail-safe	Fehlersicher	Sécurité positive	A prueba de fallos
 Fan	Lüfter	Ventilateur	Ventilador
@@ -881,8 +881,8 @@ Intermediate switch (installation)	Kreuzschalter (Installation)	Permutateur (ins
 Intermediate switch, manually operated	Kreuzschalter, handbetätigt	Permutateur, à commande manuelle	Conmutador de cruce, accionado manualmente
 Internal	Intern	Interne	Interno
 Internal cable	Kabel intern	Câble interne	Cable interno
-Internal connection point	Anschluss intern	Point de raccordement interne	Punto de conexión interno
 Internal location	Ort intern	Emplacement interne	Ubicación interna
+Internal point	Anschluss intern	Point interne	Punto interno
 Internal target	Internes Ziel	Cible interne	Destino interno
 Interruption point '{}' has no counterpart	Unterbrechungspunkt '{}' hat keine Gegenstelle	Le point d'interruption '{}' n'a pas de correspondant	El punto de interrupción '{}' no tiene contraparte
 Invalid bend {}	Ungültige Biegung {}	Pliage invalide {}	Doblez no válido {}

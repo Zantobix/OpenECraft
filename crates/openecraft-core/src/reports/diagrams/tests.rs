@@ -229,3 +229,28 @@ fn terminal_wiring_shows_busbars_their_interruption_and_levels() {
     assert_eq!((cell("-X3", "1", 7), cell("-X3", "2", 7)), ("1".to_string(), "2".to_string()));
     assert_eq!(cell("-X3", "2", 8), "1 (1 – 2)");
 }
+
+/// The same potential drawn above and below a terminal is no target of the terminal
+/// itself.
+#[test]
+fn terminal_wiring_leaves_out_the_terminal_itself() {
+    use crate::testkit::Kit;
+    let mut k = Kit::new();
+    k.sym("term_pe", 100.0, 100.0, "-X5", "PE");
+    let above = k.sym("pot_pe", 100.0, 80.0, "", "PE");
+    let below = k.sym("pot_pe", 100.0, 120.0, "", "PE");
+    let at = |prj: &Project, id: u64, i: usize| {
+        let s = prj.pages[0].symbols.iter().find(|s| s.id == id).unwrap();
+        prj.symbol(&s.sym).unwrap().pin_world(i, s.pos, s.rot, s.mirror)
+    };
+    let x5 = k.prj.pages[0].symbols.iter().find(|s| s.tag == "-X5").unwrap().id;
+    for (a, b) in [(at(&k.prj, x5, 0), at(&k.prj, above, 0)), (at(&k.prj, x5, 1), at(&k.prj, below, 0))] {
+        let id = k.prj.new_id();
+        k.prj.pages[0].wires.push(Wire { id, a, b, ..Default::default() });
+    }
+    let an = Analysis::checked(&k.prj);
+    let t = &an.report(&k.prj, ReportKind::TerminalWiring).unwrap();
+    let x5 = rows(t, "-X5");
+    assert_eq!(x5.len(), 1, "{x5:?}");
+    assert!(x5[0][2] != "-X5" && x5[0][10] != "-X5", "{x5:?}");
+}

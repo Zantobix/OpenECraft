@@ -186,9 +186,21 @@ fn board_name(prj: &Project, tag: &str) -> String {
 }
 
 /// The cables leaving the load side (even designations) of the symbols of device `tag`,
-/// with type or cross-section, in schematic order.
-fn outgoing_cables(prj: &Project, conns: &[Connection], tag: &str) -> Vec<String> {
+/// with type or cross-section, in schematic order; those of its circuit (beyond its
+/// terminals) when it has any, the cross-section of its wires otherwise.
+fn outgoing_cables(prj: &Project, conns: &[Connection], tag: &str, circuit: Option<&crate::installation::Circuit>) -> Vec<String> {
+    let of_circuit: Vec<String> = circuit
+        .map(|c| c.legs.iter().filter(|l| !l.cable.is_empty()).map(|l| format!("{} {}", l.cable, l.cable_type).trim().to_string()).collect())
+        .unwrap_or_default();
     let mut out: Vec<String> = Vec::new();
+    for c in of_circuit {
+        if !out.contains(&c) {
+            out.push(c);
+        }
+    }
+    if !out.is_empty() {
+        return out;
+    }
     for c in conns {
         for (at, other) in [(c.a, c.b), (c.b, c.a)] {
             let s = &prj.pages[at.page].symbols[at.sym];
@@ -397,7 +409,7 @@ pub(super) fn fuse_overview(prj: &Project, an: &crate::analysis::Analysis) -> Ta
             let mut rooms: Vec<&str> = circuit.map(|c| c.devices.iter().filter_map(|d| d.placed).map(|(ri, _)| prj.layout.enclosures[ri].name.as_str()).collect()).unwrap_or_default();
             rooms.sort();
             rooms.dedup();
-            let cables = if i.role == Role::Rcd { Vec::new() } else { outgoing_cables(prj, conns, tag) };
+            let cables = if i.role == Role::Rcd { Vec::new() } else { outgoing_cables(prj, conns, tag, circuit) };
             t.push(
                 vec![
                     board.clone(),

@@ -99,19 +99,19 @@ pub(super) fn terminal_connections(prj: &Project, conns: &[Connection]) -> Table
 /// the rows below.
 pub(super) fn terminal_wiring(prj: &Project, nl: &Netlist, open: &Netlist, conns: &[Connection]) -> Table {
     let mut t = Table::with_widths(&[
-        (tr_const!("Strip"), 0.6),
-        (tr_const!("Function text"), 1.2),
+        (tr_const!("Strip"), 0.7),
+        (tr_const!("Function text"), 1.1),
         (tr_const!("External target"), 0.8),
-        (tr_const!("External connection point"), 0.5),
-        (tr_const!("External location"), 0.6),
+        (tr_const!("External point"), 0.6),
+        (tr_const!("External location"), 0.7),
         (tr_const!("External cable"), 0.8),
         (tr_const!("Terminal"), 0.5),
-        (tr_const!("Terminal level"), 0.4),
+        (tr_const!("Terminal level"), 0.5),
         (tr_const!("Jumper"), 1.0),
         (tr_const!("Potential"), 0.6),
         (tr_const!("Internal target"), 0.8),
-        (tr_const!("Internal connection point"), 0.5),
-        (tr_const!("Internal location"), 0.6),
+        (tr_const!("Internal point"), 0.6),
+        (tr_const!("Internal location"), 0.7),
         (tr_const!("Internal cable"), 0.8),
     ]);
     // Device, connection point, location and cable of the other end of each wire.
@@ -119,6 +119,8 @@ pub(super) fn terminal_wiring(prj: &Project, nl: &Netlist, open: &Netlist, conns
         conns
             .iter()
             .filter_map(|c| if c.a == pin { Some((c.b, c)) } else if c.b == pin { Some((c.a, c)) } else { None })
+            // Not the terminal's own other side (the same potential drawn above and below it).
+            .filter(|(other, _)| (other.page, other.sym) != (pin.page, pin.sym))
             .map(|(other, c)| {
                 let s = &prj.pages[other.page].symbols[other.sym];
                 let full = pin_designation(prj, other);
