@@ -1396,6 +1396,7 @@ Makes the current page content of the option	Macht die aktuelle Seite zum Inhalt
 Manage plugins	Plugins verwalten	Gérer les plugins	Gestionar plugins
 Management	Verwaltung	Gestion	Gestión
 Manufacturer's coordination tables	Koordinationstabellen der Hersteller	Tableaux de coordination des fabricants	Tablas de coordinación de los fabricantes
+Mark	Zeichen	Marque	Marca
 Mark as mounted	Als montiert markieren	Marquer comme monté	Marcar como montado
 Mark as not mountable; describe the problem in the note	Als nicht montierbar markieren; Problem in der Notiz beschreiben	Marquer comme non montable ; décrivez le problème dans la note	Marcar como no montable; describa el problema en la nota
 Mark as not wirable; describe the problem in the note	Als nicht verdrahtbar markieren; Problem in der Notiz beschreiben	Marquer comme non câblable ; décrire le problème dans la note	Marcar como no cableable; describir el problema en la nota
@@ -2936,6 +2937,7 @@ computed	berechnet	calculé	calculado
 connection point	Anschluss	point de connexion	punto de conexión
 connection point (generated)	Anschluss (erzeugt)	point de connexion (généré)	punto de conexión (generado)
 current	aktuell	à jour	actual
+default	Vorgabe	par défaut	por defecto
 device centre	Gerätemitte	centre de l'appareil	centro del equipo
 different: taking over replaces it	verschieden: Übernehmen ersetzt es	différent : la reprise le remplace	diferente: adoptar lo reemplaza
 e.g. 1.5 mm²	z. B. 1,5 mm²	p. ex. 1,5 mm²	p. ej. 1,5 mm²
@@ -2958,6 +2960,7 @@ e.g. wire too short, terminal missing	z. B. Draht zu kurz, Klemme fehlt	p. ex. f
 empty	leer	vide	vacía
 female	Buchse	femelle	hembra
 from the cross-section	aus dem Querschnitt	selon la section	según la sección
+from the part	vom Artikel	de l'article	del artículo
 from the parts	aus den Artikeln	d'après les articles	de los artículos
 given	vorgegeben	imposée	fijada
 horizontal	waagerecht	horizontale	horizontal
