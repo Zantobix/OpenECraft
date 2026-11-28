@@ -444,8 +444,9 @@ pub enum ReportKind {
     RackElevation,
     PvStrings,
     InstallationCircuits,
-    /// Protective and residual current devices of each distribution board.
-    FuseOverview,
+    /// The devices of each distribution board the user operates (protective, residual
+    /// current and surge protective devices, switches) as a tree.
+    BoardOverview,
     /// Every terminal with the devices wired directly to its two sides.
     TerminalWiring,
 }
@@ -500,7 +501,7 @@ impl ReportKind {
         ReportKind::RackElevation,
         ReportKind::PvStrings,
         ReportKind::InstallationCircuits,
-        ReportKind::FuseOverview,
+        ReportKind::BoardOverview,
         ReportKind::TerminalWiring,
     ];
 
@@ -555,7 +556,7 @@ impl ReportKind {
             ReportKind::RackElevation => tr_const!("19-inch rack elevation"),
             ReportKind::PvStrings => tr_const!("PV strings"),
             ReportKind::InstallationCircuits => tr_const!("Installation circuits (cable lengths, voltage drop)"),
-            ReportKind::FuseOverview => tr_const!("Fuse overview of the distribution boards"),
+            ReportKind::BoardOverview => tr_const!("Distribution board overview"),
             ReportKind::TerminalWiring => tr_const!("Terminal wiring diagram"),
         }
     }
@@ -616,7 +617,7 @@ impl ReportKind {
             ReportKind::RackElevation => "rack_elevation",
             ReportKind::PvStrings => "pv_strings",
             ReportKind::InstallationCircuits => "installation_circuits",
-            ReportKind::FuseOverview => "fuse_overview",
+            ReportKind::BoardOverview => "board_overview",
             ReportKind::TerminalWiring => "terminal_wiring",
         }
     }

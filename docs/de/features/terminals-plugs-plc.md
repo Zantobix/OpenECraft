@@ -42,6 +42,12 @@ je Fehlerstrom-Schutzeinrichtung) ist eine Sammelschiene je Abschnitt, und die e
 Klemme eines Abschnitts nennt die Schiene, von der er getrennt ist
 (`Sammelschiene 2 (N3 – N4), getrennt von 1`). Etagenklemmen stehen Etage für Etage mit
 ihren Brücken da; eine Drahtbrücke verbindet die Etagen.
+Die Seite zeichnet ihn grafisch (außer ihre Seiteneigenschaften verlangen die Tabelle):
+eine Seitenansicht der Leiste, jede Klemme eine Linie von ihrem externen zu ihrem
+internen Klemmpunkt in der Farbe ihres Leiters (*Leiterart*: N blau, PE grün-gelb, die
+Außenleiter schwarz), die Etagen eines Blocks gegeneinander versetzt, ein Punkt am
+Brückenschacht jeder gebrückten Klemme mit der Brücke von Punkt zu Punkt und eine
+Sammelschiene als Balken daneben; die Ziele stehen neben den Klemmpunkten.
 
 ## Stecker
 

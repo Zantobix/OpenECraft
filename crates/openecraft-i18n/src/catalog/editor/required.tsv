@@ -223,7 +223,9 @@ Archive project…	Projekt archivieren…	Archiver le projet…	Archivar proyect
 Area	Bereich	Zone	Zona
 Arms	Arme	Bras	Brazos
 Array	Feld	Champ	Campo
+As a tree: every device below the one it is fed from	Als Baum: jedes Betriebsmittel unter dem, von dem es gespeist wird	En arbre : chaque appareil sous celui qui l'alimente	Como árbol: cada dispositivo bajo el que lo alimenta
 As defined by the check	Wie von der Prüfung festgelegt	Comme défini par la vérification	Como lo define la comprobación
+As the report form says	Wie im Berichtsformular	Comme le dit le formulaire du rapport	Como indica el formulario del informe
 As the rules say ({})	Wie die Regeln sagen ({})	Selon les règles ({})	Según las reglas ({})
 Aspects of the pages	Aspekte der Seiten	Aspects des pages	Aspectos de las páginas
 Aspects, identifiers and work areas as a file for other projects	Aspekte, Kennzeichen und Arbeitsbereiche als Datei für andere Projekte	Aspects, identificateurs et zones de travail dans un fichier pour d'autres projets	Aspectos, identificadores y áreas de trabajo como archivo para otros proyectos
@@ -258,6 +260,7 @@ Automatic accessories	Automatisches Zubehör	Accessoires automatiques	Accesorios
 Automatic configuration	Automatische Konfiguration	Configuration automatique	Configuración automática
 Automatic mode pans with identified trackpad input, zooms with mouse-wheel input, and uses the wheel-source policy below for unknown sources.	Der automatische Modus verschiebt bei als Trackpad erkanntem Scrollen, zoomt bei als Mausrad erkanntem Scrollen und verwendet für unbekannte Quellen die unten gewählte Regel.	En mode automatique, le défilement identifié comme provenant d'un pavé tactile déplace la vue, celui d'une molette de souris zoome, et les sources inconnues suivent la règle ci-dessous.	En modo automático, el desplazamiento identificado como panel táctil desplaza la vista, el de la rueda del ratón hace zoom y las fuentes desconocidas siguen la regla siguiente.
 Automatic placement	Automatische Platzierung	Placement automatique	Colocación automática
+Automatic: protective, residual current and surge protective devices and switches on the mains of a board	Automatisch: Schutzorgane, Fehlerstrom-Schutzeinrichtungen, Überspannungsschutz und Schalter am Netz eines Verteilers	Automatique : appareils de protection, dispositifs différentiels, parafoudres et interrupteurs sur le réseau d'un tableau	Automático: dispositivos de protección, diferenciales, protectores contra sobretensiones e interruptores en la red de un cuadro
 Automatic: {}	Automatisch: {}	Automatique : {}	Automático: {}
 Avoid:	Meiden:	Éviter :	Evitar:
 Back	Zurück	Retour	Atrás
@@ -564,6 +567,7 @@ Consecutive addresses from the start byte, in schematic order	Aufeinanderfolgend
 Contact image below coils	Kontaktspiegel unter Spulen	Image de contacts sous les bobines	Imagen de contactos bajo las bobinas
 Content	Inhalt	Contenu	Contenido
 Content of an inactive option is hidden: it is not drawn, evaluated, reported or exported.	Inhalt einer inaktiven Option ist ausgeblendet: Er wird nicht gezeichnet, ausgewertet, berichtet oder exportiert.	Le contenu d'une option inactive est masqué : il n'est ni dessiné, ni évalué, ni listé dans les rapports, ni exporté.	El contenido de una opción inactiva está oculto: no se dibuja, evalúa, informa ni exporta.
+Continue on following pages	Auf Folgeseiten fortsetzen	Continuer sur les pages suivantes	Continuar en las páginas siguientes
 Control point {} added to {}: routing again…	Stützpunkt {} zu {} hinzugefügt: wird neu verlegt…	Point de passage {} ajouté à {} : nouveau routage…	Punto de paso {} añadido a {}: tendiendo de nuevo…
 Control point {} of {} moved: routing again…	Stützpunkt {} von {} verschoben: wird neu verlegt…	Point de passage {} de {} déplacé : nouveau routage…	Punto de paso {} de {} movido: tendiendo de nuevo…
 Control points: {}	Stützpunkte: {}	Points de passage : {}	Puntos de paso: {}
@@ -905,6 +909,7 @@ Estimated air temperature in front of the mounting plate (power loss of the devi
 Estimated along the installation zones: not all connections are routed in 3D yet	Entlang der Installationszonen geschätzt: noch nicht alle Verbindungen sind in 3D verlegt	Estimée le long des zones d'installation : toutes les connexions ne sont pas encore tracées en 3D	Estimada a lo largo de las zonas de instalación: todavía no todas las conexiones están trazadas en 3D
 Every command of the editor and of the plugins by name	Jeder Befehl des Editors und der Plugins nach Namen	Toutes les commandes de l'éditeur et des plugins par leur nom	Todos los comandos del editor y de los plugins por nombre
 Every connection gets one number for all its wires; the two sides of a terminal are separate connections.	Jede Verbindung erhält eine Nummer für alle ihre Leitungen; die beiden Seiten einer Klemme sind getrennte Verbindungen.	Chaque liaison reçoit un numéro pour tous ses fils ; les deux côtés d'une borne sont des liaisons distinctes.	Cada conexión recibe un número para todos sus hilos; los dos lados de un borne son conexiones distintas.
+Every group on pages of its own	Jede Gruppe auf eigenen Seiten	Chaque groupe sur ses propres pages	Cada grupo en sus propias páginas
 Every item of the scope that meets the conditions must meet the requirement.	Jedes Element des Bereichs, das die Bedingungen erfüllt, muss die Anforderung erfüllen.	Chaque élément de la portée qui remplit les conditions doit remplir l'exigence.	Cada elemento del ámbito que cumple las condiciones debe cumplir el requisito.
 Every tool is a pane: drag its tab beside the page, into the navigators or out as a window.	Jedes Werkzeug ist ein Fenster: seine Registerkarte neben die Seite, zu den Navigatoren oder als eigenes Fenster ziehen.	Chaque outil est un panneau : faites glisser son onglet à côté de la page, dans les navigateurs ou hors de la fenêtre.	Cada herramienta es un panel: arrastre su pestaña junto a la página, a los navegadores o fuera como ventana.
 Example projects	Beispielprojekte	Projets d'exemple	Proyectos de ejemplo
@@ -988,6 +993,7 @@ Fit page	Seite einpassen	Ajuster la page	Ajustar página
 Fits {}	Passt zu {}	Compatible avec {}	Compatible con {}
 Fitted	Angebracht	Montée	Montada
 Fitted into the rectangle keeping its aspect ratio (PNG, JPEG)	In das Rechteck eingepasst, Seitenverhältnis bleibt erhalten (PNG, JPEG)	Ajustée au rectangle en conservant ses proportions (PNG, JPEG)	Ajustada al rectángulo manteniendo su relación de aspecto (PNG, JPEG)
+Fixed page output from another project	Feste Seite aus einem anderen Projekt	Page figée issue d'un autre projet	Página fija de otro proyecto
 Fixing	Befestigung	Fixation	Fijación
 Float	Abdocken	Détacher	Desacoplar
 Floor	Boden	Fond	Suelo
@@ -1005,6 +1011,7 @@ Fluid and process	Fluid und Verfahrenstechnik	Fluide et procédé	Fluidos y proc
 Flush-mounted lines run in slots in the walls along the installation zones, or down into the floor and along its zone	Unterputzleitungen verlaufen in Schlitzen der Wände entlang der Installationszonen oder hinab in den Fußboden und entlang seiner Zone	Les lignes encastrées passent dans des saignées des murs le long des zones d'installation, ou descendent dans le sol et suivent sa zone	Las líneas empotradas van en rozas de las paredes a lo largo de las zonas de instalación, o bajan al suelo y siguen su zona
 Folder containing plugin subfolders with plugin.json files	Ordner mit Plugin-Unterordnern und plugin.json-Dateien	Dossier contenant des sous-dossiers de plugins avec des fichiers plugin.json	Carpeta que contiene subcarpetas de plugins con archivos plugin.json
 Follows its condition: use Apply conditions	Folgt ihrer Bedingung: Verwenden Sie Bedingungen anwenden	Suit sa condition : utilisez Appliquer les conditions	Sigue su condición: use Aplicar condiciones
+Follows the project: pages added and removed with the rows	Folgt dem Projekt: Seiten werden mit den Zeilen angefügt und entfernt	Suit le projet : pages ajoutées et retirées avec les lignes	Sigue el proyecto: páginas añadidas y quitadas con las filas
 Font	Schrift	Police	Fuente
 Font sizes	Schriftgrößen	Tailles de police	Tamaños de fuente
 Foot	Antritt	Départ	Arranque
@@ -1013,6 +1020,7 @@ For pages that choose none; before the plot frame's title block and the project 
 For parts without Stock length; longer profiles have to be joined	Für Artikel ohne Stock length; längere Profile müssen gestoßen werden	Pour les articles sans Stock length ; les profilés plus longs doivent être raboutés	Para artículos sin Stock length; los perfiles más largos deben empalmarse
 For parts without temperature data (Max temperature, Operating temperature); 0: not checked	Für Artikel ohne Temperaturangaben (Max temperature, Operating temperature); 0: nicht geprüft	Pour les articles sans données de température (Max temperature, Operating temperature) ; 0 : non contrôlé	Para artículos sin datos de temperatura (Max temperature, Operating temperature); 0: no se comprueba
 For the import into EPLAN parts management (P_ARTICLE_* attributes, texts in en_US)	Für den Import in die EPLAN-Artikelverwaltung (P_ARTICLE_*-Attribute, Texte in en_US)	Pour l'import dans la gestion d'articles EPLAN (attributs P_ARTICLE_*, textes en en_US)	Para importar en la gestión de artículos de EPLAN (atributos P_ARTICLE_*, textos en en_US)
+Form	Form	Forme	Forma
 Format of cross references, structure of the target page, interruption points, contact images	Format der Querverweise, Struktur der Zielseite, Unterbrechungspunkte, Kontaktspiegel	Format des renvois, structure de la page cible, points d'interruption, images de contacts	Formato de las referencias cruzadas, estructura de la página destino, puntos de interrupción, imágenes de contactos
 Formboard drawing of the harness to scale with branch lengths and the pin tables of the connectors	Nagelbrett-Zeichnung des Kabelbaums maßstäblich mit Abzweiglängen und den Pin-Tabellen der Stecker	Plan de clouage du faisceau à l'échelle avec les longueurs des branches et les tableaux de broches des connecteurs	Plano de clavos del mazo a escala con las longitudes de las ramas y las tablas de pines de los conectores
 Formboard length	Formbrettlänge	Longueur sur planche	Longitud en tablero
@@ -1083,6 +1091,7 @@ Give the distance of the two points above	Den Abstand der beiden Punkte oben ang
 Global variable list with direct addresses for CODESYS, TwinCAT and others	Globale Variablenliste mit direkten Adressen für CODESYS, TwinCAT und andere	Liste de variables globales avec adresses directes pour CODESYS, TwinCAT et autres	Lista de variables globales con direcciones directas para CODESYS, TwinCAT y otros
 Go on working locally; Save saves to a local file	Lokal weiterarbeiten; Speichern speichert in eine lokale Datei	Continuer en local ; Enregistrer enregistre dans un fichier local	Seguir trabajando localmente; Guardar guarda en un archivo local
 Go to page	Zur Seite	Aller à la page	Ir a la página
+Graphic	Grafik	Graphique	Gráfico
 Graphic line	Grafische Linie	Ligne graphique	Línea gráfica
 Graphic rectangle	Grafisches Rechteck	Rectangle graphique	Rectángulo gráfico
 Graphical form	Grafisches Formular	Formulaire graphique	Formulario gráfico
@@ -1098,6 +1107,7 @@ Group as assembly	Als Baugruppe gruppieren	Grouper en ensemble	Agrupar como conj
 Group column	Gruppierungsspalte	Colonne de regroupement	Columna de agrupación
 Group in the symbol list, e.g. your company	Gruppe in der Symbolliste, z. B. Ihre Firma	Groupe dans la liste des symboles, p. ex. votre société	Grupo en la lista de símbolos, p. ej. tu empresa
 Groups shown	Angezeigte Gruppen	Groupes affichés	Grupos mostrados
+Groups shown (none ticked: all)	Angezeigte Gruppen (keine angehakt: alle)	Groupes affichés (aucun coché : tous)	Grupos mostrados (ninguno marcado: todos)
 HEATER=yes	HEIZUNG=ja	CHAUFFAGE=oui	CALEFACCION=si
 Halfway up the front or right slope; move it to its place	Auf halber Höhe der vorderen oder rechten Dachfläche; an seinen Platz verschieben	À mi-hauteur du versant avant ou droit ; déplacez-la à sa place	A media altura del faldón delantero o derecho; muévala a su lugar
 Hardware configuration and PLC tags for TIA Portal and other PLC tools	Hardwarekonfiguration und SPS-Variablen für TIA Portal und andere SPS-Werkzeuge	Configuration matérielle et variables automate pour TIA Portal et d'autres outils automate	Configuración de hardware y variables PLC para TIA Portal y otras herramientas PLC
@@ -1120,6 +1130,7 @@ Height of the underside of the roof over the walls above the ground level of the
 Heights above floor (IEC 60204-1)	Höhen über Boden (IEC 60204-1)	Hauteurs au-dessus du sol (CEI 60204-1)	Alturas sobre el suelo (IEC 60204-1)
 Held while clicking, moving or scrolling. Ctrl is Cmd on macOS.	Beim Klicken, Verschieben oder Scrollen gedrückt gehalten. Strg ist Cmd unter macOS.	Maintenue en cliquant, déplaçant ou faisant défiler. Ctrl est Cmd sous macOS.	Se mantiene pulsada al hacer clic, mover o desplazar. Ctrl es Cmd en macOS.
 Help	Hilfe	Aide	Ayuda
+Hide	Ausblenden	Masquer	Ocultar
 Hide PV modules	PV-Module ausblenden	Masquer les modules photovoltaïques	Ocultar los módulos fotovoltaicos
 Hide ceiling	Decke ausblenden	Masquer le plafond	Ocultar el techo
 Hide the Discord button (shown again in Settings › Appearance)	Discord-Schaltfläche ausblenden (wieder einblenden unter Einstellungen › Erscheinungsbild)	Masquer le bouton Discord (réaffiché dans Paramètres › Apparence)	Ocultar el botón de Discord (se vuelve a mostrar en Ajustes › Apariencia)
@@ -1793,6 +1804,7 @@ Page macro	Seitenmakro	Macro de page	Macro de página
 Page macro {} inserted as page {}	Seitenmakro {} als Seite {} eingefügt	Macro de page {} insérée comme page {}	Macro de página {} insertada como página {}
 Page macro: {}	Seitenmakro: {}	Macro de page : {}	Macro de página: {}
 Page name / number	Seitenname / -nummer	Nom / numéro de page	Nombre / número de página
+Page of the report block {}	Seite des Berichtsblocks {}	Page du bloc de rapports {}	Página del bloque de informes {}
 Page properties…	Seiteneigenschaften…	Propriétés de la page…	Propiedades de la página…
 Page template {} saved	Seitenvorlage {} gespeichert	Modèle de page {} enregistré	Plantilla de página {} guardada
 Page templates (JSON) from another project	Seitenvorlagen (JSON) aus einem anderen Projekt	Modèles de page (JSON) d'un autre projet	Plantillas de página (JSON) de otro proyecto
@@ -1805,6 +1817,7 @@ Page {} – {}	Seite {} – {}	Page {} – {}	Página {} – {}
 Page, Insert center and properties	Seite, Einfügezentrum und Eigenschaften	Page, centre d'insertion et propriétés	Página, centro de inserción y propiedades
 Pages and structure	Seiten und Struktur	Pages et structure	Páginas y estructura
 Pages and templates using the frame follow	Seiten und Vorlagen mit diesem Rahmen ziehen mit	Les pages et modèles utilisant ce cadre suivent	Las páginas y plantillas que usan el marco lo siguen
+Pages are added after this one for the rows that do not fit, and removed again when the rows shrink	Für Zeilen, die nicht passen, werden nach dieser Seite Seiten angefügt und wieder entfernt, wenn es weniger Zeilen werden	Des pages sont ajoutées après celle-ci pour les lignes qui ne tiennent pas, et retirées quand les lignes diminuent	Se añaden páginas tras esta para las filas que no caben y se quitan de nuevo cuando hay menos filas
 Pages of revision {}	Seiten der Revision {}	Pages de la révision {}	Páginas de la revisión {}
 Pages of the selected block	Seiten des gewählten Blocks	Pages du bloc sélectionné	Páginas del bloque seleccionado
 Pages using it get the project default	Seiten, die es verwenden, erhalten den Projektstandard	Les pages qui l'utilisent prennent la valeur par défaut du projet	Las páginas que lo usan reciben el valor predeterminado del proyecto
@@ -2111,6 +2124,7 @@ Report blocks updated: {} pages	Auswertungsblöcke aktualisiert: {} Seiten	Blocs
 Report blocks…	Auswertungsblöcke…	Blocs de rapports…	Bloques de informes…
 Report forms	Berichtsformulare	Formulaires de rapport	Formularios de informe
 Report name (page heading)	Name der Auswertung (Seitenüberschrift)	Nom du rapport (titre de la page)	Nombre del informe (título de la página)
+Report page	Berichtsseite	Page de rapport	Página de informe
 Report with all harness wires	Bericht mit allen Kabelbaum-Leitungen	Rapport avec tous les fils du faisceau	Informe con todos los hilos del mazo
 Representation	Darstellung	Représentation	Representación
 Representations	Darstellungsarten	Représentations	Representaciones
@@ -2518,6 +2532,7 @@ Synchronize project parts from database	Projektartikel aus der Datenbank synchro
 T Text	T Text	T Texte	T Texto
 T-connections	T-Verbindungen	Jonctions en T	Uniones en T
 Tab	Tabulator	Tabulation	Tabulador
+Table	Tabelle	Tableau	Tabla
 Table import failed: {}	Tabellenimport fehlgeschlagen: {}	Échec de l'import du tableau : {}	Error al importar la tabla: {}
 Tablet mode	Tablet-Modus	Mode tablette	Modo tableta
 Tag	Kennzeichen	Repère	Identificador

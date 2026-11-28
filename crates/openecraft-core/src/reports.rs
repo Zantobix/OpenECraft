@@ -92,7 +92,7 @@ pub fn table(prj: &Project, an: &Analysis, kind: ReportKind) -> Table {
         ReportKind::RackElevation => rack_elevation(prj),
         ReportKind::PvStrings => pv_strings(prj),
         ReportKind::InstallationCircuits => installation_circuits(prj, an),
-        ReportKind::FuseOverview => electrical_reports::fuse_overview(prj, an),
+        ReportKind::BoardOverview => electrical_reports::board_overview(prj, an),
         ReportKind::TerminalWiring => diagrams::terminal_wiring(prj, netlist, open, conns),
     }
 }
@@ -127,7 +127,7 @@ pub fn keywords(k: ReportKind) -> &'static [&'static str] {
             "Messprotokoll",
         ],
         K::ShortCircuit => &["IEC 60909-0", "DIN EN 60909-0", "VDE 0102", "IEC 60364-4-41", "DIN VDE 0100-410"],
-        K::FuseOverview => &["Circuit list", "Breaker schedule", "Panel schedule", "Stromkreisverteiler", "Sicherungsplan"],
+        K::BoardOverview => &["Fuse overview", "Circuit list", "Breaker schedule", "Panel schedule", "Sicherungsübersicht", "Stromkreisverteiler", "Sicherungsplan"],
         K::Selectivity => &["Discrimination", "IEC 60364-4-43", "DIN VDE 0100-430"],
         K::CableSizing => &["Voltage drop", "IEC 60204-1", "IEC 60364-5-52", "DIN VDE 0100-520", "DIN VDE 0298-4"],
         K::LoadCalculation => &["Diversity factor", "IEC 61439-1", "DIN EN 61439-1"],

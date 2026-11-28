@@ -34,24 +34,40 @@ d'article répétés.
 `list_cable_parts` expose les choix du projet et les choix intégrés aux plugins et à la
 CLI/MCP.
 
-**Tableau des protections** (rapport *Tableau des protections des tableaux de
-distribution*, `fuse_overview`) : tableau par tableau – l'armoire où un appareil est
-placé, sinon l'emplacement de son repère (`+UV1`) – chaque appareil de protection
-alimenté par le réseau, chaque dispositif différentiel et parafoudre, les
-interrupteurs principaux et interrupteurs sur le réseau du tableau, dans l'ordre du
-schéma. Chaque ligne donne le type d'appareil (disjoncteur, fusible,
+**Vue d'ensemble des tableaux de distribution** (rapport *Vue d'ensemble des tableaux
+de distribution*, `board_overview`) : tableau par tableau – l'armoire où un appareil
+est placé, sinon l'emplacement de son repère (`+UV1`) – chaque appareil de protection
+alimenté par le réseau, chaque dispositif différentiel et parafoudre, les interrupteurs
+principaux et interrupteurs sur le réseau du tableau, en arbre : chaque appareil sous
+celui qui l'alimente dans le même tableau (les disjoncteurs sous leur interrupteur
+différentiel), dans l'ordre du schéma, pour voir ce que coupe l'ouverture d'un
+dispositif différentiel. Chaque ligne donne le type d'appareil (disjoncteur, fusible,
 disjoncteur-moteur, disjoncteur différentiel pour un disjoncteur avec fonction
-différentielle, détecteur d'arc électrique (DDA) par la propriété *Détection d'arc
+différentielle, détecteur d'arc électrique (DDA) par l'interrupteur *Détection d'arc
 électrique (DDA)* ou `AFDD` / `arc fault` dans la description ou les données
 techniques de son article, interrupteur différentiel, parafoudre, interrupteur
 principal, interrupteur), le type (`B 16 A`, `40 A RCD 30 mA`, le *Type de
 parafoudre*), les phases, le dispositif différentiel qui le protège, le texte de
-fonction (*Réserve* lorsque rien n'est raccordé en aval), les salles de son circuit,
-les câbles qui en partent avec leur type et l'endroit où il est dessiné (un clic y
-mène). La propriété d'appareil *Tableau des protections* ajoute avec *Afficher* tout
-autre appareil manœuvré dans un tableau (p. ex. une minuterie d'escalier) et en
-retire un avec *Masquer*. En pages de rapport, un bloc de rapport avec *Nouvelles
-pages pour chaque groupe* donne à chaque tableau ses propres pages.
+fonction (*Réserve* lorsque rien n'est raccordé en aval ; sans texte, ce qu'il
+alimente : `Prise de courant -XD1, -XD2`), les salles de son circuit, les câbles qui
+quittent le tableau avec leur type et l'endroit où il est dessiné (un clic dans le
+volet *Rapports* y mène). Dans les propriétés de l'appareil (onglet *Appareil*), *Vue
+d'ensemble des tableaux de distribution* ajoute avec *Afficher* tout autre appareil
+manœuvré dans un tableau (p. ex. une minuterie d'escalier) et en retire un avec
+*Masquer* ; les appareils de protection y ont l'interrupteur *Détection d'arc
+électrique (DDA)*.
+
+**Pages de rapport** (*Propriétés de la page* d'une page de rapport,
+`set_report_page`) : les groupes affichés – tableaux, borniers, câbles … de la première
+colonne, cochés un à un ou par un motif (`+UV1`, `-X*`) –, les colonnes affichées (une
+case par colonne), les aspects des repères (*Repères affichés* : repère complet,
+emplacement et appareil …), l'arbre d'un rapport qui en a un (*En arbre* : `|-> -F1`
+sous `-Q1`) et la forme graphique ou le tableau. *Continuer sur les pages suivantes*
+(`continue_report_page`) ajoute après la page des pages pour les lignes qui ne tiennent
+pas et les retire quand les lignes diminuent (la page devient un bloc de rapports qui
+suit le projet) ; *Chaque groupe sur ses propres pages* donne à chaque tableau ou
+bornier ses propres pages. Un tel bloc est mis à jour après chaque modification, les
+autres blocs de rapports avec *Suit le projet* aussi.
 
 ## Formulaires
 

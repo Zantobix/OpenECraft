@@ -43,6 +43,12 @@ puente; una barra N interrumpida (un tramo por diferencial) es una barra por tra
 el primer borne de un tramo indica de qué barra está separado
 (`barra 2 (N3 – N4), separada de 1`). Los bornes de varios pisos se listan piso a piso
 con sus puentes; un puente de hilo une los pisos.
+La página lo dibuja gráficamente (salvo que sus propiedades pidan la tabla): una vista
+lateral de la regleta, cada borne una línea de su punto de conexión externo al interno
+en el color de su conductor (*Tipo de conductor*: N azul, PE verde y amarillo, las
+fases negras), los pisos de un bloque desplazados, un punto en el pozo de puente de
+cada borne puenteado con el puente de punto a punto y una barra al lado; los destinos
+aparecen junto a los puntos de conexión.
 
 ## Conectores
 

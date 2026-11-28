@@ -89,6 +89,25 @@ pub(super) fn terminal_connections(prj: &Project, conns: &[Connection]) -> Table
     t
 }
 
+/// The conductor a terminal carries: `PE` and `N` for PE and N terminals, otherwise by
+/// the kind of its potential (`L`, `N`, `PE`, `+`, `-`; empty for other potentials).
+fn conductor(prj: &Project, sym: &str, potential: &str) -> &'static str {
+    use crate::model::potentials::PotentialKind as K;
+    match sym {
+        "term_pe" => "PE",
+        "term_n" => "N",
+        _ if potential.is_empty() => "",
+        _ => match crate::electrical::net_kind(prj, potential) {
+            K::L => "L",
+            K::N => "N",
+            K::Pe => "PE",
+            K::DcPlus => "+",
+            K::DcMinus => "-",
+            _ => "",
+        },
+    }
+}
+
 /// Terminal wiring diagram: one row per terminal (in the order of the strip, every
 /// level) with the function text, the device and connection point wired directly to
 /// its external and internal side (not every device of the potential), their cables
@@ -113,7 +132,9 @@ pub(super) fn terminal_wiring(prj: &Project, nl: &Netlist, open: &Netlist, conns
         (tr_const!("Internal point"), 0.6),
         (tr_const!("Internal location"), 0.7),
         (tr_const!("Internal cable"), 0.8),
+        (tr_const!("Conductor kind"), 0.5),
     ]);
+    t.tag_columns = vec![2, 10];
     // Device, connection point, location and cable of the other end of each wire.
     let side = |pin: PinRef| -> Vec<[String; 4]> {
         conns
@@ -162,13 +183,14 @@ pub(super) fn terminal_wiring(prj: &Project, nl: &Netlist, open: &Netlist, conns
                 };
                 let target = r.terminal.as_ref().map(|t| (t.page, t.id));
                 let level = if e.levels.is_empty() { String::new() } else { r.level.to_string() };
+                let conductor = conductor(prj, r.terminal.as_ref().map(|t| prj.pages[t.page].symbols[t.sym].sym.as_str()).unwrap_or(""), &r.potential);
                 let lines = ext.len().max(int.len()).max(1);
                 for n in 0..lines {
                     let [ed, ep, el, ec] = ext.get(n).cloned().unwrap_or_default();
                     let [id, ip, il, ic] = int.get(n).cloned().unwrap_or_default();
                     let first = n == 0;
                     let pick = |v: &String| if first { v.clone() } else { String::new() };
-                    t.push(vec![strip.clone(), pick(&r.function_text), ed, ep, el, ec, pick(&r.label), pick(&level), pick(&jumper_text), pick(&r.potential), id, ip, il, ic], target);
+                    t.push(vec![strip.clone(), pick(&r.function_text), ed, ep, el, ec, pick(&r.label), pick(&level), pick(&jumper_text), pick(&r.potential), id, ip, il, ic, conductor.to_string()], target);
                 }
             }
         }

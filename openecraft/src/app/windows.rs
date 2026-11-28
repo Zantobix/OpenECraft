@@ -483,6 +483,8 @@ impl App {
         let mut apply_structure = None;
         let mut document_action = None;
         let mut move_to = None;
+        let report_info = report_page_ui::report_info(&self.session.prj, &self.session.analysis, pi);
+        let mut report_action = None;
         if pi < self.session.prj.pages.len() {
             let tb_names = openecraft_core::forms::names(&self.session.prj);
             let frame_names = openecraft_core::frame::names(&self.session.prj);
@@ -562,6 +564,11 @@ impl App {
                 if let PageKind::InstallationPlan(level) = pg.kind {
                     plan_page_options(ui, pg, &self.session.prj.layout, level);
                 }
+                if let Some(info) = &report_info {
+                    if let Some(a) = report_page_ui::report_page_options(ui, pg, info) {
+                        report_action = Some(a);
+                    }
+                }
                 if pg.kind == PageKind::Document {
                     ui.horizontal(|ui| {
                         match &pg.document {
@@ -609,6 +616,9 @@ impl App {
         }
         if let Some(id) = move_to {
             self.section_action(ctx, sections_ui::SectionAction::MovePage(pi, id));
+        }
+        if report_info.is_some() {
+            report_page_ui::follow_page(&mut self.session.prj, &self.session.analysis, pi, report_action);
         }
         if !open {
             self.page_props = None;

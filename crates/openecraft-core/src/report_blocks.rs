@@ -26,6 +26,8 @@ impl Default for ReportBlock {
             groups: String::new(),
             function: String::new(),
             location: String::new(),
+            view: Default::default(),
+            auto: false,
         }
     }
 }
@@ -34,20 +36,24 @@ fn column(table: &Table, name: &str) -> Option<usize> {
     table.column(name)
 }
 
-/// The rows of a report filtered and sorted by a form.
+/// The rows of a report filtered and sorted by a form (a sorted table loses its tree).
 pub fn scheme_table(table: &Table, form: Option<&ReportForm>) -> Table {
     let Some(form) = form else { return table.clone() };
     let filters: Vec<(usize, &forms::RowFilter)> = form.filters.iter().filter_map(|f| Some((column(table, &f.column)?, f))).collect();
-    // (cells, jump target)
-    type Row = (Vec<String>, Option<(usize, u64)>);
+    // (cells, jump target, depth)
+    type Row = (Vec<String>, Option<(usize, u64)>, u8);
     let mut rows: Vec<Row> = table
         .rows
         .iter()
         .zip(&table.targets)
-        .filter(|(r, _)| filters.iter().all(|(c, f)| f.passes(r.get(*c).map(String::as_str).unwrap_or(""))))
-        .map(|(r, t)| (r.clone(), *t))
+        .enumerate()
+        .filter(|(_, (r, _))| filters.iter().all(|(c, f)| f.passes(r.get(*c).map(String::as_str).unwrap_or(""))))
+        .map(|(i, (r, t))| (r.clone(), *t, table.depth.get(i).copied().unwrap_or(0)))
         .collect();
     let keys: Vec<(usize, bool)> = form.sort.iter().filter_map(|k| Some((column(table, &k.column)?, k.descending))).collect();
+    let mut out = table.clone_layout();
+    out.headers = table.headers.clone();
+    out.widths = table.widths.clone();
     if !keys.is_empty() {
         rows.sort_by(|a, b| {
             keys.iter().fold(std::cmp::Ordering::Equal, |o, (c, desc)| {
@@ -57,9 +63,16 @@ pub fn scheme_table(table: &Table, form: Option<&ReportForm>) -> Table {
                 })
             })
         });
+        out.tree_column = None;
     }
-    let (rows, targets) = rows.into_iter().unzip();
-    Table { headers: table.headers.clone(), widths: table.widths.clone(), rows, targets }
+    for (r, t, d) in rows {
+        out.rows.push(r);
+        out.targets.push(t);
+        if out.tree_column.is_some() {
+            out.depth.push(d);
+        }
+    }
+    out
 }
 
 /// Column that groups the rows: the form's group column, otherwise the first one.
@@ -69,7 +82,12 @@ pub fn group_column(table: &Table, form: Option<&ReportForm>) -> usize {
 
 pub fn rows_per_page(kind: impl Into<ReportId>, form: Option<&ReportForm>) -> usize {
     let kind = kind.into();
-    let default = if is_graphic(kind, form) {
+    page_rows(kind, form, is_graphic(kind, form))
+}
+
+/// Rows per page of a report page drawn graphically or as a table.
+pub fn page_rows(kind: ReportId, form: Option<&ReportForm>, graphic: bool) -> usize {
+    let default = if graphic {
         GRAPHIC_ROWS_PER_PAGE
     } else if kind == ReportId::from(ReportKind::TerminalLineup) {
         LINEUP_ROWS_PER_PAGE
@@ -82,15 +100,23 @@ pub fn rows_per_page(kind: impl Into<ReportId>, form: Option<&ReportForm>) -> us
 /// Rows per page of graphical report pages.
 pub const GRAPHIC_ROWS_PER_PAGE: usize = 26;
 
-/// The report has a graphical form (terminal, cable and plug diagrams, PLC assignment).
+/// The report has a graphical form (terminal diagrams, cable and plug diagrams, PLC
+/// assignment).
 pub fn has_graphic(kind: impl Into<ReportId>) -> bool {
     let kind = kind.into();
-    [ReportKind::TerminalDiagram, ReportKind::CableDiagram, ReportKind::PlugDiagram, ReportKind::PlcAssignment].into_iter().any(|k| kind == ReportId::from(k))
+    [ReportKind::TerminalDiagram, ReportKind::TerminalWiring, ReportKind::CableDiagram, ReportKind::PlugDiagram, ReportKind::PlcAssignment].into_iter().any(|k| kind == ReportId::from(k))
 }
 
-/// The form asks for the graphical form and the report has one.
+/// The report is drawn in its graphical form: as its form asks; without a form the
+/// terminal wiring diagram is.
 pub fn is_graphic(kind: impl Into<ReportId>, form: Option<&ReportForm>) -> bool {
-    form.is_some_and(|f| f.graphic) && has_graphic(kind)
+    let kind = kind.into();
+    form.map_or(kind == ReportId::from(ReportKind::TerminalWiring), |f| f.graphic) && has_graphic(kind)
+}
+
+/// A page with `view` is drawn graphically: as the view says, else as [`is_graphic`].
+pub fn view_graphic(kind: ReportId, form: Option<&ReportForm>, view: &crate::model::report_blocks::ReportView) -> bool {
+    has_graphic(kind) && view.graphic.unwrap_or_else(|| is_graphic(kind, form))
 }
 
 /// Values of the group column in order of appearance.
@@ -119,6 +145,55 @@ pub fn matches(pattern: &str, text: &str) -> bool {
     !any
 }
 
+/// The rows of a report as a page shows them: the device tags of its tag columns with
+/// the aspects of `view` only, and its tree column as a tree (`|-> ` below the row a row
+/// depends on, `|   ` for each level further down).
+pub fn view_table(table: &Table, view: &crate::model::report_blocks::ReportView) -> Table {
+    let mut out = table.clone();
+    if let Some(parts) = view.tag_parts.filter(|t| !t.is_all()) {
+        for row in &mut out.rows {
+            for &c in &table.tag_columns {
+                if let Some(cell) = row.get_mut(c) {
+                    *cell = shorten_tags(cell, &parts);
+                }
+            }
+        }
+    }
+    if let (true, Some(c)) = (view.tree, table.tree_column) {
+        for (row, d) in out.rows.iter_mut().zip(&table.depth) {
+            if let (Some(cell), 1..) = (row.get_mut(c), *d) {
+                *cell = format!("{}|-> {cell}", "|   ".repeat(*d as usize - 1));
+            }
+        }
+    }
+    out
+}
+
+/// Every device tag in `cell` (words starting with `=`, `+` or `-`, separated by blanks
+/// or commas) with the aspects `parts` only.
+fn shorten_tags(cell: &str, parts: &crate::model::TagParts) -> String {
+    let mut out = String::new();
+    let mut word = String::new();
+    let flush = |word: &mut String, out: &mut String| {
+        if word.len() > 1 && word.starts_with(['=', '+', '-']) && word[1..].starts_with(|c: char| c.is_alphanumeric()) {
+            out.push_str(&parts.apply(word));
+        } else {
+            out.push_str(word);
+        }
+        word.clear();
+    };
+    for ch in cell.chars() {
+        if ch == ' ' || ch == ',' {
+            flush(&mut word, &mut out);
+            out.push(ch);
+        } else {
+            word.push(ch);
+        }
+    }
+    flush(&mut word, &mut out);
+    out
+}
+
 /// Content of a report page; `None` for other pages.
 pub fn page_table(prj: &Project, an: &Analysis, page_i: usize) -> Option<PageTable> {
     let page = prj.pages.get(page_i)?;
@@ -129,16 +204,24 @@ pub fn page_table(prj: &Project, an: &Analysis, page_i: usize) -> Option<PageTab
     }
     let form = forms::report_form(prj, kind, &part.scheme);
     let table = an.report(prj, kind)?;
-    let table = scheme_table(&table, form);
+    let table = view_table(&scheme_table(&table, form), &part.view);
     let gc = group_column(&table, form);
-    let rows: Vec<usize> = (0..table.rows.len()).filter(|&i| part.group.as_ref().is_none_or(|g| table.rows[i].get(gc) == Some(g))).collect();
-    let per_page = rows_per_page(kind, form);
+    let in_group = |i: usize| {
+        let g = table.rows[i].get(gc).map(String::as_str).unwrap_or("");
+        part.group.as_deref().is_none_or(|own| own == g) && matches(&part.groups, g)
+    };
+    let rows: Vec<usize> = (0..table.rows.len()).filter(|&i| in_group(i)).collect();
+    let layout = form.and_then(|f| f.layout.clone());
+    let graphic = layout.is_none() && view_graphic(kind, form, &part.view);
+    let per_page = page_rows(kind, form, graphic);
     let shown: Vec<usize> = rows.iter().skip(part.first).take(per_page).copied().collect();
     let more = rows.len().saturating_sub(part.first + shown.len());
-    let layout = form.and_then(|f| f.layout.clone());
-    let graphic = layout.is_none() && is_graphic(kind, form);
     // Graphical and drawn forms read the columns in the report's own order.
-    let cols = if graphic || layout.is_some() { (0..table.headers.len()).collect() } else { forms::report_columns(form, &table.headers) };
+    let cols: Vec<usize> = if graphic || layout.is_some() {
+        (0..table.headers.len()).collect()
+    } else {
+        forms::report_columns(form, &table.headers).into_iter().filter(|&c| !part.view.hidden.iter().any(|h| crate::table::header_matches(&table.headers[c], h))).collect()
+    };
     let width = |c: usize| form.and_then(|f| forms::header_value(&f.widths, &table.headers[c])).copied().filter(|w| *w > 0.0).unwrap_or(table.widths[c]);
     let mut out_rows: Vec<Vec<String>> = shown.iter().map(|&i| cols.iter().map(|&c| table.rows[i].get(c).cloned().unwrap_or_default()).collect()).collect();
     if form.is_some_and(|f| f.blank_repeats) && !graphic && layout.is_none() {
@@ -246,12 +329,13 @@ pub fn block_pages(prj: &Project, an: &Analysis, block: &ReportBlock) -> Vec<(Op
     let form = forms::report_form(prj, block.kind, &block.scheme);
     let Some(table) = an.report(prj, block.kind) else { return vec![(None, 0)] };
     let table = scheme_table(&table, form);
-    let per_page = rows_per_page(block.kind, form);
+    let per_page = page_rows(block.kind, form, form.is_none_or(|f| f.layout.is_none()) && view_graphic(block.kind, form, &block.view));
     let chunks = |n: usize| (0..n.div_ceil(per_page).max(1)).map(move |k| k * per_page);
-    if !block.per_group {
-        return chunks(table.rows.len()).map(|f| (None, f)).collect();
-    }
     let gc = group_column(&table, form);
+    if !block.per_group {
+        let n = table.rows.iter().filter(|r| matches(&block.groups, r.get(gc).map(String::as_str).unwrap_or(""))).count();
+        return chunks(n).map(|f| (None, f)).collect();
+    }
     let mut out = Vec::new();
     for g in groups(&table, gc).into_iter().filter(|g| matches(&block.groups, g)) {
         let n = table.rows.iter().filter(|r| r.get(gc) == Some(&g)).count();
@@ -289,10 +373,83 @@ pub fn generate(prj: &mut Project, an: &Analysis, block: usize) -> Result<usize,
         let mut page = Page::new(id, &name, &description, PageKind::Report(b.kind));
         page.function = b.function.clone();
         page.location = b.location.clone();
-        page.report = Some(ReportPart { block: b.name.clone(), scheme: b.scheme.clone(), group: group.clone(), first: *first, frozen: None });
+        page.report = Some(ReportPart { block: b.name.clone(), scheme: b.scheme.clone(), group: group.clone(), first: *first, view: b.view.clone(), groups: if b.per_group { String::new() } else { b.groups.clone() }, ..Default::default() });
         crate::ops::insert_page(prj, at + i, page);
     }
     Ok(pages.len())
+}
+
+/// Called after every edit in the editor: generates again the report blocks that follow
+/// the project ([`ReportBlock::auto`]) whose pages no longer fit their rows (with the
+/// built-in reports). Returns the number of blocks generated.
+pub fn follow(prj: &mut Project, before: &Project) -> usize {
+    if !prj.report_blocks.iter().any(|b| b.auto) || prj == before {
+        return 0;
+    }
+    let an = Analysis::with_builtin(prj);
+    let mut n = 0;
+    for i in 0..prj.report_blocks.len() {
+        let b = prj.report_blocks[i].clone();
+        if !b.auto {
+            continue;
+        }
+        let want = block_pages(prj, &an, &b);
+        let have: Vec<(Option<String>, usize)> = prj.pages.iter().filter_map(|p| p.report.as_ref()).filter(|r| r.frozen.is_none() && r.block == b.name).map(|r| (r.group.clone(), r.first)).collect();
+        if want != have && generate(prj, &an, i).is_ok() {
+            n += 1;
+        }
+    }
+    n
+}
+
+/// Makes report page `page_i` the first page of a report block that follows the project
+/// ([`ReportBlock::auto`]): its rows continue on pages added after it (and the pages go
+/// again when the rows shrink); with `per_group` every group (strip, board …) starts on
+/// a page of its own. The block takes the page's name, report, scheme, groups and view.
+/// Returns the name of the block.
+pub fn continue_page(prj: &mut Project, an: &Analysis, page_i: usize, per_group: bool) -> Result<String, String> {
+    let pg = prj.pages.get(page_i).ok_or_else(|| tr_fmt!("No page {}", page_i + 1))?;
+    let PageKind::Report(kind) = pg.kind else { return Err(tr_fmt!("Page {} is no report page", pg.name)) };
+    let part = pg.report.clone().unwrap_or_default();
+    if part.frozen.is_some() {
+        return Err(tr_fmt!("Page {} is a fixed page output from another project", pg.name));
+    }
+    if !part.block.is_empty() {
+        if let Some(b) = prj.report_blocks.iter_mut().find(|b| b.name == part.block) {
+            b.auto = true;
+            b.per_group = per_group;
+            let name = b.name.clone();
+            let i = prj.report_blocks.iter().position(|b| b.name == name).unwrap_or(0);
+            generate(prj, an, i)?;
+            return Ok(name);
+        }
+    }
+    let base = if pg.name.trim().is_empty() { kind.title() } else { pg.name.clone() };
+    let name = std::iter::once(base.clone()).chain((2..).map(|i| format!("{base} ({i})"))).find(|n| !prj.report_blocks.iter().any(|b| &b.name == n)).unwrap_or(base);
+    let groups = match (&part.group, part.groups.trim()) {
+        (_, g) if !g.is_empty() => g.to_string(),
+        (Some(g), _) => g.clone(),
+        _ => String::new(),
+    };
+    let block = ReportBlock {
+        name: name.clone(),
+        kind,
+        scheme: part.scheme.clone(),
+        per_group,
+        groups,
+        function: pg.function.clone(),
+        location: pg.location.clone(),
+        view: part.view.clone(),
+        auto: true,
+    };
+    prj.report_blocks.push(block);
+    if let Some(r) = prj.pages[page_i].report.as_mut() {
+        r.block = name.clone();
+    } else {
+        prj.pages[page_i].report = Some(ReportPart { block: name.clone(), ..Default::default() });
+    }
+    generate(prj, an, prj.report_blocks.len() - 1)?;
+    Ok(name)
 }
 
 /// Renames a report block and its pages. Fails for empty names and names in use.

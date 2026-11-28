@@ -102,7 +102,6 @@ Applied directives	Angewandte Richtlinien	Directives appliquées	Directivas apli
 Approval date	Freigabedatum	Date d'approbation	Fecha de aprobación
 Approvals	Zulassungen	Homologations	Homologaciones
 Approved by	Freigegeben von	Approuvé par	Aprobado por
-Arc fault detection (AFDD)	Fehlerlichtbogen-Erkennung (AFDD)	Détection d'arc électrique (DDA)	Detección de arco eléctrico (AFDD)
 Arc fault detection device	Brandschutzschalter (AFDD)	Détecteur d'arc électrique (DDA)	Detector de arco eléctrico (AFDD)
 Arms {} and {}	Arme {} und {}	Bras {} et {}	Brazos {} y {}
 Asset number	Anlagennummer	Numéro d'inventaire	Número de activo
@@ -304,6 +303,7 @@ Compressed air supply	Druckluftversorgung	Alimentation en air comprimé	Suminist
 Compressor	Kompressor / Verdichter	Compresseur / Compresseur	Compresor / condensador
 Condition '{}' needs OPTION=value	Bedingung '{}' braucht OPTION=Wert	La condition '{}' requiert OPTION=valeur	La condición '{}' necesita OPCIÓN=valor
 Conductor class	Leiterklasse	Classe d'âme	Clase de conductor
+Conductor kind	Leiterart	Type de conducteur	Tipo de conductor
 Conductors selected for current-carrying capacity and voltage drop	Leiter nach Strombelastbarkeit und Spannungsfall ausgewählt	Conducteurs choisis selon le courant admissible et la chute de tension	Conductores elegidos según la intensidad admisible y la caída de tensión
 Conduit	Installationsrohr	Conduit	Tubo protector
 Connected	Belegt	Raccordées	Conectadas
@@ -698,8 +698,6 @@ Fuse disconnector 3-pole	Sicherungstrennschalter 3-polig	Sectionneur-fusible 3 p
 Fuse disconnector with motor circuit breaker 1-pole	Sicherungstrennschalter mit Motorschutzschalter 1-polig	Sectionneur-fusible avec disjoncteur-moteur 1 pôle	Seccionador-fusible con guardamotor 1 polo
 Fuse disconnector with motor circuit breaker 2-pole	Sicherungstrennschalter mit Motorschutzschalter 2-polig	Sectionneur-fusible avec disjoncteur-moteur 2 pôles	Seccionador-fusible con guardamotor 2 polos
 Fuse disconnector with motor circuit breaker 3-pole	Sicherungstrennschalter mit Motorschutzschalter 3-polig	Sectionneur-fusible avec disjoncteur-moteur 3 pôles	Seccionador-fusible con guardamotor 3 polos
-Fuse overview	Sicherungsübersicht	Tableau des protections	Cuadro de protecciones
-Fuse overview of the distribution boards	Sicherungsübersicht der Verteiler	Tableau des protections des tableaux de distribution	Cuadro de protecciones de los cuadros de distribución
 Fuse rated current	Sicherungsnennstrom	Courant assigné du fusible	Corriente nominal del fusible
 Fuse ratio 1.6	Sicherungsverhältnis 1,6	Rapport des fusibles 1,6	Relación de fusibles 1,6
 Fuse size	Sicherungsgröße	Taille du fusible	Tamaño del fusible
@@ -737,7 +735,6 @@ Generic digital module 8 inputs / 8 outputs	Generische Digitalbaugruppe 8 Eingä
 Generic digital output module 16 channels	Generische Digitalausgabebaugruppe 16 Kanäle	Module de sorties TOR générique 16 voies	Módulo de salidas digitales genérico 16 canales
 Generic digital output module 8 channels	Generische Digitalausgabebaugruppe 8 Kanäle	Module de sorties TOR générique 8 voies	Módulo de salidas digitales genérico 8 canales
 Generic function	Allgemeine Funktion	Fonction générique	Función genérica
-Graphic	Grafik	Graphique	Gráfico
 Graphic (no electrical function)	Grafik (ohne elektrische Funktion)	Graphique (sans fonction électrique)	Gráfico (sin función eléctrica)
 Graphics A4 portrait	Grafik A4 hoch	Graphique A4 portrait	Gráfico A4 vertical
 Greenline	Greenline	Greenline	Greenline
@@ -774,7 +771,6 @@ Heating element	Heizelement	Élément chauffant	Elemento calefactor
 Heating element (installation)	Heizelement (Installation)	Élément chauffant (installation)	Elemento calefactor (instalación)
 Heating element three-phase	Heizelement dreiphasig	Élément chauffant triphasé	Elemento calefactor trifásico
 Heating water	Heizungswasser	Eau de chauffage	Agua de calefacción
-Hide	Ausblenden	Masquer	Ocultar
 Higher-level product (-)	Übergeordnetes Produkt (-)	Produit de niveau supérieur (-)	Producto de nivel superior (-)
 Higher-level product of the page	Übergeordnetes Produkt der Seite	Produit de niveau supérieur de la page	Producto de nivel superior de la página
 Highest (°C)	Höchstens (°C)	Maximum (°C)	Máximo (°C)
@@ -1138,7 +1134,6 @@ No page or page item with id {}	Keine Seite und kein Seitenelement mit der ID {}
 No page with id {}	Keine Seite mit der ID {}	Aucune page avec l'ID {}	No hay ninguna página con el ID {}
 No pin view with this id on the page	Keine Anschlussansicht mit dieser ID auf der Seite	Aucune vue de connexions avec cet ID sur la page	Ninguna vista de conexiones con este ID en la página
 No plugs	Keine Stecker	Aucun connecteur	Sin conectores
-No report block {}	Kein Auswertungsblock {}	Aucun bloc de rapports {}	Ningún bloque de informes {}
 No rooms found in the floor plan	Keine Räume im Grundriss erkannt	Aucune pièce détectée dans le plan	No se detectaron salas en el plano
 No rooms on this level	Keine Räume auf dieser Ebene	Aucune salle à ce niveau	No hay salas en este nivel
 No routed wire, cable or tube {}	Keine verlegte Leitung, kein verlegtes Kabel und kein verlegter Schlauch {}	Aucun fil, câble ou tube posé {}	Ningún hilo, cable o tubo tendido {}
@@ -2537,3 +2532,4 @@ yellow	gelb	jaune	amarillo
 {}{} is {} mm off its position (tolerance {} mm)	{}{} weicht {} mm von seiner Position ab (Toleranz {} mm)	{}{} est décalé de {} mm de sa position (tolérance {} mm)	{}{} está desviado {} mm de su posición (tolerancia {} mm)
 ~ length assumed: no wire of the connector has a length	~ Länge angenommen: keine Ader des Steckers hat eine Länge	~ longueur supposée : aucun fil du connecteur n'a de longueur	~ longitud supuesta: ningún cable del conector tiene longitud
 … {} more rows – see Reports window / CSV export	… {} weitere Zeilen – siehe Berichtsfenster / CSV-Export	… {} lignes de plus – voir la fenêtre Rapports / export CSV	… {} filas más – ver la ventana de informes / exportación CSV
+… {} more rows: Page properties › Continue on following pages	… {} weitere Zeilen: Seiteneigenschaften › Auf Folgeseiten fortsetzen	… {} lignes de plus : Propriétés de la page › Continuer sur les pages suivantes	… {} filas más: Propiedades de la página › Continuar en las páginas siguientes

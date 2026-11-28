@@ -358,3 +358,29 @@ fn commands_that_only_read_leave_the_project_as_it_is() {
     }
     assert!(ran > 60, "{ran}");
 }
+
+#[test]
+fn report_pages_show_groups_columns_tags_and_continue() {
+    let p = Plugins::new(Vec::<String>::new());
+    let mut prj = demo_project();
+    let mut run = |prj: &mut openecraft_core::model::Project, name: &str, args: serde_json::Value| p.run(p.command(name).unwrap(), prj, args.as_object().unwrap());
+    let at = prj.pages.len();
+    openecraft_core::ops::add_page(&mut prj, openecraft_core::model::PageKind::Report(openecraft_core::model::ReportKind::TerminalWiring.into()), at);
+    prj.pages[at].name = "K9".into();
+    let v = run(&mut prj, "set_report_page", serde_json::json!({ "page": "K9", "groups": "-X1", "hidden_columns": "External cable, Internal cable", "tag_parts": "product", "graphic": "table" })).unwrap();
+    assert_eq!(v["groups"], "-X1");
+    assert_eq!(v["hidden_columns"], serde_json::json!(["External cable", "Internal cable"]));
+    assert_eq!(v["tag_parts"], serde_json::json!(["product"]));
+    assert_eq!(v["graphic"], false);
+    // All or nothing: an unknown column changes nothing.
+    assert!(run(&mut prj, "set_report_page", serde_json::json!({ "page": "K9", "groups": "-X2", "hidden_columns": "Nope" })).unwrap_err().contains("Nope"));
+    let i = prj.pages.iter().position(|pg| pg.name == "K9").unwrap();
+    assert_eq!(prj.pages[i].report.as_ref().unwrap().groups, "-X1");
+    assert!(run(&mut prj, "set_report_page", serde_json::json!({ "page": "1", "tree": true })).unwrap_err().contains("no report page"));
+    assert!(run(&mut prj, "set_report_page", serde_json::json!({ "page": "K9", "graphic": "maybe" })).is_err());
+    let b = run(&mut prj, "continue_report_page", serde_json::json!({ "page": "K9" })).unwrap();
+    assert_eq!((b["name"].as_str(), b["auto"].as_bool(), b["groups"].as_str()), (Some("K9"), Some(true), Some("-X1")));
+    assert_eq!(b["pages"][0], "K9");
+    let i = prj.pages.iter().position(|pg| pg.name == "K9").unwrap();
+    assert_eq!(prj.pages[i].report.as_ref().unwrap().view.hidden.len(), 2, "the pages keep the view");
+}

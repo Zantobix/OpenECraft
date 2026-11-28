@@ -303,6 +303,8 @@ impl Session {
             self.structure_kept.extend(kept);
             // New cables leaving an enclosure get their cable glands.
             openecraft_core::routing3d::glands::follow(&mut self.prj, self.history.committed());
+            // Report blocks that follow the project get pages for the rows added or removed.
+            openecraft_core::report_blocks::follow(&mut self.prj, self.history.committed());
         }
         self.history.track(&self.prj, can_commit)
     }

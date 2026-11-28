@@ -45,6 +45,12 @@ dispositif différentiel) est une barre par section, et la première borne d'une
 section indique la barre dont elle est séparée (`barre 2 (N3 – N4), séparée de 1`).
 Les bornes à étages sont listées étage par étage avec leurs ponts ; un pont filaire
 relie les étages.
+La page le dessine graphiquement (sauf si ses propriétés demandent le tableau) : une
+vue de côté du bornier, chaque borne une ligne de son point de raccordement externe à
+son point interne dans la couleur de son conducteur (*Type de conducteur* : N bleu, PE
+vert et jaune, les phases noires), les étages d'un bloc décalés, un point au puits de
+pont de chaque borne pontée avec le pont de point en point et une barre à côté ; les
+cibles figurent à côté des points de raccordement.
 
 ## Connecteurs
 

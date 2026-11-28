@@ -35,24 +35,40 @@ lokale Metadaten und Klassifikationen haben bei wiederholten Artikelnummern Vorr
 `list_cable_parts` stellt die Auswahl des Projekts und die mitgelieferte für Plugins und
 CLI/MCP bereit.
 
-**Sicherungsübersicht** (Bericht *Sicherungsübersicht der Verteiler*, `fuse_overview`):
-Verteiler für Verteiler – der Schrank, in dem ein Betriebsmittel sitzt, sonst der Ort
-seines Kennzeichens (`+UV1`) – jede Schutzeinrichtung des Netzes, jede
+**Verteilerübersicht** (Bericht *Verteilerübersicht*, `board_overview`): Verteiler für
+Verteiler – der Schrank, in dem ein Betriebsmittel sitzt, sonst der Ort seines
+Kennzeichens (`+UV1`) – jede Schutzeinrichtung des Netzes, jede
 Fehlerstrom-Schutzeinrichtung und jeder Überspannungsschutz, die Haupt- und Schalter
-am Netz des Verteilers, in der Reihenfolge des Schaltplans. Jede Zeile nennt die Art
-(Sicherungsautomat, Sicherung, Motorschutzschalter, FI/LS-Schalter für einen
-Leitungsschutzschalter mit Fehlerstromfunktion, Brandschutzschalter (AFDD) über die
-Eigenschaft *Fehlerlichtbogen-Erkennung (AFDD)* oder `AFDD` / `arc fault` in
-Beschreibung oder technischen Daten seines Artikels, Fehlerstromschutzschalter,
-Überspannungsschutz, Hauptschalter, Schalter), den Typ (`B 16 A`, `40 A RCD 30 mA`,
-der *Überspannungsschutz-Typ*), die Phasen, die vorgeschaltete
+am Netz des Verteilers, als Baum: jedes Betriebsmittel unter dem, von dem es im selben
+Verteiler gespeist wird (die Sicherungsautomaten unter ihrem Fehlerstromschutzschalter),
+in der Reihenfolge des Schaltplans; so ist zu sehen, was das Abschalten eines
+Fehlerstromschutzschalters abschaltet. Jede Zeile nennt die Art (Sicherungsautomat,
+Sicherung, Motorschutzschalter, FI/LS-Schalter für einen Leitungsschutzschalter mit
+Fehlerstromfunktion, Brandschutzschalter (AFDD) über den Schalter
+*Fehlerlichtbogen-Erkennung (AFDD)* oder `AFDD` / `arc fault` in Beschreibung oder
+technischen Daten seines Artikels, Fehlerstromschutzschalter, Überspannungsschutz,
+Hauptschalter, Schalter), den Typ (`B 16 A`, `40 A RCD 30 mA`, der
+*Überspannungsschutz-Typ*), die Phasen, die vorgeschaltete
 Fehlerstrom-Schutzeinrichtung, den Funktionstext (*Reserve*, wenn dahinter nichts
-angeschlossen ist), die Räume seines Stromkreises, die abgehenden Kabel mit ihrem Typ
-und wo es gezeichnet ist (ein Klick springt dorthin). Die Betriebsmittel-Eigenschaft
-*Sicherungsübersicht* nimmt mit *Anzeigen* jedes andere Betriebsmittel auf, das im
-Verteiler bedient wird (z. B. einen Treppenlichtautomaten), und lässt mit
-*Ausblenden* eines weg. Als Berichtsseiten bekommt mit einem Berichtsblock und *Neue
-Seiten für jede Gruppe* jeder Verteiler eigene Seiten.
+angeschlossen ist; ohne Funktionstext, was es speist: `Steckdose -XD1, -XD2`), die
+Räume seines Stromkreises, die Kabel, die den Verteiler verlassen, mit ihrem Typ und wo
+es gezeichnet ist (ein Klick im Bereich *Berichte* springt dorthin). In den
+Eigenschaften des Betriebsmittels (Reiter *Betriebsmittel*) nimmt *Verteilerübersicht*
+mit *Anzeigen* jedes andere im Verteiler bediente Betriebsmittel auf (z. B. einen
+Treppenlichtautomaten) und lässt mit *Ausblenden* eines weg; Schutzeinrichtungen haben
+dort den Schalter *Fehlerlichtbogen-Erkennung (AFDD)*.
+
+**Berichtsseiten** (*Seiteneigenschaften* einer Berichtsseite, `set_report_page`): die
+angezeigten Gruppen – Verteiler, Leisten, Kabel … der ersten Spalte, einzeln angehakt
+oder als Muster (`+UV1`, `-X*`) –, die angezeigten Spalten (ein Haken je Spalte), die
+Aspekte der Betriebsmittelkennzeichen (*BMK anzeigen als*: vollständiges BMK, Ort und
+Betriebsmittel …), der Baum eines Berichts, der einen hat (*Als Baum*: `|-> -F1` unter
+`-Q1`), und die grafische Form oder die Tabelle. *Auf Folgeseiten fortsetzen*
+(`continue_report_page`) fügt nach der Seite Seiten für die Zeilen an, die nicht
+passen, und entfernt sie wieder, wenn es weniger Zeilen werden (die Seite wird ein
+Berichtsblock, der dem Projekt folgt); *Jede Gruppe auf eigenen Seiten* gibt jedem
+Verteiler oder jeder Leiste eigene Seiten. Ein solcher Block wird nach jeder Änderung
+nachgeführt, andere Berichtsblöcke mit *Folgt dem Projekt* ebenso.
 
 ## Formulare
 

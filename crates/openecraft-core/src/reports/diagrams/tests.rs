@@ -131,7 +131,7 @@ fn terminal_wiring_names_the_wired_ends_of_both_sides() {
     data.jumpers.insert("3".into(), 1);
     let an = Analysis::checked(&prj);
     let t = &an.report(&prj, ReportKind::TerminalWiring).unwrap();
-    assert_eq!(t.headers.len(), 14);
+    assert_eq!(t.headers.len(), 15);
     assert!(t.rows.iter().all(|r| r.len() == t.headers.len()));
     let x1 = rows(t, "-X1");
     // One terminal after the other in the order of the strip, no accessories.
@@ -146,6 +146,7 @@ fn terminal_wiring_names_the_wired_ends_of_both_sides() {
     assert!(!one[2].contains(',') && !one[10].contains(','), "{one:?}");
     assert!(!one[4].is_empty() || !one[12].is_empty(), "the location of a target: {one:?}");
     assert!(!one[9].is_empty(), "the potential: {one:?}");
+    assert_eq!(x1.iter().find(|r| r[6] == "PE").unwrap()[14], "PE", "the conductor of the PE terminal");
     // The jumper with the terminals it spans, on each of its terminals.
     assert_eq!(one[8], "1 (1 – 3)");
     assert_eq!(x1.iter().find(|r| r[6] == "3").unwrap()[8], "1 (1 – 3)");

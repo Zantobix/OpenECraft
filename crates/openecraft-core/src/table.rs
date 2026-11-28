@@ -18,6 +18,12 @@ pub struct Table {
     pub rows: Vec<Vec<String>>,
     /// Optional jump target (page index, item id) per row.
     pub targets: Vec<Option<(usize, u64)>>,
+    /// Columns holding device tags (report pages may show only some of their aspects).
+    pub tag_columns: Vec<usize>,
+    /// Column a report page may draw as a tree, with the depth of every row below the
+    /// row it depends on (`depth`, one per row; empty: no tree).
+    pub tree_column: Option<usize>,
+    pub depth: Vec<u8>,
 }
 
 impl Table {
@@ -36,6 +42,22 @@ impl Table {
     pub fn push(&mut self, row: Vec<String>, target: Option<(usize, u64)>) {
         self.rows.push(row);
         self.targets.push(target);
+        if self.tree_column.is_some() {
+            self.depth.push(0);
+        }
+    }
+
+    /// A row of the tree at `depth` below the row it depends on.
+    pub fn push_at(&mut self, row: Vec<String>, target: Option<(usize, u64)>, depth: u8) {
+        self.push(row, target);
+        if let Some(d) = self.depth.last_mut() {
+            *d = depth;
+        }
+    }
+
+    /// The table without rows, with its tag and tree columns (for tables built from it).
+    pub fn clone_layout(&self) -> Table {
+        Table { tag_columns: self.tag_columns.clone(), tree_column: self.tree_column, ..Default::default() }
     }
 
     /// The headers in the current language.

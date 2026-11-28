@@ -133,6 +133,7 @@ fn report(s: &mut Session, a: &Args) -> Result<Value, String> {
             widths: cols.iter().map(|&c| t.widths[c]).collect(),
             rows: t.rows.iter().map(|r| cols.iter().map(|&c| r.get(c).cloned().unwrap_or_default()).collect()).collect(),
             targets: t.targets,
+            ..Default::default()
         };
     }
     match a.str("format").unwrap_or("json") {

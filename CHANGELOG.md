@@ -5,22 +5,33 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
-- **Fuse overview and terminal wiring diagram:** the report *Fuse overview of the
-  distribution boards* (`fuse_overview`) lists board by board (the cabinet a device is
+- **Distribution board overview and terminal wiring diagram:** the report *Distribution
+  board overview* (`board_overview`) lists board by board (the cabinet a device is
   placed in, else the location of its tag) every protective device of the mains, every
   residual current and surge protective device and the main switches and switches on
-  the mains, with kind (circuit breaker, fuse, RCBO, arc fault detection device by the
-  new property *Arc fault detection (AFDD)* or its part, …), type (`B 16 A`,
-  `40 A RCD 30 mA`), phases, the residual current device protecting it, function text or
-  *Spare*, the rooms of its circuit, its outgoing cables and where it is drawn; the new
-  device property *Fuse overview* shows any other device (*Show*) or leaves one out
-  (*Hide*). The report *Terminal wiring diagram* (`terminal_wiring`) gives every
-  terminal, level by level, one row with the device and connection point wired directly
-  to each side, cable and core, where the target is drawn, the potential and the jumper
-  with the terminals it spans. The new jumper kind *Busbar bridge* (`busbar`) is the N
-  or PE busbar terminals sit on (PE terminals allowed, no jumper part); an interrupted
-  N busbar is one busbar per section, and the report names the section a busbar is
+  the mains as a tree – every device below the one it is fed from, so that it shows what
+  a residual current device cuts off – with kind (circuit breaker, fuse, RCBO, arc fault
+  detection device by the new property *Arc fault detection (AFDD)* or its part, …),
+  type (`B 16 A`, `40 A RCD 30 mA`), phases, the residual current device protecting it,
+  function text, *Spare* or what it feeds, the rooms of its circuit, its outgoing
+  cables and where it is drawn; the new device property *Distribution board overview*
+  (tab *Device* of the properties) shows any other device (*Show*) or leaves one out
+  (*Hide*). The report *Terminal wiring diagram* (`terminal_wiring`), drawn as a side
+  view of the strip, gives every terminal, level by level, the device and connection
+  point wired directly to each side, cable and core, where the target is drawn, the
+  potential, the conductor (N blue, PE green and yellow) and the jumper with the
+  terminals it spans. The new jumper kind *Busbar bridge* (`busbar`) is the N or PE
+  busbar terminals sit on (PE terminals allowed, no jumper part); an interrupted N
+  busbar is one busbar per section, and the report names the section a busbar is
   separated from ([#277](https://github.com/nilres/OpenECraft/issues/277)).
+- **Report pages show what is wanted:** the page properties of a report page choose the
+  groups shown (boards, strips … ticked one by one or as a pattern), the columns (a
+  tick each), the aspects of the device tags, the tree of a report that has one and the
+  graphical form or the table (`set_report_page`); *Continue on following pages*
+  (`continue_report_page`) adds pages for the rows that do not fit and removes them when
+  the rows shrink, optionally every group on pages of its own. Report blocks can follow
+  the project the same way (*Follows the project*): they are generated again after every
+  change that changes their pages.
 - **Exchange with KiCad and FreeCAD:** a board designed in KiCad becomes a device of
   the project from its netlist (*File › Import › Import KiCad board as device…*,
   `import_kicad`): a device box with a connection point for every pin of its

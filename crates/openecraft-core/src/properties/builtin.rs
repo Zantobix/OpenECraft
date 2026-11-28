@@ -165,6 +165,7 @@ pub(super) const ROWS: &[Row] = &[
     r("device.keywords", tr_const!("Keywords"), Device, General, Text, ""),
     r("device.serial", tr_const!("Serial number"), Device, General, Text, ""),
     r("device.asset", tr_const!("Asset number"), Device, General, Text, ""),
+    r("device.board_overview", tr_const!("Distribution board overview"), Device, General, Choice, "").of(&["Show", "Hide"]),
     // Commercial (from the assigned parts)
     r("device.exclude_from_bom",tr_const!("Exclude from bill of materials"),Device,Commercial,Bool,"false"),
     r("device.material_owner",tr_const!("Material owner device tag"),Device,Commercial,Text,""),
@@ -239,7 +240,6 @@ pub(super) const ROWS: &[Row] = &[
     r("device.protection_level", tr_const!("Voltage protection level"), Device, Protection, Real, "kV"),
     r("device.discharge_current", tr_const!("Nominal discharge current"), Device, Protection, Real, "kA"),
     r("device.afdd", tr_const!("Arc fault detection (AFDD)"), Device, Protection, Bool, ""),
-    r("device.fuse_overview", tr_const!("Fuse overview"), Device, Protection, Choice, "").of(&["Show", "Hide"]),
     // Motor
     r("device.speed", tr_const!("Rated speed"), Device, Motor, Real, "rpm"),
     r("device.power_factor", tr_const!("Power factor"), Device, Motor, Real, ""),

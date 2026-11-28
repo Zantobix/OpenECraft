@@ -94,6 +94,7 @@ mod requests_ui;
 mod review_ui;
 mod revisions_ui;
 mod report_blocks_ui;
+mod report_page_ui;
 mod symbol_editor;
 mod update_ui;
 mod vault_ui;

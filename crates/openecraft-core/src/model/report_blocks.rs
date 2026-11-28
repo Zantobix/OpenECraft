@@ -22,6 +22,39 @@ pub struct ReportPart {
     /// Fixed content output from another project.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub frozen: Option<PageTable>,
+    /// Only the groups matching these patterns (`-X*`, several separated by `,`); empty:
+    /// all (a page of a report block shows the groups of the block).
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub groups: String,
+    /// How the page shows the rows.
+    #[serde(skip_serializing_if = "ReportView::is_default")]
+    pub view: ReportView,
+}
+
+/// How a report page shows the rows of its report: the columns it hides, the aspects
+/// of the device tags it shows and whether it draws the report's tree.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct ReportView {
+    /// Columns not shown (as stored in forms: English keys or plugin texts).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub hidden: Vec<String>,
+    /// Aspects of the device tags shown; none: the full tags.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub tag_parts: Option<TagParts>,
+    /// The report's tree column as a tree (each row indented below the row it depends on).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub tree: bool,
+    /// Drawn graphically (`Some(true)`) or as a table (`Some(false)`); none: as the form
+    /// of the report says.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub graphic: Option<bool>,
+}
+
+impl ReportView {
+    pub fn is_default(&self) -> bool {
+        *self == ReportView::default()
+    }
 }
 
 /// The content of one report page, ready to draw.
@@ -96,4 +129,11 @@ pub struct ReportBlock {
     /// Structure of the generated pages.
     pub function: String,
     pub location: String,
+    /// How its pages show the rows.
+    #[serde(skip_serializing_if = "ReportView::is_default")]
+    pub view: ReportView,
+    /// Generated again after every change, so that its pages always hold every row
+    /// (pages added or removed as the rows grow or shrink).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub auto: bool,
 }

@@ -105,6 +105,9 @@ impl App {
                     ui.label("");
                     ui.checkbox(&mut b.per_group, tr("New pages for every group (strip, plug, cable, device …)"));
                     ui.end_row();
+                    ui.label("");
+                    ui.checkbox(&mut b.auto, tr("Follows the project: pages added and removed with the rows"));
+                    ui.end_row();
                     ui.label(tr("Groups"));
                     ui.add_enabled(b.per_group, egui::TextEdit::singleline(&mut b.groups).hint_text(tr("all, or e.g. -X*, -W1")).desired_width(240.0));
                     ui.end_row();

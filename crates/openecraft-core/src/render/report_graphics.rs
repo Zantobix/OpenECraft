@@ -35,6 +35,8 @@ fn fit(s: &str, max: usize) -> String {
 pub fn draw(d: &mut dyn Draw, kind: ReportId, t: &PageTable, frame: &PlotFrame) -> bool {
     if kind == ReportId::from(ReportKind::TerminalDiagram) {
         terminal_diagram(d, t, frame);
+    } else if kind == ReportId::from(ReportKind::TerminalWiring) {
+        terminal_wiring(d, t, frame);
     } else if kind == ReportId::from(ReportKind::CableDiagram) {
         cable_diagram(d, t, frame);
     } else if kind == ReportId::from(ReportKind::PlugDiagram) {
@@ -142,6 +144,142 @@ fn terminal_diagram(d: &mut dyn Draw, t: &PageTable, frame: &PlotFrame) {
     for n in &notes {
         d.text(p(x0, y + 2.0), &fit(n, ((x1 - x0) / (SIZE * 0.6)) as usize), SIZE, Anchor::Left, VAnchor::Middle, Ink::Text);
         y += 4.5;
+    }
+    footer(d, t, frame);
+}
+
+/// Colour of a conductor: N blue, PE green (with yellow dashes drawn over it), the
+/// others the line colour.
+fn conductor_ink(conductor: &str) -> Ink {
+    match conductor {
+        "N" => Ink::Color([30, 100, 200]),
+        "PE" => Ink::Color([0, 140, 60]),
+        _ => Ink::Line,
+    }
+}
+
+/// Rows of the terminal wiring diagram (columns: strip, function text, external target,
+/// point, location, cable, terminal, level, jumper, potential, internal target, point,
+/// location, cable, conductor), drawn as a side view of the strip: every terminal a line
+/// from its external to its internal clamp point (circles) in the colour of its
+/// conductor, the levels of a block stepped against each other, a dot at the jumper
+/// shaft of every jumpered terminal with the bridge from dot to dot, a busbar as a bar
+/// with its sections; the targets wired to each clamp beside it.
+fn terminal_wiring(d: &mut dyn Draw, t: &PageTable, frame: &PlotFrame) {
+    let area = frame.area();
+    let (x0, x1) = (area.min.x + 7.0, area.max.x - 10.0);
+    let top = area.min.y;
+    d.text(p(x0, top + 9.0), &t.title, 6.0, Anchor::Left, VAnchor::Middle, Ink::Text);
+    let w = x1 - x0;
+    // Columns: function text | external targets | the strip | internal targets.
+    let (ft_l, ext_l, ext_r) = (x0, x0 + w * 0.16, x0 + w * 0.40);
+    let (g_l, g_r) = (x0 + w * 0.42, x0 + w * 0.58);
+    let int_l = x0 + w * 0.60;
+    // Clamp points; each level higher starts a step further in (as the terminal's
+    // side view), the jumper shafts in the middle.
+    const STEP: f32 = 3.0;
+    let jx = (g_l + g_r) / 2.0;
+    let mut y = top + 19.0;
+    for (x, h, a) in [(ft_l, tr("Function text"), Anchor::Left), (ext_r, tr("External"), Anchor::Right), (jx, tr("Terminal"), Anchor::Center), (int_l, tr("Internal"), Anchor::Left)] {
+        d.text(p(x, y), h, 2.4, a, VAnchor::Middle, Ink::Text);
+    }
+    y += 4.0;
+    d.line(p(x0, y), p(x1, y), 0.3, Ink::Frame, false);
+    let ext_chars = ((ext_r - ext_l - 2.0) / (SIZE * 0.6)) as usize;
+    let int_chars = ((x1 - int_l - 2.0) / (SIZE * 0.6)) as usize;
+    let ft_chars = ((ext_l - ft_l - 2.0) / (SIZE * 0.6)) as usize;
+    let mut strip = String::new();
+    // (jumper text, y, x of the dot, busbar)
+    let mut jumpers: Vec<(String, f32, f32, bool)> = Vec::new();
+    // Clamps of the terminal before: for the further wires of a side.
+    let (mut last_l, mut last_r, mut last_y, mut last_ink) = (g_l, g_r, y, Ink::Line);
+    let target_text = |dev: &str, point: &str, cable: &str, loc: &str| {
+        let main = if point.is_empty() { dev.to_string() } else { format!("{dev}:{point}") };
+        [main.as_str(), cable, loc].iter().filter(|s| !s.is_empty()).copied().collect::<Vec<_>>().join("  ")
+    };
+    for row in &t.rows {
+        if cell(row, 0) != strip {
+            strip = cell(row, 0).to_string();
+            y += 2.0;
+            d.text(p(g_l, y + 2.5), &strip, 3.0, Anchor::Left, VAnchor::Middle, Ink::Text);
+            y += 6.0;
+        }
+        let mid = y + ROW / 2.0;
+        let label = cell(row, 6);
+        let ext = target_text(cell(row, 2), cell(row, 3), cell(row, 5), cell(row, 4));
+        let int = target_text(cell(row, 10), cell(row, 11), cell(row, 13), cell(row, 12));
+        if label.is_empty() {
+            // A further wire at a clamp of the terminal above.
+            if !ext.is_empty() {
+                d.line(p(last_l, last_y), p(last_l - 2.0, mid), SYMBOL_W, last_ink, false);
+                d.line(p(last_l - 2.0, mid), p(ext_r + 1.0, mid), SYMBOL_W, last_ink, false);
+                d.text(p(ext_r, mid), &fit(&ext, ext_chars), SIZE, Anchor::Right, VAnchor::Middle, Ink::Text);
+            }
+            if !int.is_empty() {
+                d.line(p(last_r, last_y), p(last_r + 2.0, mid), SYMBOL_W, last_ink, false);
+                d.line(p(last_r + 2.0, mid), p(int_l - 1.0, mid), SYMBOL_W, last_ink, false);
+                d.text(p(int_l, mid), &fit(&int, int_chars), SIZE, Anchor::Left, VAnchor::Middle, Ink::Text);
+            }
+            y += ROW;
+            continue;
+        }
+        let level: f32 = cell(row, 7).parse::<f32>().unwrap_or(1.0).max(1.0) - 1.0;
+        let conductor = cell(row, 14);
+        let ink = conductor_ink(conductor);
+        let (cl, cr) = (g_l + level * STEP, g_r - level * STEP * 0.3);
+        d.line(p(cl, mid), p(cr, mid), SYMBOL_W * 3.0, ink, false);
+        if conductor == "PE" {
+            d.line(p(cl, mid), p(cr, mid), SYMBOL_W * 1.5, Ink::Color([230, 200, 0]), true);
+        }
+        d.circle(p(cl, mid), 1.2, SYMBOL_W * 1.5, Ink::Line, false);
+        d.circle(p(cr, mid), 1.2, SYMBOL_W * 1.5, Ink::Line, false);
+        let pot = cell(row, 9);
+        let name = if pot.is_empty() || pot == label { label.to_string() } else { format!("{label}  {pot}") };
+        d.text(p(cl + 2.0, mid - 1.6), &name, 1.8, Anchor::Left, VAnchor::Middle, Ink::Text);
+        if level > 0.0 {
+            d.text(p(cr - 2.0, mid - 1.6), cell(row, 7), 1.4, Anchor::Right, VAnchor::Middle, Ink::FrameText);
+        }
+        if !ext.is_empty() {
+            d.line(p(ext_r + 1.0, mid), p(cl - 1.2, mid), SYMBOL_W, ink, false);
+        }
+        if !int.is_empty() {
+            d.line(p(cr + 1.2, mid), p(int_l - 1.0, mid), SYMBOL_W, ink, false);
+        }
+        d.text(p(ext_r, mid), &fit(&ext, ext_chars), SIZE, Anchor::Right, VAnchor::Middle, Ink::Text);
+        d.text(p(int_l, mid), &fit(&int, int_chars), SIZE, Anchor::Left, VAnchor::Middle, Ink::Text);
+        d.text(p(ft_l, mid), &fit(cell(row, 1), ft_chars), SIZE, Anchor::Left, VAnchor::Middle, Ink::Text);
+        let jumper = cell(row, 8);
+        if !jumper.is_empty() {
+            let number = jumper.split_whitespace().find(|w| w.chars().all(|c| c.is_ascii_digit())).unwrap_or(jumper).to_string();
+            let bar = !jumper.starts_with(|c: char| c.is_ascii_digit());
+            let dot = jx + level * STEP * 0.6;
+            jumpers.push((format!("{strip}/{number}/{bar}"), mid, dot, bar));
+            d.circle(p(dot, mid), 0.8, 0.0, Ink::Line, true);
+        }
+        (last_l, last_r, last_y, last_ink) = (cl, cr, mid, ink);
+        y += ROW;
+    }
+    // Bridges from dot to dot of every jumper, busbars as a bar beside the dots.
+    let mut keys: Vec<&String> = jumpers.iter().map(|j| &j.0).collect();
+    keys.sort();
+    keys.dedup();
+    for key in keys {
+        let dots: Vec<&(String, f32, f32, bool)> = jumpers.iter().filter(|j| &j.0 == key).collect();
+        let (Some(a), Some(b)) = (dots.first(), dots.last()) else { continue };
+        let number = key.split('/').nth(1).unwrap_or("");
+        if a.3 {
+            let bx = a.2 + 3.0;
+            d.line(p(bx, a.1 - 1.2), p(bx, b.1 + 1.2), SYMBOL_W * 5.0, Ink::Line, false);
+            for j in &dots {
+                d.line(p(j.2, j.1), p(bx, j.1), SYMBOL_W, Ink::Line, false);
+            }
+            d.text(p(bx + 1.2, a.1 - 1.6), number, 1.6, Anchor::Left, VAnchor::Middle, Ink::FrameText);
+        } else if dots.len() > 1 {
+            for pair in dots.windows(2) {
+                d.line(p(pair[0].2, pair[0].1), p(pair[1].2, pair[1].1), SYMBOL_W * 2.0, Ink::Line, false);
+            }
+            d.text(p(a.2 + 1.2, a.1 - 1.6), number, 1.6, Anchor::Left, VAnchor::Middle, Ink::FrameText);
+        }
     }
     footer(d, t, frame);
 }
@@ -320,7 +458,7 @@ fn footer(d: &mut dyn Draw, t: &PageTable, frame: &PlotFrame) {
     } else if t.continued {
         Some(tr("Continued on the next page").to_string())
     } else if t.more > 0 {
-        Some(tr_fmt!("… {} more rows – see Reports window / CSV export", t.more))
+        Some(tr_fmt!("… {} more rows: Page properties › Continue on following pages", t.more))
     } else {
         None
     };

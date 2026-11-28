@@ -1512,7 +1512,7 @@ fn draw_report(d: &mut dyn Draw, t: &crate::report_blocks::PageTable, frame: &cr
     } else if t.continued {
         Some(tr("Continued on the next page").to_string())
     } else if t.more > 0 {
-        Some(tr_fmt!("… {} more rows – see Reports window / CSV export", t.more))
+        Some(tr_fmt!("… {} more rows: Page properties › Continue on following pages", t.more))
     } else {
         None
     };

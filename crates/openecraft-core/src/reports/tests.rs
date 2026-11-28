@@ -361,18 +361,18 @@ fn boards() -> crate::testkit::Kit {
     rcbo.functions.push(crate::parts::FunctionTemplate::new(FnKind::ResidualCurrent, "1 2"));
     let device = |t: &str| crate::properties::Object::Device(t.into());
     crate::properties::set(&mut k.prj, &device("+UV1-F9"), "device.spd_type", "Type 2").unwrap();
-    crate::properties::set(&mut k.prj, &device("+UV1-K1"), "device.fuse_overview", "Show").unwrap();
-    crate::properties::set(&mut k.prj, &device("+UV2-F3"), "device.fuse_overview", "Hide").unwrap();
+    crate::properties::set(&mut k.prj, &device("+UV1-K1"), "device.board_overview", "Show").unwrap();
+    crate::properties::set(&mut k.prj, &device("+UV2-F3"), "device.board_overview", "Hide").unwrap();
     let page = &mut k.prj.pages[0];
     page.symbols.iter_mut().find(|s| s.tag == "+UV1-F1").unwrap().function_text = "Kitchen sockets".into();
     k
 }
 
 #[test]
-fn fuse_overview_lists_the_devices_of_each_board() {
+fn board_overview_lists_the_devices_of_each_board() {
     let k = boards();
     let an = Analysis::checked(&k.prj);
-    let t = an.report(&k.prj, ReportKind::FuseOverview).unwrap();
+    let t = an.report(&k.prj, ReportKind::BoardOverview).unwrap();
     assert!(t.rows.iter().all(|r| r.len() == t.headers.len()));
     let devices: Vec<(&str, &str)> = t.rows.iter().map(|r| (r[0].as_str(), r[1].as_str())).collect();
     assert_eq!(
@@ -400,25 +400,25 @@ fn fuse_overview_lists_the_devices_of_each_board() {
     assert_eq!(row("+UV2-F5")[5], "");
     assert!(t.targets.iter().all(|t| t.is_some()), "every row jumps to its device");
     // Found by the words of practice.
-    assert!(keywords(ReportKind::FuseOverview).contains(&"Panel schedule"));
+    assert!(keywords(ReportKind::BoardOverview).contains(&"Panel schedule"));
 }
 
 /// The property says it: `device.afdd` false overrides the description of the part.
 #[test]
-fn fuse_overview_follows_the_afdd_property() {
+fn board_overview_follows_the_afdd_property() {
     let mut k = boards();
     crate::properties::set(&mut k.prj, &crate::properties::Object::Device("+UV1-F4".into()), "device.afdd", "false").unwrap();
     let an = Analysis::checked(&k.prj);
-    let t = an.report(&k.prj, ReportKind::FuseOverview).unwrap();
+    let t = an.report(&k.prj, ReportKind::BoardOverview).unwrap();
     assert_eq!(t.rows.iter().find(|r| r[1] == "+UV1-F4").unwrap()[2], "Circuit breaker");
 }
 
 /// The board of a protective device is the cabinet it is placed in.
 #[test]
-fn fuse_overview_takes_the_board_from_the_layout() {
+fn board_overview_takes_the_board_from_the_layout() {
     let prj = crate::sample::example("electrical_room").unwrap();
     let an = Analysis::checked(&prj);
-    let t = an.report(&prj, ReportKind::FuseOverview).unwrap();
+    let t = an.report(&prj, ReportKind::BoardOverview).unwrap();
     assert!(!t.rows.is_empty());
     for r in &t.rows {
         if let Some(ei) = crate::installation::board_of(&prj, &r[1]) {
@@ -430,7 +430,7 @@ fn fuse_overview_takes_the_board_from_the_layout() {
 
 /// Only the cables leaving the board: not those between the devices of the rooms.
 #[test]
-fn fuse_overview_names_the_cables_leaving_the_board() {
+fn board_overview_names_the_cables_leaving_the_board() {
     use crate::installation::{Circuit, Kind, Leg, SchematicDevice};
     let leg = |from: &str, to: &str, cable: &str| Leg { from: from.into(), to: to.into(), cable: cable.into(), cable_type: "NYM-J 3x1.5".into(), mm2: 1.5, length: None, routed: false };
     let device = |tag: &str| SchematicDevice { tag: tag.into(), kind: Kind::Socket, text: String::new(), part: None, placed: None };
@@ -447,4 +447,28 @@ fn fuse_overview_names_the_cables_leaving_the_board() {
     };
     let prj = Project::default();
     assert_eq!(electrical_reports::outgoing_cables(&prj, &[], "-F1", Some(&c)), ["-W1 NYM-J 3x1.5"]);
+}
+
+/// The devices below the residual current device they are fed from, and what a breaker
+/// without function text feeds.
+#[test]
+fn board_overview_is_a_tree_with_the_texts_of_what_is_fed() {
+    let mut k = boards();
+    k.prj.pages[0].symbols.iter_mut().find(|s| s.tag == "+UV1-F1").unwrap().function_text.clear();
+    let an = Analysis::checked(&k.prj);
+    let t = an.report(&k.prj, ReportKind::BoardOverview).unwrap();
+    assert_eq!(t.tree_column, Some(1));
+    let depth = |tag: &str| t.depth[t.rows.iter().position(|r| r[1] == tag).unwrap()];
+    assert_eq!((depth("+UV1-Q1"), depth("+UV1-F1"), depth("+UV1-F2"), depth("+UV1-F4")), (0, 1, 1, 1));
+    assert_eq!((depth("+UV1-Q0"), depth("+UV2-F5")), (0, 0));
+    let f1 = t.rows.iter().find(|r| r[1] == "+UV1-F1").unwrap();
+    assert_eq!(f1[6], "Socket outlet +R1-XD1, +R1-XD2", "{f1:?}");
+    // As a page shows it: the tree drawn in the device column, the tags shortened.
+    let view = crate::model::report_blocks::ReportView { tree: true, tag_parts: Some(TagParts { function: false, installation: false, location: false, product: true }), ..Default::default() };
+    let shown = crate::report_blocks::view_table(&t, &view);
+    let row = |tag: &str| shown.rows[t.rows.iter().position(|r| r[1] == tag).unwrap()].clone();
+    assert_eq!(row("+UV1-F1")[1], "|-> -F1");
+    assert_eq!(row("+UV1-F1")[5], "-Q1", "the residual current device column is shortened too");
+    assert_eq!(row("+UV1-Q1")[1], "-Q1");
+    assert_eq!(row("+UV1-Q1")[0], "+UV1", "the board column is no tag column");
 }

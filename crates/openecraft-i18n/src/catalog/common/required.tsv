@@ -31,6 +31,7 @@ Angle	Winkel	Angle	Ángulo
 Apply	Übernehmen	Appliquer	Aplicar
 Approve	Genehmigen	Approuver	Aprobar
 Approvers	Genehmiger	Approbateurs	Aprobadores
+Arc fault detection (AFDD)	Fehlerlichtbogen-Erkennung (AFDD)	Détection d'arc électrique (DDA)	Detección de arco eléctrico (AFDD)
 As with every website, the server that delivers this page receives the IP address of your device in order to answer.	Wie bei jeder Website erhält der Server, der diese Seite ausliefert, die IP-Adresse Ihres Geräts, um antworten zu können.	Comme pour tout site web, le serveur qui délivre cette page reçoit l'adresse IP de votre appareil afin de pouvoir répondre.	Como en cualquier sitio web, el servidor que entrega esta página recibe la dirección IP de su dispositivo para poder responder.
 Automatic	Automatisch	Automatique	Automático
 Automation	Automatisierung	Automatisation	Automatización
@@ -149,6 +150,7 @@ Direction	Richtung	Direction	Dirección
 Discard	Verwerfen	Abandonner	Descartar
 Discard changes	Änderungen verwerfen	Abandonner les modifications	Descartar los cambios
 Display	Darstellung	Affichage	Presentación
+Distribution board overview	Verteilerübersicht	Vue d'ensemble des tableaux de distribution	Resumen de los cuadros de distribución
 Documentation	Dokumentation	Documentation	Documentación
 Documents	Dokumente	Documents	Documentos
 Done	Erledigt	Terminé	Hecho
@@ -374,6 +376,7 @@ No plot frame named {}	Kein Plotrahmen namens {}	Aucun cadre nommé {}	Ningún m
 No plug {}	Kein Stecker {}	Aucun connecteur {}	No hay conector {}
 No protective measure of its own	Keine eigene Schutzmaßnahme	Pas de mesure de protection propre	Sin medida de protección propia
 No report block named {}	Kein Auswertungsblock namens {}	Aucun bloc de rapports nommé {}	Ningún bloque de informes llamado {}
+No report block {}	Kein Auswertungsblock {}	Aucun bloc de rapports {}	Ningún bloque de informes {}
 No segment {}	Kein Segment {}	Aucun segment {}	No hay ningún segmento {}
 No socket outlet, switch or light {}	Keine Steckdose, kein Schalter und keine Leuchte {}	Aucune prise, aucun interrupteur ni luminaire {}	Ninguna toma, interruptor ni luminaria {}
 No station {}	Keine Station {}	Pas de station {}	No hay estación {}
@@ -431,7 +434,9 @@ Page names, separated by ','	Seitennamen, durch ',' getrennt	Noms de page, sépa
 Page properties	Seiteneigenschaften	Propriétés de la page	Propiedades de la página
 Page templates	Seitenvorlagen	Modèles de page	Plantillas de página
 Page type	Seitentyp	Type de page	Tipo de página
+Page {} is a fixed page output from another project	Seite {} ist eine feste Seite aus einem anderen Projekt	La page {} est une page figée issue d'un autre projet	La página {} es una página fija de otro proyecto
 Page {} is locked	Seite {} ist gesperrt	La page {} est verrouillée	La página {} está bloqueada
+Page {} is no report page	Seite {} ist keine Berichtsseite	La page {} n'est pas une page de rapport	La página {} no es una página de informe
 Page {} of {}	Seite {} von {}	Page {} sur {}	Página {} de {}
 Page {}: {}	Seite {}: {}	Page {} : {}	Página {}: {}
 Pages	Seiten	Pages	Páginas

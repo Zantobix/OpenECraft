@@ -40,6 +40,12 @@ section per residual current device) is one busbar per section, and the first
 terminal of a section says which busbar it is separated from
 (`busbar 2 (N3 – N4), separated from 1`). Multi-level terminals are listed level by
 level with their jumpers; a wire jumper bridges the levels.
+The page draws it graphically (unless its page properties ask for the table): a side
+view of the strip with every terminal a line from its external to its internal clamp
+point in the colour of its conductor (*Conductor kind*: N blue, PE green and yellow,
+the phases black), the levels of a block stepped against each other, a dot at the
+jumper shaft of every jumpered terminal with the bridge from dot to dot and a busbar
+as a bar beside them; the targets stand beside the clamps.
 
 ## Plugs
 

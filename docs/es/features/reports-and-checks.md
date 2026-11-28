@@ -32,24 +32,40 @@ configurado; los metadatos y las clasificaciones locales tienen prioridad para l
 números de artículo repetidos. `list_cable_parts` expone las opciones del proyecto y las
 integradas a los plugins y a CLI/MCP.
 
-**Cuadro de protecciones** (informe *Cuadro de protecciones de los cuadros de
-distribución*, `fuse_overview`): cuadro por cuadro – el armario en el que está
+**Resumen de los cuadros de distribución** (informe *Resumen de los cuadros de
+distribución*, `board_overview`): cuadro por cuadro – el armario en el que está
 colocado un dispositivo, si no la ubicación de su identificador (`+UV1`) – cada
 dispositivo de protección alimentado por la red, cada diferencial y protector contra
 sobretensiones, los interruptores principales e interruptores en la red del cuadro,
-en el orden del esquema. Cada fila indica la clase (interruptor automático, fusible,
-guardamotor, interruptor diferencial combinado para un automático con función
-diferencial, detector de arco eléctrico (AFDD) por la propiedad *Detección de arco
-eléctrico (AFDD)* o `AFDD` / `arc fault` en la descripción o los datos técnicos de su
-artículo, interruptor diferencial, protector contra sobretensiones, interruptor
-principal, interruptor), el tipo (`B 16 A`, `40 A RCD 30 mA`, el *Tipo de protección
-contra sobretensiones*), las fases, el diferencial que lo protege, el texto de
-función (*Reserva* cuando no hay nada conectado detrás), las salas de su circuito,
-los cables que salen de él con su tipo y dónde está dibujado (un clic lleva allí). La
-propiedad de dispositivo *Cuadro de protecciones* añade con *Mostrar* cualquier otro
-dispositivo que se maniobra en un cuadro (p. ej. un temporizador de escalera) y quita
-uno con *Ocultar*. Como páginas de informe, un bloque de informe con *Páginas nuevas
-para cada grupo* da a cada cuadro sus propias páginas.
+como árbol: cada dispositivo bajo el que lo alimenta en el mismo cuadro (los
+automáticos bajo su interruptor diferencial), en el orden del esquema, para ver qué
+corta la apertura de un diferencial. Cada fila indica la clase (interruptor
+automático, fusible, guardamotor, interruptor diferencial combinado para un automático
+con función diferencial, detector de arco eléctrico (AFDD) por el interruptor
+*Detección de arco eléctrico (AFDD)* o `AFDD` / `arc fault` en la descripción o los
+datos técnicos de su artículo, interruptor diferencial, protector contra
+sobretensiones, interruptor principal, interruptor), el tipo (`B 16 A`,
+`40 A RCD 30 mA`, el *Tipo de protección contra sobretensiones*), las fases, el
+diferencial que lo protege, el texto de función (*Reserva* cuando no hay nada
+conectado detrás; sin texto, lo que alimenta: `Toma de corriente -XD1, -XD2`), las
+salas de su circuito, los cables que salen del cuadro con su tipo y dónde está
+dibujado (un clic en el panel *Informes* lleva allí). En las propiedades del
+dispositivo (pestaña *Dispositivo*), *Resumen de los cuadros de distribución* añade
+con *Mostrar* cualquier otro dispositivo que se maniobra en un cuadro (p. ej. un
+temporizador de escalera) y quita uno con *Ocultar*; los dispositivos de protección
+tienen allí el interruptor *Detección de arco eléctrico (AFDD)*.
+
+**Páginas de informe** (*Propiedades de la página* de una página de informe,
+`set_report_page`): los grupos mostrados – cuadros, regletas, cables … de la primera
+columna, marcados uno a uno o con un patrón (`+UV1`, `-X*`) –, las columnas mostradas
+(una casilla por columna), los aspectos de los identificadores (*Identificadores mostrados como*:
+identificador completo, ubicación y dispositivo …), el árbol de un informe que lo tiene
+(*Como árbol*: `|-> -F1` bajo `-Q1`) y la forma gráfica o la tabla. *Continuar en las
+páginas siguientes* (`continue_report_page`) añade tras la página páginas para las
+filas que no caben y las quita cuando hay menos filas (la página se convierte en un
+bloque de informes que sigue el proyecto); *Cada grupo en sus propias páginas* da a
+cada cuadro o regleta sus propias páginas. Un bloque así se actualiza tras cada
+cambio, los demás bloques de informes con *Sigue el proyecto* también.
 
 ## Formularios
 

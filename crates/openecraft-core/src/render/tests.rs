@@ -846,3 +846,27 @@ fn the_links_of_a_symbol_are_those_drawn_with_it_also_in_a_reference_field() {
     assert_eq!(field.iter().map(|l|l.1).collect::<Vec<_>>(),[1],"the reference field links instead");
     assert!(!field[0].0.contains(xref.center()));
 }
+
+/// The terminal wiring diagram as a side view of the strip: N blue, PE green with
+/// yellow dashes, the jumper as a bridge between the dots of its terminals.
+#[test]
+fn graphical_terminal_wiring_diagram() {
+    use crate::model::ReportKind;
+    let mut prj = crate::sample::demo_project();
+    let data = prj.strips.entry("-X1".into()).or_default();
+    data.jumpers.insert("1".into(), 1);
+    data.jumpers.insert("2".into(), 1);
+    let at = prj.pages.len();
+    crate::ops::add_page(&mut prj, PageKind::Report(ReportKind::TerminalWiring.into()), at);
+    let an = Analysis::with_builtin(&prj);
+    let table = crate::report_blocks::page_table(&prj, &an, at).unwrap();
+    assert!(table.graphic, "graphic without a form");
+    let mut d = Rec::default();
+    draw_page(&mut d, &prj, &an.index, &an, at, &Opts::default());
+    let texts: Vec<&str> = d.texts.iter().map(|t| t.1.as_str()).collect();
+    assert!(texts.contains(&"-X1"), "strip heading: {texts:?}");
+    assert!(texts.iter().any(|t| t.starts_with("-M1:U1")), "external target: {texts:?}");
+    assert!(texts.iter().any(|t| t.starts_with('1')), "terminal 1: {texts:?}");
+    assert!(d.lines.contains(&Ink::Color([0, 140, 60])) && d.lines.contains(&Ink::Color([230, 200, 0])), "the PE terminal in green and yellow");
+    assert!(!texts.contains(&"External target"), "no table header");
+}

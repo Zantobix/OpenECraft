@@ -29,22 +29,36 @@ The cable picker includes project-local parts as well as the configured catalog;
 local metadata and classifications take precedence for repeated article numbers.
 `list_cable_parts` exposes the project and built-in choices to plugins and CLI/MCP.
 
-**Fuse overview** (report *Fuse overview of the distribution boards*, `fuse_overview`):
-board by board – the cabinet a device is placed in, else the location of its tag
-(`+UV1`) – every protective device fed from the mains, every residual current and
-surge protective device, the main switches and switches on the mains of the board,
-in the order of the schematic. Each row has the kind (circuit breaker, fuse, motor
-protection switch, RCBO for a breaker with a residual current function, arc fault
-detection device by the property *Arc fault detection (AFDD)* or `AFDD` / `arc fault`
-in the description or tech data of its part, residual current device, surge
-protective device, main switch, switch), the type (`B 16 A`, `40 A RCD 30 mA`, the
-*Surge protection type*), the phases, the residual current device protecting it, the
-function text (*Spare* when nothing is connected behind it), the rooms of its circuit,
-the cables leaving it with their type and where it is drawn (a click jumps there).
-The device property *Fuse overview* shows any other device the user operates in a
-board (e.g. a staircase timer) with *Show* and leaves a device out with *Hide*. As
-report pages, a report block with *New pages for every group* gives every board its
-own pages.
+**Distribution board overview** (report *Distribution board overview*,
+`board_overview`): board by board – the cabinet a device is placed in, else the
+location of its tag (`+UV1`) – every protective device fed from the mains, every
+residual current and surge protective device and the main switches and switches on
+the mains of the board, as a tree: every device below the one it is fed from in the
+same board (the circuit breakers below their residual current device), in the order of
+the schematic, so that it shows what switching off a residual current device cuts off.
+Each row has the kind (circuit breaker, fuse, motor protection switch, RCBO for a
+breaker with a residual current function, arc fault detection device by the switch
+*Arc fault detection (AFDD)* or `AFDD` / `arc fault` in the description or tech data
+of its part, residual current device, surge protective device, main switch, switch),
+the type (`B 16 A`, `40 A RCD 30 mA`, the *Surge protection type*), the phases, the
+residual current device protecting it, the function text (*Spare* when nothing is
+connected behind it; without one what it feeds: `Socket outlet -XD1, -XD2`), the rooms
+of its circuit, the cables leaving the board with their type and where it is drawn (a
+click in the *Reports* pane jumps there). In the device properties (tab *Device*)
+*Distribution board overview* shows any other device the user operates in a board
+(e.g. a staircase timer) with *Show*, leaves one out with *Hide*, and protective
+devices have the switch *Arc fault detection (AFDD)*.
+
+**Report pages** (*Page properties* of a report page, `set_report_page`): the groups
+shown – boards, strips, cables … of the first column, ticked one by one or as a pattern
+(`+UV1`, `-X*`) –, the columns shown (a tick per column), the aspects of the device
+tags (*Tags shown as*: full tag, location and device …), the tree of a report that has
+one (*As a tree*: `|-> -F1` below `-Q1`) and the graphical form or the table.
+*Continue on following pages* (`continue_report_page`) adds pages after the page for
+the rows that do not fit and removes them again when the rows shrink (the page becomes
+a report block that follows the project); *Every group on pages of its own* gives
+every board or strip its own pages. Such a block is updated after every change; other
+report blocks with *Follows the project* too.
 
 ## Forms
 

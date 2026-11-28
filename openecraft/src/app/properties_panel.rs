@@ -950,6 +950,7 @@ impl App {
                 properties_ui::property_grid(ui, &mut self.session.prj, &properties::Object::Device(edited.tag.clone()), &mut self.properties_ui.device_grid, "devgrid");
             }
             if tab == PropTab::Device {
+                super::report_page_ui::board_overview_row(ui, &mut self.session.prj, &edited.tag);
                 if let Some((ei, _)) = openecraft_core::panel::locate(&self.session.prj, &edited.tag) {
                     let enc = self.session.prj.layout.enclosures[ei].name.clone();
                     if icons::text_button(ui, Icon::Database, &tr_fmt!("Show in panel layout ({})", enc)).clicked() {

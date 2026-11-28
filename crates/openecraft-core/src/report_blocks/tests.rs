@@ -212,10 +212,86 @@ fn totals_sum_numbers_with_their_unit() {
         widths: vec![1.0; 3],
         rows: vec![vec!["-W1".into(), "1.5 m".into(), "x".into()], vec!["-W2".into(), "2,25 m".into(), "".into()], vec!["-W3".into(), "".into(), "".into()]],
         targets: vec![None; 3],
+        ..Default::default()
     };
     let totals = total_row(&table, &[0, 1, 2], &[0, 1, 2], &["Length".into()]);
     assert_eq!(totals, vec!["Total", "3.75 m", ""]);
     // Only the rows given (e.g. those of one group).
     assert_eq!(total_row(&table, &[1], &[1], &["Length".into()]), vec!["2.25 m"]);
     assert_eq!(total_row(&table, &[0], &[0], &["Nothing".into()]), vec![""]);
+}
+
+/// A report page added on its own.
+fn report_page(prj: &mut Project, kind: ReportKind) -> usize {
+    let id = prj.new_id();
+    let page = Page::new(id, "R1", "", PageKind::Report(kind.into()));
+    prj.pages.push(page);
+    prj.pages.len() - 1
+}
+
+#[test]
+fn a_page_shows_some_groups_and_columns() {
+    let mut prj = demo_project();
+    let pi = report_page(&mut prj, ReportKind::DeviceList);
+    let an = Analysis::checked(&prj);
+    let table = an.report(&prj, ReportKind::DeviceList).unwrap();
+    let all = page_table(&prj, &an, pi).unwrap();
+    let names = groups(&table, 0);
+    assert!(names.len() > 2, "{names:?}");
+    let hide = table.header_keys()[1].to_string();
+    let part = prj.pages[pi].report.get_or_insert_with(Default::default);
+    part.groups = format!("{}, {}", names[0], names[2]);
+    part.view.hidden = vec![hide.clone()];
+    let t = page_table(&prj, &an, pi).unwrap();
+    assert!(!t.rows.is_empty());
+    assert!(t.rows.iter().all(|r| r[0] == names[0] || r[0] == names[2]), "{:?}", t.rows);
+    assert_eq!(t.headers.len() + 1, all.headers.len());
+    assert!(!t.headers.iter().any(|h| *h == hide));
+}
+
+#[test]
+fn the_terminal_wiring_diagram_is_graphic_unless_the_page_says_table() {
+    let mut prj = demo_project();
+    let pi = report_page(&mut prj, ReportKind::TerminalWiring);
+    let an = Analysis::checked(&prj);
+    assert!(page_table(&prj, &an, pi).unwrap().graphic);
+    prj.pages[pi].report.get_or_insert_with(Default::default).view.graphic = Some(false);
+    let t = page_table(&prj, &an, pi).unwrap();
+    assert!(!t.graphic);
+    assert_eq!(t.per_page, ROWS_PER_PAGE);
+    // Reports without a graphical form stay tables.
+    let pi = report_page(&mut prj, ReportKind::DeviceList);
+    prj.pages[pi].report.get_or_insert_with(Default::default).view.graphic = Some(true);
+    assert!(!page_table(&prj, &an, pi).unwrap().graphic);
+}
+
+#[test]
+fn a_page_continues_on_following_pages_that_follow_the_rows() {
+    let mut prj = demo_project();
+    prj.forms.schemes.push(ReportScheme { name: "Short".into(), kind: ReportKind::ConnectionList.into(), form: ReportForm { rows: 3, ..Default::default() } });
+    let pi = report_page(&mut prj, ReportKind::ConnectionList);
+    prj.pages[pi].report.get_or_insert_with(Default::default).scheme = "Short".into();
+    let an = Analysis::checked(&prj);
+    let rows = an.report(&prj, ReportKind::ConnectionList).unwrap().rows.len();
+    assert!(rows > 3);
+    assert!(page_table(&prj, &an, pi).unwrap().more > 0);
+    let name = continue_page(&mut prj, &an, pi, false).unwrap();
+    assert_eq!(name, "R1");
+    let pages = report_pages(&prj, Some("R1"));
+    assert_eq!(pages.len(), rows.div_ceil(3));
+    assert_eq!(prj.pages[pages[0]].name, "R1", "the page keeps its name and place");
+    assert_eq!(pages[0], pi);
+    let an = Analysis::checked(&prj);
+    assert!(page_table(&prj, &an, pages[0]).unwrap().continued);
+    // Fewer rows per page: the block follows with more pages; nothing to do when unchanged.
+    let before = prj.clone();
+    assert_eq!(follow(&mut prj, &before), 0);
+    prj.forms.schemes[0].form.rows = 2;
+    assert_eq!(follow(&mut prj, &before), 1);
+    assert_eq!(report_pages(&prj, Some("R1")).len(), rows.div_ceil(2));
+    let after = prj.clone();
+    assert_eq!(follow(&mut prj, &after), 0);
+    // Saved with the project.
+    let back = Project::from_json(&prj.to_json()).unwrap();
+    assert!(back.report_blocks.iter().any(|b| b.name == "R1" && b.auto));
 }
