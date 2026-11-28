@@ -318,3 +318,45 @@ fn a_wrong_plan_option_leaves_the_page_as_it_was() {
     let first = s.project().unwrap().pages[0].name.clone();
     assert!(run(&mut s, "set_page", json!({ "page": first, "legend": false })).is_err());
 }
+
+#[test]
+fn devices_of_the_installation_move_and_are_taken_out() {
+    let (mut s, room, at) = room_session();
+    let breakers = run(&mut s, "list_breakers", json!({})).unwrap();
+    let f2 = breakers.as_array().unwrap().iter().find(|b| b["breaker"].as_str().unwrap().ends_with("-F2")).unwrap()["breaker"].clone();
+    let q = at(s.project().unwrap(), 0.02, 0.5);
+    let socket = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "part": "GEN.SOCKET-F-UP", "x": q[0], "z": q[1] })).unwrap();
+    let tag = socket["device"].as_str().unwrap().to_string();
+    // To the opposite wall: the same device, by its tag.
+    let q = at(s.project().unwrap(), 0.98, 0.5);
+    let moved = run(&mut s, "move_installation", json!({ "item": tag, "x": q[0], "z": q[1] })).unwrap();
+    assert_eq!((moved["id"].clone(), moved["device"].as_str()), (socket["id"].clone(), Some(tag.as_str())));
+    assert_ne!(moved["face"], socket["face"], "on another wall: {moved}");
+    let c = run(&mut s, "list_circuits", json!({ "breaker": f2, "estimate": true })).unwrap();
+    assert!(c[0]["devices"].as_array().unwrap().iter().any(|d| d["device"] == tag.as_str() && d["room"] == room.as_str()), "{c}");
+    // Taken out by its id: still in the schematic, not placed.
+    let id = moved["id"].as_u64().unwrap().to_string();
+    let out = run(&mut s, "remove_installation", json!({ "item": id })).unwrap();
+    assert_eq!(out["device"], tag.as_str());
+    let c = run(&mut s, "list_circuits", json!({ "breaker": f2, "estimate": true })).unwrap();
+    assert!(c[0]["devices"].as_array().unwrap().iter().any(|d| d["device"] == tag.as_str() && d["room"].is_null()), "{c}");
+    assert!(run(&mut s, "remove_installation", json!({ "item": "-NOPE" })).is_err());
+}
+
+#[test]
+fn plan_pages_show_walls_ceilings_and_facades() {
+    let (mut s, room, _) = room_session();
+    let prj = s.project_mut().unwrap();
+    let ri = prj.layout.enclosures.iter().position(|e| e.is_room()).unwrap();
+    let b = panel::buildings::add_building(prj, "+B9").unwrap();
+    let level = prj.layout.buildings[b].levels[0].id;
+    prj.layout.enclosures[ri].level = level;
+    let id = prj.new_id();
+    prj.pages.push(openecraft_core::model::Page::new(id, "IP9", "", openecraft_core::model::PageKind::InstallationPlan(level)));
+    for view in ["ceiling", "facade:rear", &format!("wall:{room}:wall1"), &format!("wall:{room}:outside2"), "floor"] {
+        run(&mut s, "set_page", json!({ "page": "IP9", "projection": view })).unwrap_or_else(|e| panic!("{view}: {e}"));
+    }
+    assert!(run(&mut s, "set_page", json!({ "page": "IP9", "projection": "facade:up" })).is_err());
+    assert!(run(&mut s, "set_page", json!({ "page": "IP9", "projection": "wall:+NOPE:wall1" })).is_err());
+    assert!(run(&mut s, "set_page", json!({ "page": "IP9", "projection": format!("wall:{room}:wall99") })).is_err());
+}

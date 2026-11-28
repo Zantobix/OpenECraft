@@ -677,6 +677,8 @@ pub struct Editor {
     pub keys_active: bool,
     /// The items copied or cut last (Home › Paste).
     pub clip: Option<Clip>,
+    /// The device worked on on an installation plan page.
+    pub plan: PlanEdit,
 }
 
 impl Default for Editor {
@@ -737,6 +739,7 @@ impl Default for Editor {
             place_once: None,
             keys_active: true,
             clip: None,
+            plan: PlanEdit::default(),
         }
     }
 }
@@ -1372,6 +1375,11 @@ impl Editor {
             self.review_mouse(&resp, world, &mut out);
         } else if editable {
             self.mouse(ui, &resp, prj, page_i, rect, world, snapped, an, idx, &mut out);
+        } else if self.tool == Tool::Select && self.plan_editable(prj, page_i) {
+            // Installation plan: its devices are moved, taken out and put in here.
+            if !self.plan_mouse(ui, &resp, prj, page_i, (rect, world), an, &mut out) {
+                self.select_mouse(ui, &resp, prj, idx, page_i, rect, world, false, &mut out);
+            }
         } else if resp.dnd_hover_payload::<PartDrag>().is_some() {
             // A part dragged onto a released, locked or generated page: say why it
             // cannot be dropped here instead of ignoring it.
@@ -1439,6 +1447,9 @@ impl Editor {
                 MarkupKind::Line => g.line(a, b, 0.5, Ink::Ghost, true),
                 _ => g.rect(a, b, 0.5, Ink::Ghost, false),
             }
+        }
+        if self.tool == Tool::Select && self.plan_editable(prj, page_i) {
+            self.draw_plan_edit(&painter, (rect, world), &pal, prj, an, page_i);
         }
         if self.tool == Tool::Select && matches!(self.drag, Drag::None) && !matches!(pointer_prop, Some(PropHandle::Wire(..))) {
             self.draw_hover(&painter, rect, &pal, prj, page_i, pointer_hit, an);
@@ -1579,6 +1590,8 @@ impl Editor {
                 tr("Released page – unlock it in Project data › Revisions to change it")
             } else if self.read_only && !self.read_only_reason.is_empty() {
                 self.read_only_reason.as_str()
+            } else if self.plan_editable(prj, page_i) {
+                tr("Installation plan – drag a device to move it, Delete takes it out of its room, drop a part from the parts onto a room to put it in; the rest via the page properties")
             } else {
                 tr("Generated page – edit via page properties")
             };
@@ -2667,6 +2680,9 @@ fn intr_place(def: &SymbolDef, s: &SymbolInst, t: render::IntrText) -> TextPlace
     let (label, xref) = render::interruption_places(def, s);
     if t == render::IntrText::Label { label } else { xref }
 }
+
+mod plan_page;
+pub use plan_page::PlanEdit;
 
 #[cfg(test)]
 mod tests;

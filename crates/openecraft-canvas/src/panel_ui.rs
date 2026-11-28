@@ -2388,9 +2388,7 @@ impl PanelUi {
                     .on_hover_text(tr("Extent of the floor plan; change it by its walls"));
             }
             ui.end_row();
-            ui.label(tr("Height"));
-            ui.add(egui::DragValue::new(&mut e.height).speed(10.0).range(500.0..=20_000.0).suffix(" mm"));
-            ui.end_row();
+            height_rows(ui, e);
             level = Self::level_row(ui, &levels, e);
             ui.label(if building.is_some() { tr("Place in the building") } else { tr("Place in the plant") });
             let current = e.site;
@@ -5010,6 +5008,17 @@ fn face_summary(items: &[&PanelItem]) -> String {
     .map(|(n, one, many)| if n == 1 { one.to_string() } else { many })
     .collect();
     if parts.is_empty() { tr("empty").to_string() } else { parts.join(", ") }
+}
+
+/// The rows of a room's height and wall thickness in its properties.
+fn height_rows(ui: &mut egui::Ui, e: &mut panel::Enclosure) {
+    ui.label(tr("Height"));
+    ui.add(egui::DragValue::new(&mut e.height).speed(10.0).range(500.0..=20_000.0).suffix(" mm"));
+    ui.end_row();
+    ui.label(tr("Wall thickness"));
+    ui.add(egui::DragValue::new(&mut e.wall_thickness).speed(5.0).range(0.0..=panel::MAX_WALL_THICKNESS).suffix(" mm"))
+        .on_hover_text(tr("Thickness of the walls of the room (0: thin walls); a wall shared with a neighbouring room is as thick as the space between them, its doors and windows go through all of it"));
+    ui.end_row();
 }
 
 #[cfg(test)]

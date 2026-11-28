@@ -870,6 +870,12 @@ pub struct Enclosure {
     /// measured in the building's floor plan and the room stands on the level's floor.
     #[serde(skip_serializing_if = "is_zero")]
     pub level: u64,
+    /// Rooms: thickness of their walls and ceiling outside the outline, mm; 0 for the
+    /// thin walls of [`crate::panel::rooms::ROOM_WALL`]. A wall shared with a
+    /// neighbouring room is as thick as the space between both rooms
+    /// ([`crate::panel::rooms::shared_walls`]).
+    #[serde(skip_serializing_if = "is_zero")]
+    pub wall_thickness: f32,
 }
 
 /// What an [`Enclosure`] is.

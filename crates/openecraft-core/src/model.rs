@@ -810,6 +810,110 @@ pub struct PlanView {
     /// to them, and cut off at the edge of the drawing area; none: the whole level.
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub rooms: Vec<String>,
+    /// What the page shows of its level: the floor plan, the ceilings, a wall of a room
+    /// or a side of the building.
+    #[serde(skip_serializing_if = "PlanProjection::is_floor")]
+    pub projection: PlanProjection,
+}
+
+/// What an installation plan page shows: the level seen from above, only what is on
+/// its ceilings, one wall of a room seen from in front of it (a wall from inside, a side
+/// of an inner wall, the outside of a wall), or one side of the building seen from
+/// outside (its façade on every level, with what is mounted on it).
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PlanProjection {
+    #[default]
+    Floor,
+    Ceiling,
+    /// The room (its name) and its face (`wall2`, `inner1a`, `outside3`).
+    Wall { room: String, face: String },
+    Facade(FacadeSide),
+}
+
+/// A side of a building, seen from outside: the front faces +z of its floor plan, the
+/// rear -z, the right side +x, the left side -x.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum FacadeSide {
+    #[default]
+    Front,
+    Right,
+    Rear,
+    Left,
+}
+
+impl FacadeSide {
+    pub const ALL: [FacadeSide; 4] = [FacadeSide::Front, FacadeSide::Right, FacadeSide::Rear, FacadeSide::Left];
+
+    /// Name shown (English, translate with `tr`).
+    pub fn title(self) -> &'static str {
+        match self {
+            FacadeSide::Front => tr_const!("Front facade"),
+            FacadeSide::Right => tr_const!("Right facade"),
+            FacadeSide::Rear => tr_const!("Rear facade"),
+            FacadeSide::Left => tr_const!("Left facade"),
+        }
+    }
+
+    pub fn key(self) -> &'static str {
+        match self {
+            FacadeSide::Front => "front",
+            FacadeSide::Right => "right",
+            FacadeSide::Rear => "rear",
+            FacadeSide::Left => "left",
+        }
+    }
+
+    /// The direction the viewer looks from (out of the building) in its floor plan
+    /// (x, z), and the direction to the right of the viewer.
+    pub fn axes(self) -> ([f32; 2], [f32; 2]) {
+        match self {
+            FacadeSide::Front => ([0.0, 1.0], [1.0, 0.0]),
+            FacadeSide::Rear => ([0.0, -1.0], [-1.0, 0.0]),
+            FacadeSide::Right => ([1.0, 0.0], [0.0, -1.0]),
+            FacadeSide::Left => ([-1.0, 0.0], [0.0, 1.0]),
+        }
+    }
+}
+
+impl PlanProjection {
+    pub fn is_floor(&self) -> bool {
+        *self == PlanProjection::Floor
+    }
+
+    /// Seen from the side (a wall or a façade), not from above.
+    pub fn is_elevation(&self) -> bool {
+        matches!(self, PlanProjection::Wall { .. } | PlanProjection::Facade(_))
+    }
+
+    /// Text on the command line: `floor`, `ceiling`, `wall:+KIT:wall2`, `facade:front`.
+    pub fn key(&self) -> String {
+        match self {
+            PlanProjection::Floor => "floor".into(),
+            PlanProjection::Ceiling => "ceiling".into(),
+            PlanProjection::Wall { room, face } => format!("wall:{room}:{face}"),
+            PlanProjection::Facade(side) => format!("facade:{}", side.key()),
+        }
+    }
+
+    pub fn from_key(text: &str) -> Option<PlanProjection> {
+        let t = text.trim();
+        let mut parts = t.splitn(3, ':').map(str::trim);
+        match parts.next()?.to_ascii_lowercase().as_str() {
+            "floor" | "" => Some(PlanProjection::Floor),
+            "ceiling" => Some(PlanProjection::Ceiling),
+            "wall" => {
+                let (room, face) = (parts.next()?, parts.next()?);
+                (!room.is_empty() && !face.is_empty()).then(|| PlanProjection::Wall { room: room.into(), face: face.to_ascii_lowercase() })
+            }
+            "facade" => {
+                let side = parts.next()?;
+                FacadeSide::ALL.into_iter().find(|s| s.key().eq_ignore_ascii_case(side)).map(PlanProjection::Facade)
+            }
+            _ => None,
+        }
+    }
 }
 
 impl Default for PlanView {
@@ -829,6 +933,7 @@ impl Default for PlanView {
             cabinet_scale: 100.0,
             tag_parts: TagParts::default(),
             rooms: Vec::new(),
+            projection: PlanProjection::Floor,
         }
     }
 }
@@ -902,13 +1007,15 @@ impl TagParts {
         *self == TagParts::default()
     }
 
-    /// Tag `tag` with only these aspects (the device name always).
+    /// Tag `tag` with only these aspects (the device name always), in the order they
+    /// are written in: `+KIT=SD1-X1` keeps its location in front, `-X1.6+F1` behind.
     pub fn apply(&self, tag: &str) -> String {
         if self.is_all() {
-            tag.to_string()
-        } else {
-            structure::Dt::parse(tag).tag_with(|a| self.get(a))
+            return tag.to_string();
         }
+        let parts = structure::tag_segments(tag);
+        let name = parts.iter().rposition(|(a, _)| *a == structure::Aspect::Product);
+        parts.iter().enumerate().filter(|(k, (a, _))| Some(*k) == name || self.get(*a)).map(|(_, (_, s))| *s).collect()
     }
 
     pub fn get_mut(&mut self, a: structure::Aspect) -> &mut bool {

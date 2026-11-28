@@ -315,6 +315,13 @@ or Enter), walls are dragged to move them or get a length in the room's properti
   of the wall the opening sign (its tip at the hinges, dashed when the leaf opens away
   from the viewer) or an arrow. The check keeps the swing of an inward door and the way
   of a sliding door in front of the wall free of cabinets.
+- **Wall thickness and shared walls:** *Wall thickness* in the room's properties
+  (`set_room wall_thickness=…`, 0 for thin walls) is the thickness of its walls outside
+  the outline. Two rooms of a level whose walls face each other at most 500 mm apart
+  share that stretch of wall, as thick as the space between them (`list_rooms` lists it
+  under `shared_with`): a door, window or wall penetration in one side goes through all
+  of it, installation plan pages draw the wall between both rooms solid and the door
+  once, and the check reports a door or window entered in both sides at the same place.
 - **Cabinets** (their line-ups) stand in it at a place of the floor plan, dragged there
   in the floor plan (R turns the selected one about its centre), and move with the
   room. A cabinet outside the room, across a wall, in an inner wall or in the swing
@@ -831,7 +838,9 @@ lengths of their cables are those of the 3D routing.
   with `tags`, `circuit_colors`, `connections`, `room_names`), and the tags shortened to
   some of their aspects (*Tags shown as*: full tag, location and device, function and
   device, device only, or custom; `tag_parts`: only the product aspect shows `-X1.6` of
-  `=SD1+F1-X1.6`).
+  `=SD1+F1-X1.6`). The aspects stay in the order they are written in (`-X1.6+F1` keeps its
+  location behind), and a tag that would cover a symbol or another tag moves to a free
+  place round its symbol, with a thin line to it.
   The legend can be switched off or placed at the right, the left, the top or the bottom
   (`legend`, `legend_at`); a room shows its location identifier and the description of
   that identifier from the structure management, e.g. *Kitchen* (*Description* in the
@@ -839,6 +848,19 @@ lengths of their cables are those of the 3D routing.
   (`room_names`, `room_descriptions`), and the font sizes of tags, rooms and legend
   (in pt, `tag_size`, `room_size`, `legend_size`) and the sizes of the device and
   cabinet symbols (in %, `symbol_scale`, `cabinet_scale`) are set per page.
+  The devices are worked on on the page itself (tool *Select*): a click selects one,
+  dragging moves it onto another wall or into another room of the level, Del takes it
+  out of its room (a device of the schematic stays there, not placed), and a part
+  dragged from the parts onto a room is put in there – the functions of the *Buildings*
+  pane and of the commands `move_installation` and `remove_installation`, so the
+  schematic, the site plan, the 3D view and the other pages follow.
+  *View* (`set_page projection=…`) chooses what the page shows: the *Floor plan* (`floor`), only
+  what is on the *Ceilings* (`ceiling`), a *Wall of a room* (`wall:+KIT:wall2`, also a side of an
+  inner wall `inner1a` or the outside of a wall `outside3`) with its doors and windows and the
+  devices at their places, each with its height above the floor in mm, or a *Facade*
+  (`facade:front`, `right`, `rear`, `left`): that side of the building seen from outside, every
+  level, the outer walls facing that way with their doors and windows and what is mounted on
+  them (lights, sensors, cameras, outdoor sockets). Devices are moved on the floor plan.
 
 ![Installation plan page of a flat: rooms with doors and windows, devices with their plan symbols turned towards their walls, tags shortened to the product aspect](../images/installation-plan.png)
 

@@ -358,3 +358,19 @@ fn commands_that_only_read_leave_the_project_as_it_is() {
     }
     assert!(ran > 60, "{ran}");
 }
+
+#[test]
+fn rooms_get_a_wall_thickness_and_show_their_shared_walls() {
+    let p = Plugins::new(Vec::<String>::new());
+    let mut prj = openecraft_core::model::Project::default();
+    let mut run = |name: &str, args: serde_json::Value| p.run(p.command(name).unwrap(), &mut prj, args.as_object().unwrap());
+    run("add_room", serde_json::json!({ "name": "+R1", "width": 4000, "depth": 3000, "x": 0, "z": 0, "wall_thickness": 240 })).unwrap();
+    let r2 = run("add_room", serde_json::json!({ "name": "+R2", "width": 3000, "depth": 3000, "x": 4115, "z": 0 })).unwrap();
+    assert_eq!(r2["wall_thickness"], 10.0);
+    let r1 = run("list_rooms", serde_json::json!({ "room": "+R1" })).unwrap();
+    assert_eq!(r1[0]["wall_thickness"], 240.0);
+    let shared = &r1[0]["walls"][1]["shared_with"][0];
+    assert_eq!((shared["room"].as_str(), shared["thickness"].as_f64().map(f64::round)), (Some("+R2"), Some(115.0)), "{r1}");
+    assert!(run("set_room", serde_json::json!({ "room": "+R1", "wall_thickness": -1 })).is_err());
+    assert!(run("set_room", serde_json::json!({ "room": "+R1", "wall_thickness": 5000 })).is_err());
+}

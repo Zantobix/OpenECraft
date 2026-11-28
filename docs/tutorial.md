@@ -161,7 +161,7 @@ panel layout. Most steps below can be tried on it.
 
 ## 10. Panel layout
 
-- The *Panel layout* workspace (*View › Workspaces* or the chooser in the quick access
+- The *Layout and buildings* workspace (*View › Workspaces* or the chooser in the quick access
   row) shows the *Layout space* tab of the ribbon: enclosures, mounting plates, rails,
   ducts, busbars, cutouts and the devices of the schematic; the 3D view shows the
   enclosure with the door, routed wires and duct fill.

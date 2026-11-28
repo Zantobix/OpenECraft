@@ -174,3 +174,14 @@ fn identifiers_keep_no_blanks_or_separators() {
     }
     assert_eq!(check_identifier(Aspect::Location, "").unwrap(), "");
 }
+
+#[test]
+fn tag_segments_keep_the_written_order() {
+    let seg = |t: &str| tag_segments(t).into_iter().map(|(a, s)| (a.key(), s.to_string())).collect::<Vec<_>>();
+    assert_eq!(seg("+KIT=SD1-X1"), [("location", "+KIT".into()), ("function", "=SD1".into()), ("product", "-X1".into())]);
+    assert_eq!(seg("-X1.6+F1"), [("product", "-X1.6".into()), ("location", "+F1".into())]);
+    assert_eq!(seg("=A1++H1+C1-U1-K1").len(), 5);
+    assert_eq!(seg("++H1-K1")[0], ("installation", "++H1".into()));
+    assert_eq!(seg("K1"), [("product", "K1".into())]);
+    assert!(seg("").is_empty());
+}

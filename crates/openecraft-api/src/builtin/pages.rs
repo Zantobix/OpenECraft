@@ -7,6 +7,7 @@ use super::{add_commands, info, Spec};
 use openecraft_core::model::*;
 use openecraft_core::netlist::Netlist;
 use openecraft_core::structure::{Aspect, Dt};
+use openecraft_core::panel::Face;
 use openecraft_core::numbering::{self, PageNumbering};
 use openecraft_core::{frame, ops, potentials, sections};
 use openecraft_i18n::{tr, tr_const, tr_fmt};
@@ -68,6 +69,7 @@ pub static COMMANDS: &[Spec] = &[
             optional("cabinet_scale", Kind::Num, tr_const!("Installation plan: size of the cabinet symbols in % (100: their footprint)")),
             optional("rooms", Kind::Str, tr_const!("Installation plan: the rooms the page is about, comma separated (the rest of the level is cut off at the edge); empty: the whole level")),
             optional("tag_parts", Kind::Str, tr_const!("Installation plan: the aspects of the device tags shown, comma separated (function, installation, location, product or =, ++, +, -); all: the full tag")),
+            optional("projection", Kind::Str, tr_const!("Installation plan: what the page shows: floor (the floor plan), ceiling (what is on the ceilings), wall:<room>:<face> (a wall of a room, e.g. wall:+KIT:wall2, inner1a, outside3) or facade:front|right|rear|left (a side of the building from outside)")),
         ],
         run: set_page,
     },
@@ -284,7 +286,7 @@ fn get_page(prj: &mut Project, a: &Args) -> Result<Value, String> {
 }
 
 /// The keys of [`set_page`] for the options of an installation plan page.
-const PLAN_KEYS: [&str; 14] = ["tags", "circuit_colors", "connections", "room_names", "room_descriptions", "legend", "legend_at", "tag_size", "room_size", "legend_size", "symbol_scale", "cabinet_scale", "tag_parts", "rooms"];
+const PLAN_KEYS: [&str; 15] = ["tags", "circuit_colors", "connections", "room_names", "room_descriptions", "legend", "legend_at", "tag_size", "room_size", "legend_size", "symbol_scale", "cabinet_scale", "tag_parts", "rooms", "projection"];
 
 /// The options of an installation plan page: all checked on a copy first, so that a
 /// wrong value leaves the page as it was.
@@ -328,6 +330,18 @@ fn set_plan(prj: &mut Project, i: usize, a: &Args) -> Result<(), String> {
             return Err(tr_fmt!("No room named {} on the level of the page", n));
         }
         plan.rooms = names;
+    }
+    if let Some(t) = a.str("projection") {
+        let pr = PlanProjection::from_key(t).ok_or_else(|| tr_fmt!("Unknown view: {} (floor, ceiling, wall:<room>:<face> or facade:<side>)", t.trim()))?;
+        if let PlanProjection::Wall { room, face } = &pr {
+            let ri = openecraft_core::panel::buildings::rooms_on(&prj.layout, level).into_iter().find(|&ri| prj.layout.enclosures[ri].name == *room).ok_or_else(|| tr_fmt!("No room named {} on the level of the page", room))?;
+            let e = &prj.layout.enclosures[ri];
+            let faces = openecraft_core::panel::room_faces(e);
+            if !openecraft_core::panel::room_face_from_key(e, face).is_some_and(|f| faces.contains(&f) && matches!(f, Face::Wall(_) | Face::Inner(..) | Face::Outside(_))) {
+                return Err(tr_fmt!("{} has no wall {}", room, face));
+            }
+        }
+        plan.projection = pr;
     }
     prj.pages[i].plan = plan;
     Ok(())

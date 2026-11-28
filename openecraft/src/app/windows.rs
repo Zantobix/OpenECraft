@@ -693,6 +693,76 @@ fn page_structure_ui(ui: &mut egui::Ui, pg: &Page, pi: usize, page_aspects: &[As
 
 /// The options of an installation plan page: scale, rooms, what is shown and the parts
 /// of the device tags.
+/// What an installation plan page shows: the floor plan, the ceilings, a wall of a room
+/// (room and wall) or a side of the building.
+fn plan_projection_row(ui: &mut egui::Ui, pg: &mut openecraft_core::model::Page, layout: &openecraft_core::model::panel::Layout, level: u64) {
+    use openecraft_core::model::{FacadeSide, PlanProjection};
+    use openecraft_core::panel::{self, Face};
+    let rooms = panel::buildings::rooms_on(layout, level);
+    let walls_of = |ri: usize| panel::room_faces(&layout.enclosures[ri]).into_iter().filter(|f| matches!(f, Face::Wall(_) | Face::Inner(..) | Face::Outside(_))).collect::<Vec<_>>();
+    ui.horizontal_wrapped(|ui| {
+        ui.label(tr("View")).on_hover_text(tr("The floor plan seen from above, only what is on the ceilings, one wall of a room with the devices at their heights, or a side of the building from outside with what is mounted on its facade"));
+        let title = match &pg.plan.projection {
+            PlanProjection::Floor => tr("Floor plan"),
+            PlanProjection::Ceiling => tr("Ceilings"),
+            PlanProjection::Wall { .. } => tr("Wall of a room"),
+            PlanProjection::Facade(_) => tr("Facade"),
+        };
+        egui::ComboBox::from_id_salt("plview").selected_text(title).show_ui(ui, |ui| {
+            if ui.selectable_label(pg.plan.projection.is_floor(), tr("Floor plan")).clicked() {
+                pg.plan.projection = PlanProjection::Floor;
+            }
+            if ui.selectable_label(pg.plan.projection == PlanProjection::Ceiling, tr("Ceilings")).clicked() {
+                pg.plan.projection = PlanProjection::Ceiling;
+            }
+            let wall = matches!(pg.plan.projection, PlanProjection::Wall { .. });
+            if ui.selectable_label(wall, tr("Wall of a room")).clicked() && !wall {
+                if let Some(&ri) = rooms.first() {
+                    let e = &layout.enclosures[ri];
+                    pg.plan.projection = PlanProjection::Wall { room: e.name.clone(), face: panel::room_face_key(e, Face::Wall(0)) };
+                }
+            }
+            let facade = matches!(pg.plan.projection, PlanProjection::Facade(_));
+            if ui.selectable_label(facade, tr("Facade")).clicked() && !facade {
+                pg.plan.projection = PlanProjection::Facade(FacadeSide::Front);
+            }
+        });
+        match &mut pg.plan.projection {
+            PlanProjection::Wall { room, face } => {
+                egui::ComboBox::from_id_salt("plviewroom").selected_text(room.as_str()).show_ui(ui, |ui| {
+                    for &ri in &rooms {
+                        let e = &layout.enclosures[ri];
+                        if ui.selectable_label(*room == e.name, e.name.as_str()).clicked() {
+                            *room = e.name.clone();
+                            *face = panel::room_face_key(e, Face::Wall(0));
+                        }
+                    }
+                });
+                if let Some(ri) = rooms.iter().copied().find(|&ri| layout.enclosures[ri].name == *room) {
+                    let e = &layout.enclosures[ri];
+                    let shown = panel::room_face_from_key(e, face).map_or_else(|| face.clone(), |f| panel::room_face_title(e, f));
+                    egui::ComboBox::from_id_salt("plviewface").selected_text(shown).show_ui(ui, |ui| {
+                        for f in walls_of(ri) {
+                            let key = panel::room_face_key(e, f);
+                            if ui.selectable_label(*face == key, panel::room_face_title(e, f)).clicked() {
+                                *face = key;
+                            }
+                        }
+                    });
+                }
+            }
+            PlanProjection::Facade(side) => {
+                egui::ComboBox::from_id_salt("plviewside").selected_text(tr(side.title())).show_ui(ui, |ui| {
+                    for s in FacadeSide::ALL {
+                        ui.selectable_value(side, s, tr(s.title()));
+                    }
+                });
+            }
+            _ => {}
+        }
+    });
+}
+
 fn plan_page_options(ui: &mut egui::Ui, pg: &mut openecraft_core::model::Page, layout: &openecraft_core::model::panel::Layout, level: u64) {
     ui.horizontal(|ui| {
         ui.label(tr("Scale"));
@@ -725,6 +795,7 @@ fn plan_page_options(ui: &mut egui::Ui, pg: &mut openecraft_core::model::Page, l
             }
         });
     });
+    plan_projection_row(ui, pg, layout, level);
     let rooms: Vec<&str> = openecraft_core::panel::buildings::rooms_on(layout, level).into_iter().map(|ri| layout.enclosures[ri].name.as_str()).collect();
     ui.horizontal_wrapped(|ui| {
         ui.label(tr("Rooms")).on_hover_text(tr("The page is centred on the rooms ticked; what does not fit is cut off at the edge. None ticked: the whole level."));

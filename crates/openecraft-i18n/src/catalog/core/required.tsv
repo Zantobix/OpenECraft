@@ -665,6 +665,7 @@ Frequency meter	Frequenzmesser	Fréquencemètre	Frecuencímetro
 From end	Vom Ende	Depuis la fin	Desde el final
 From start	Vom Anfang	Depuis le début	Desde el inicio
 From the supply (%)	Ab Einspeisung (%)	Depuis l'alimentation (%)	Desde la alimentación (%)
+Front facade	Vorderseite	Façade avant	Fachada delantera
 Frozen route of {} is no longer possible and was routed again	Eingefrorene Verlegung von {} ist nicht mehr möglich und wurde neu verlegt	Le tracé figé de {} n'est plus possible et a été re-routé	El recorrido congelado de {} ya no es posible y se ha vuelto a tender
 Full page name	Vollständiger Seitenname	Nom de page complet	Nombre completo de la página
 Full page name (=A1+CAB1/3)	Vollständiger Seitenname (=A1+CAB1/3)	Nom complet de la page (=A1+CAB1/3)	Nombre completo de la página (=A1+CAB1/3)
@@ -914,6 +915,7 @@ Leakage current	Ableitstrom	Courant de fuite	Corriente de fuga
 Leakage line	Leckölleitung	Conduite de fuite	Línea de fugas
 Left door leaf	Linker Türflügel	Vantail gauche de la porte	Hoja izquierda de la puerta
 Left door leaf (front view)	Linker Türflügel (Frontansicht)	Vantail gauche de la porte (vue de face)	Hoja izquierda de la puerta (vista frontal)
+Left facade	Linke Seite	Façade gauche	Fachada izquierda
 Left side panel	Linke Seitenwand	Paroi latérale gauche	Panel lateral izquierdo
 Legend plate text	Schildtext	Texte de l'étiquette	Texto de la placa
 Length (m)	Länge (m)	Longueur (m)	Longitud (m)
@@ -1171,6 +1173,7 @@ Not an Excel workbook (.xlsx)	Keine Excel-Arbeitsmappe (.xlsx)	Pas un classeur E
 Not an image	Kein Bild	Pas une image	No es una imagen
 Not connected	Nicht aufgelegt	Non raccordé	No conectado
 Not in the single-line diagram	Nicht im Übersichtsschaltplan	Absent du schéma unifilaire	No está en el esquema unifilar
+Nothing to show - choose a wall or a side of the building in the page properties	Nichts darzustellen – in den Seiteneigenschaften eine Wand oder eine Seite des Gebäudes wählen	Rien à afficher – choisissez un mur ou un côté du bâtiment dans les propriétés de la page	Nada que mostrar: elija una pared o un lado del edificio en las propiedades de la página
 Number of NC contacts	Anzahl Öffner	Nombre de contacts à ouverture	Número de contactos NC
 Number of NO contacts	Anzahl Schließer	Nombre de contacts à fermeture	Número de contactos NA
 Number of changeover contacts	Anzahl Wechsler	Nombre de contacts inverseurs	Número de contactos conmutados
@@ -1525,6 +1528,7 @@ Rated short-time withstand current	Bemessungskurzzeitstromfestigkeit	Courant ass
 Rated speed	Bemessungsdrehzahl	Vitesse assignée	Velocidad nominal
 Rated torque	Bemessungsmoment	Couple assigné	Par nominal
 Rated voltage	Bemessungsspannung	Tension assignée	Tensión nominal
+Rear facade	Rückseite	Façade arrière	Fachada trasera
 Recessed light	Einbauleuchte	Encastré lumineux	Luminaria empotrada
 Rectangular punch	Rechteckstempel	Poinçon rectangulaire	Punzón rectangular
 Rectifier / inverter AC/DC, bidirectional	Gleich- / Wechselrichter AC/DC, bidirektional	Redresseur / onduleur AC/DC, bidirectionnel	Rectificador / inversor AC/DC, bidireccional
@@ -1570,6 +1574,7 @@ Revision table: description of the last revision (2: the one before …)	Revisio
 Revision table: index of the last revision (2: the one before …)	Revisionstabelle: Index der letzten Revision (2: die davor …)	Tableau des révisions : indice de la dernière révision (2 : la précédente …)	Tabla de revisiones: índice de la última revisión (2: la anterior …)
 Right door leaf	Rechter Türflügel	Vantail droit de la porte	Hoja derecha de la puerta
 Right door leaf (front view)	Rechter Türflügel (Frontansicht)	Vantail droit de la porte (vue de face)	Hoja derecha de la puerta (vista frontal)
+Right facade	Rechte Seite	Façade droite	Fachada derecha
 Right side panel	Rechte Seitenwand	Paroi latérale droite	Panel lateral derecho
 Ring earth electrode	Ringerder	Boucle de terre	Anillo de tierra
 Ring terminal	Ringkabelschuh	Cosse à œillet	Terminal de ojal
@@ -2464,6 +2469,7 @@ yellow	gelb	jaune	amarillo
 {}: {} ({})	{}: {} ({})	{} : {} ({})	{}: {} ({})
 {}: {} ({}) and {} ({}) are {} mm apart, at least {} mm required	{}: {} ({}) und {} ({}) sind {} mm voneinander entfernt, mindestens {} mm erforderlich	{} : {} ({}) et {} ({}) sont à {} mm l'un de l'autre, au moins {} mm requis	{}: {} ({}) y {} ({}) están a {} mm, se requieren al menos {} mm
 {}: {} W power loss heat the enclosure to {} °C (highest {} °C): {} needed	{}: {} W Verlustleistung erwärmen das Gehäuse auf {} °C (höchstens {} °C): {} nötig	{} : {} W de puissance dissipée chauffent l'armoire à {} °C (maximum {} °C) : {} nécessaire	{}: {} W de potencia disipada calientan el armario a {} °C (máximo {} °C): se necesita {}
+{}: {} and {} of {} are the same opening of their shared wall: delete one of them	{}: {} und {} von {} sind dieselbe Öffnung ihrer gemeinsamen Wand: eine davon löschen	{} : {} et {} de {} sont la même ouverture de leur mur commun : supprimez l'une d'elles	{}: {} y {} de {} son la misma abertura de su pared compartida: elimine una de ellas
 {}: {} blocks the service space in front of {}	{}: {} versperrt den Serviceraum vor {}	{} : {} bloque l'espace de service devant {}	{}: {} bloquea el espacio de servicio delante de {}
 {}: {} cannot be made on {}	{}: {} kann nicht auf {} gefertigt werden	{} : {} ne peut pas être réalisé sur {}	{}: {} no se puede fabricar en {}
 {}: {} carries {} A, the load {} needs {} A	{}: {} trägt {} A, der Verbraucher {} braucht {} A	{} : {} supporte {} A, la charge {} demande {} A	{}: {} soporta {} A, la carga {} necesita {} A

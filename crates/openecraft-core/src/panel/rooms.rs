@@ -701,16 +701,26 @@ pub fn add_opening(prj: &mut Project, room: usize, opening: Opening, face: Face,
         Opening::Cutout => return Err(tr("Doors and windows go into walls").to_string()),
     };
     let x = snap(x.unwrap_or((wall_len - w) / 2.0));
-    // Through the wall: an outer wall or the whole inner wall.
+    // Through the wall: an outer wall (all of a shared one) or the whole inner wall.
     let t = match face {
         Face::Inner(id, _) => e.inner_walls.iter().find(|w| w.id == id).map_or(INNER_WALL, |w| w.thickness),
-        _ => e.wall(),
+        _ => opening_depth(prj, room, face, x + w / 2.0),
     };
     let y = e.height - sill - h;
     let id = prj.new_id();
     let item = PanelItem { id, kind: ItemKind::Cutout, opening, face, x, y, w, h, z: -t, d: t, ..Default::default() };
     prj.layout.enclosures[room].items.push(item);
     Ok(id)
+}
+
+/// How deep an opening in wall `face` of room `room` at `along` goes: through the
+/// shared wall to the neighbouring room where the wall is shared, through the room's
+/// own wall elsewhere.
+pub fn opening_depth(prj: &Project, room: usize, face: Face, along: f32) -> f32 {
+    let own = prj.layout.enclosures[room].wall();
+    let Face::Wall(n) = face else { return own };
+    let poses = site_poses(prj);
+    shared_walls(prj, &poses, room).into_iter().find(|sw| sw.wall == n && along >= sw.from && along <= sw.to).map_or(own, |sw| sw.gap.max(own))
 }
 
 /// Floor plan area of the room a door's leaf moves through: as deep into the room as
@@ -729,6 +739,145 @@ pub fn door_zone(e: &Enclosure, it: &PanelItem) -> Option<[[f32; 2]; 4]> {
         _ => (it.x, it.x + it.w, it.w),
     };
     Some([at(a, 0.0), at(b, 0.0), at(b, depth), at(a, depth)])
+}
+
+/// Widest space between two rooms that is one wall shared by both, mm (a thick masonry
+/// wall); rooms further apart have walls of their own.
+pub const SHARED_WALL_MAX: f32 = 500.0;
+/// How far two rooms may overlap at a wall and still share it (drawn wall to wall), mm.
+const SHARED_TOUCH: f32 = 1.0;
+/// Shortest stretch two walls have to face each other along to be a shared wall, mm.
+const SHARED_MIN: f32 = 10.0;
+
+/// A stretch of wall `wall` of a room that is one wall with wall `other_wall` of the
+/// neighbouring room `other`: both face each other, `gap` apart (the thickness of the
+/// shared wall), from `from` to `to` along the wall (from its left end seen from inside).
+/// Along the other wall a place `u` of this one is `turn - u`.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct SharedWall {
+    pub wall: u16,
+    pub other: usize,
+    pub other_wall: u16,
+    pub from: f32,
+    pub to: f32,
+    pub gap: f32,
+    pub turn: f32,
+}
+
+impl SharedWall {
+    /// The stretch of the other wall from `u0` to `u1` of this one (or the other way).
+    pub fn mirror(&self, u0: f32, u1: f32) -> (f32, f32) {
+        (self.turn - u1, self.turn - u0)
+    }
+}
+
+/// The stretches of the walls of room `ri` shared with neighbouring rooms on the same
+/// level (`poses`: [`site_poses`]): walls of two rooms facing each other at most
+/// [`SHARED_WALL_MAX`] apart. A door, window or wall penetration in one side of a shared
+/// wall goes through all of it ([`wall_openings`]).
+pub fn shared_walls(prj: &Project, poses: &[SitePose], ri: usize) -> Vec<SharedWall> {
+    let layout = &prj.layout;
+    let Some(e) = layout.enclosures.get(ri).filter(|e| e.is_room()) else { return Vec::new() };
+    let flat = |v: V3| [v[0], v[2]];
+    let in_plant = |k: usize, w: &Wall| {
+        let pose = &poses[k];
+        let s = flat(pose.apply([w.start()[0], 0.0, w.start()[1]]));
+        let r = flat(pose.turn([w.right()[0], 0.0, w.right()[1]]));
+        let n = flat(pose.turn([w.normal[0], 0.0, w.normal[1]]));
+        (s, r, n)
+    };
+    let dot = |a: [f32; 2], b: [f32; 2]| a[0] * b[0] + a[1] * b[1];
+    let sub = |a: [f32; 2], b: [f32; 2]| [a[0] - b[0], a[1] - b[1]];
+    let mut out = Vec::new();
+    for (n, w) in walls(e).iter().enumerate() {
+        let (a, r, nm) = in_plant(ri, w);
+        for k in rooms(layout).into_iter().filter(|&k| k != ri && layout.enclosures[k].level == e.level) {
+            for (m, v) in walls(&layout.enclosures[k]).iter().enumerate() {
+                let (b, r2, n2) = in_plant(k, v);
+                if dot(nm, n2) > -0.999 {
+                    continue;
+                }
+                // Behind this wall's face (against its normal) and not beyond the reach.
+                let gap = dot(sub(b, a), [-nm[0], -nm[1]]);
+                // Rooms drawn wall to wall (or a hair apart) share it too.
+                if !(-SHARED_TOUCH..=SHARED_WALL_MAX).contains(&gap) {
+                    continue;
+                }
+                let turn = dot(sub(a, b), r2);
+                let (u0, u1) = (turn - v.length(), turn);
+                let (from, to) = (u0.max(0.0), u1.min(w.length()));
+                if to - from >= SHARED_MIN && dot(r, r2) < -0.999 {
+                    out.push(SharedWall { wall: n as u16, other: k, other_wall: m as u16, from, to, gap, turn });
+                }
+            }
+        }
+    }
+    out
+}
+
+/// A door, window or wall penetration in a wall of a room: its own or one of the room
+/// behind a shared stretch of the wall, at its place along this wall.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct WallOpening {
+    /// From its left edge to its right edge along this wall (seen from inside).
+    pub x: f32,
+    pub w: f32,
+    pub opening: Opening,
+    /// The room it belongs to and its id there.
+    pub room: usize,
+    pub item: u64,
+    /// The room of the wall has it itself (not the neighbour).
+    pub own: bool,
+}
+
+/// The doors, windows and wall penetrations of wall `wall` of room `ri`: its own and,
+/// where the wall is shared, those of the neighbour's side of it (a door belongs to the
+/// whole wall), sorted along the wall.
+pub fn wall_openings(prj: &Project, shared: &[SharedWall], ri: usize, wall: u16) -> Vec<WallOpening> {
+    let layout = &prj.layout;
+    let through = |o: Opening| matches!(o, Opening::Door | Opening::Window | Opening::Penetration);
+    let mut out: Vec<WallOpening> = layout.enclosures[ri]
+        .items
+        .iter()
+        .filter(|it| it.face == Face::Wall(wall) && through(it.opening))
+        .map(|it| WallOpening { x: it.x, w: it.w, opening: it.opening, room: ri, item: it.id, own: true })
+        .collect();
+    for sw in shared.iter().filter(|s| s.wall == wall) {
+        for it in layout.enclosures[sw.other].items.iter().filter(|it| it.face == Face::Wall(sw.other_wall) && through(it.opening)) {
+            let (u0, u1) = sw.mirror(it.x, it.x + it.w);
+            // Only what lies in the shared stretch.
+            if u1 > sw.from + 0.5 && u0 < sw.to - 0.5 {
+                out.push(WallOpening { x: u0, w: u1 - u0, opening: it.opening, room: sw.other, item: it.id, own: false });
+            }
+        }
+    }
+    out.sort_by(|a, b| a.x.total_cmp(&b.x));
+    out
+}
+
+/// Doors and windows put into both sides of a shared wall at the same place: one
+/// opening entered twice (the room and item of each, the lower room first).
+pub fn twin_openings(prj: &Project) -> Vec<((usize, u64), (usize, u64))> {
+    let poses = site_poses(prj);
+    rooms(&prj.layout).into_iter().flat_map(|ri| twins_of(prj, &poses, ri)).collect()
+}
+
+/// [`twin_openings`] of room `ri` (as the lower room of the pair).
+pub fn twins_of(prj: &Project, poses: &[SitePose], ri: usize) -> Vec<((usize, u64), (usize, u64))> {
+    let mut out = Vec::new();
+    let shared = shared_walls(prj, poses, ri);
+    for n in shared.iter().map(|sw| sw.wall).collect::<std::collections::BTreeSet<u16>>() {
+        let list = wall_openings(prj, &shared, ri, n);
+        for a in list.iter().filter(|o| o.own && matches!(o.opening, Opening::Door | Opening::Window)) {
+            for b in list.iter().filter(|o| !o.own && o.room > ri && o.opening == a.opening) {
+                let overlap = (a.x + a.w).min(b.x + b.w) - a.x.max(b.x);
+                if overlap > a.w.min(b.w) / 2.0 {
+                    out.push(((ri, a.item), (b.room, b.item)));
+                }
+            }
+        }
+    }
+    out
 }
 
 /// Changes how a door or window of a room opens, its place along the wall (left edge),
@@ -753,6 +902,13 @@ pub fn set_opening(prj: &mut Project, room: usize, id: u64, swing: Option<Swing>
     }
     let sill = if door { 0.0 } else { sill.unwrap_or(old_sill).clamp(0.0, (height - it.h).max(0.0)) };
     it.y = height - sill - it.h;
+    let (face, mid) = (it.face, it.x + it.w / 2.0);
+    if matches!(face, Face::Wall(_)) {
+        let t = opening_depth(prj, room, face, mid);
+        if let Some(it) = prj.layout.enclosures[room].items.iter_mut().find(|i| i.id == id) {
+            (it.z, it.d) = (-t, t);
+        }
+    }
     Ok(())
 }
 
@@ -1219,6 +1375,11 @@ pub(super) fn check(prj: &Project, e: &Enclosure, push: &mut impl FnMut(CheckKin
             tr_fmt!("{}: {} is on the outside of a wall, but another room is behind it", e.name, item_name(e, it.id))
         };
         push(CheckKind::Outside, Severity::Warning, vec![it.id], msg);
+    }
+    // A door or window entered in both sides of a shared wall is one opening twice.
+    for ((_, a), (other, b)) in twins_of(prj, &poses, ri) {
+        let o = &layout.enclosures[other];
+        push(CheckKind::Collision, Severity::Warning, vec![a], tr_fmt!("{}: {} and {} of {} are the same opening of their shared wall: delete one of them", e.name, item_name(e, a), item_name(o, b), o.name));
     }
     for it in e.items.iter().filter(|i| i.opening == Opening::Penetration) {
         if penetration_link(prj, &poses, ri, it).is_none() {

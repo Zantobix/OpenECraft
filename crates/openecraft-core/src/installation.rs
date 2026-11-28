@@ -466,6 +466,71 @@ pub fn preview(prj: &Project, ri: usize, part: &str, at: [f32; 2], height: Optio
     Ok(PanelItem { id: 0, ..it })
 }
 
+/// The room and the item of an installation device of a room: `item` an item id or the
+/// device tag of one.
+pub fn find_item(prj: &Project, item: &str) -> Option<(usize, u64)> {
+    let item = item.trim();
+    let by_id = item.parse::<u64>().ok();
+    panel::rooms(&prj.layout).into_iter().find_map(|ri| {
+        let it = prj.layout.enclosures[ri].items.iter().find(|it| Some(it.id) == by_id || (!it.tag.is_empty() && it.tag == item))?;
+        (find_part(prj, &it.part).and_then(kind_of).is_some()).then_some((ri, it.id))
+    })
+}
+
+/// Moves installation device `item` of room `ri` to point `at` of the plant (x, z, mm)
+/// like [`place`]: on the nearest wall there (a ceiling light on the ceiling), at its
+/// height above the floor, into the room of the same level the point lies in. It keeps
+/// its id, device tag and part, so that the schematic, the reports and every view of
+/// the building follow. Gives the room it is in then.
+pub fn move_item(prj: &mut Project, ri: usize, item: u64, at: [f32; 2]) -> Result<usize, String> {
+    let e = prj.layout.enclosures.get(ri).filter(|e| e.is_room()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", item))?;
+    let old = e.item(item).cloned().ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", item))?;
+    let poses = panel::site_poses(prj);
+    let height = placed(prj, &poses, ri, &old).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", item))?.height;
+    let level = e.level;
+    let same_level: Vec<usize> = panel::rooms(&prj.layout).into_iter().filter(|&k| prj.layout.enclosures[k].level == level).collect();
+    // The room the point is in, otherwise its own room (outside on its nearest wall).
+    let to = room_at(prj, &same_level, at).unwrap_or(ri);
+    let ceiling = old.face == Face::Roof;
+    let pv = preview(prj, to, &old.part, at, (!ceiling).then_some(height))?;
+    let moved = PanelItem {
+        face: pv.face,
+        x: pv.x,
+        y: pv.y,
+        z: pv.z,
+        w: pv.w,
+        h: pv.h,
+        d: pv.d,
+        rotation: pv.rotation,
+        rail_mount: pv.rail_mount,
+        seated_on_rail: pv.seated_on_rail,
+        rail_vertical: pv.rail_vertical,
+        mounted_on: pv.mounted_on,
+        mounting_explicit: pv.mounting_explicit,
+        anchor: pv.anchor,
+        group: if to == ri { old.group } else { 0 },
+        ..old
+    };
+    if to == ri {
+        prj.layout.enclosures[ri].items.retain(|i| i.id != item);
+    } else {
+        // What was mounted on it in the old room stays there, on its own.
+        panel::remove_items(&mut prj.layout.enclosures[ri], &[item]);
+    }
+    prj.layout.enclosures[to].items.push(moved);
+    Ok(to)
+}
+
+/// Takes installation device `item` out of room `ri`; a device of the schematic stays
+/// there, not placed any more. Gives its device tag (empty for an item without one).
+pub fn remove_item(prj: &mut Project, ri: usize, item: u64) -> Result<String, String> {
+    let e = prj.layout.enclosures.get_mut(ri).filter(|e| e.is_room()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", item))?;
+    let tag = e.item(item).map(|i| i.tag.clone()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", item))?;
+    // What was mounted on it stays, on its own.
+    panel::remove_items(e, &[item]);
+    Ok(tag)
+}
+
 /// How far from its mounting height a point clicked on a wall may be for a part to go at
 /// that height (in its installation zone); farther off it goes where it was clicked, mm.
 pub const SNAP_HEIGHT: f32 = 200.0;

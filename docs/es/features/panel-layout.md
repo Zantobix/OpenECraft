@@ -360,6 +360,15 @@ reciben una longitud en las propiedades de la sala (comandos `set_room_outline`,
   trazos cuando la hoja se abre alejándose del observador) o una flecha. La comprobación
   mantiene libres de armarios el barrido de una puerta que abre hacia dentro y el
   recorrido de una puerta corredera por delante de la pared.
+- **Grosor de las paredes y paredes compartidas:** *Grosor de las paredes* en las
+  propiedades de la sala (`set_room wall_thickness=…`, 0 para paredes finas) es el
+  grosor de sus paredes fuera del contorno. Dos salas de un nivel cuyas paredes están
+  enfrentadas a 500 mm como máximo comparten ese tramo de pared, tan grueso como el
+  espacio entre ellas (`list_rooms` lo indica en `shared_with`): una puerta, una ventana
+  o un pasamuros en un lado la atraviesa por completo, las páginas de plano de
+  instalación dibujan la pared maciza entre ambas salas y la puerta una sola vez, y la
+  comprobación avisa de una puerta o ventana introducida en ambos lados en el mismo
+  sitio.
 - **Los armarios** (sus alineaciones) se sitúan en ella en una posición del plano, a la
   que se arrastran en el plano (R gira el seleccionado alrededor de su centro), y se
   mueven con la sala. Un armario fuera de la sala, atravesando una pared, en una pared
@@ -944,7 +953,10 @@ longitudes de sus cables son las del tendido 3D.
   identificadores se acortan a algunos de sus aspectos (*Identificadores mostrados
   como*: identificador completo, ubicación y equipo, función y equipo, solo el equipo o
   personalizado; `tag_parts`: solo el aspecto de producto muestra `-X1.6` de
-  `=SD1+F1-X1.6`).
+  `=SD1+F1-X1.6`). Los aspectos se mantienen en el orden en que están escritos (`-X1.6+F1`
+  conserva su ubicación al final), y un identificador que taparía un símbolo u otro
+  identificador se desplaza a un sitio libre alrededor de su símbolo, unido por una
+  línea fina.
   La leyenda puede ocultarse o colocarse a la derecha, a la izquierda, arriba o abajo
   (`legend`, `legend_at`); una sala muestra su identificador de ubicación y la
   descripción de ese identificador en la gestión de estructuras, p. ej. *Cocina*
@@ -953,6 +965,19 @@ longitudes de sus cables son las del tendido 3D.
   identificadores, salas y leyenda (en pt, `tag_size`, `room_size`, `legend_size`) y
   los tamaños de los símbolos de equipos y armarios (en %, `symbol_scale`,
   `cabinet_scale`) se ajustan por página.
+  Los equipos se editan en la propia página (herramienta *Seleccionar*): un clic
+  selecciona uno, arrastrarlo lo mueve a otra pared o a otra sala del nivel, Supr lo
+  retira de su sala (un equipo del esquema permanece allí, sin colocar), y un artículo
+  arrastrado desde los artículos sobre una sala se coloca allí – con las funciones del
+  panel *Edificios* y de los comandos `move_installation` y `remove_installation`, de
+  modo que el esquema, el plano de situación, la vista 3D y las demás páginas sigan.
+  *Vista* (`set_page projection=…`) elige lo que muestra la página: el *Plano* (`floor`), solo
+  lo que está en los *Techos* (`ceiling`), una *Pared de una sala* (`wall:+KIT:wall2`, también un
+  lado de un tabique `inner1a` o el exterior de una pared `outside3`) con sus puertas y ventanas
+  y los equipos en su sitio, cada uno con su altura sobre el suelo en mm, o una *Fachada*
+  (`facade:front`, `right`, `rear`, `left`): ese lado del edificio visto desde fuera, todos los
+  niveles, las paredes exteriores orientadas hacia allí con sus puertas y ventanas y lo montado
+  en ellas (luminarias, sensores, cámaras, tomas exteriores). Los equipos se mueven en la planta.
 
 ![Página de plano de instalación de una vivienda: salas con puertas y ventanas, dispositivos con sus símbolos de plano girados hacia su muro, identificadores acortados al aspecto de producto](../../images/installation-plan.png)
 
