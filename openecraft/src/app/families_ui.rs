@@ -218,7 +218,13 @@ fn editor(ui: &mut egui::Ui, prj: &Project, d: &mut DeviceFamily, texts: &mut St
             ui.add_sized([130.0, 20.0], egui::TextEdit::singleline(&mut o.name));
             ui.add_sized([60.0, 20.0], egui::TextEdit::singleline(&mut o.mark)).on_hover_text(tr("Short text beside the plan symbol, e.g. IP44"));
             ui.add_sized([150.0, 20.0], egui::TextEdit::singleline(&mut o.accessory).hint_text(tr("(none)")));
-            ui.horizontal_wrapped(|ui| {
+            // The variants it fits, as a summary that opens the check boxes.
+            let summary = if o.variants.is_empty() {
+                tr("all").to_string()
+            } else {
+                variant_keys.iter().filter(|(k, _)| o.variants.contains(k)).map(|(_, n)| n.as_str()).collect::<Vec<_>>().join(", ")
+            };
+            ui.menu_button(summary, |ui| {
                 let mut all = o.variants.is_empty();
                 if ui.checkbox(&mut all, tr("all")).changed() && all {
                     o.variants.clear();
