@@ -53,7 +53,7 @@ pub static COMMANDS: &[Spec] = &[
     Spec {
         name: "set_jumper_kind",
         help: tr_const!("Sets how the terminals of a jumper are bridged"),
-        params: &[STRIP, param("jumper", Kind::Int, tr_const!("Jumper number")), param("kind", Kind::Str, tr_const!("plug_in, saddle or wire"))],
+        params: &[STRIP, param("jumper", Kind::Int, tr_const!("Jumper number")), param("kind", Kind::Str, tr_const!("plug_in, saddle, wire or busbar"))],
         run: set_jumper_kind,
     },
     Spec {
@@ -80,6 +80,7 @@ fn kind_code(k: JumperKind) -> &'static str {
         JumperKind::PlugIn => "plug_in",
         JumperKind::Saddle => "saddle",
         JumperKind::Wire => "wire",
+        JumperKind::Busbar => "busbar",
     }
 }
 
@@ -174,6 +175,7 @@ fn set_jumper_kind(prj: &mut Project, a: &Args) -> Result<Value, String> {
         "plug_in" | "plugin" => JumperKind::PlugIn,
         "saddle" => JumperKind::Saddle,
         "wire" => JumperKind::Wire,
+        "busbar" => JumperKind::Busbar,
         other => return Err(tr_fmt!("Unknown jumper kind: {}", other)),
     };
     let data = prj.strips.entry(strip).or_default();

@@ -35,6 +35,25 @@ lokale Metadaten und Klassifikationen haben bei wiederholten Artikelnummern Vorr
 `list_cable_parts` stellt die Auswahl des Projekts und die mitgelieferte für Plugins und
 CLI/MCP bereit.
 
+**Sicherungsübersicht** (Bericht *Sicherungsübersicht der Verteiler*, `fuse_overview`):
+Verteiler für Verteiler – der Schrank, in dem ein Betriebsmittel sitzt, sonst der Ort
+seines Kennzeichens (`+UV1`) – jede Schutzeinrichtung des Netzes, jede
+Fehlerstrom-Schutzeinrichtung und jeder Überspannungsschutz, die Haupt- und Schalter
+am Netz des Verteilers, in der Reihenfolge des Schaltplans. Jede Zeile nennt die Art
+(Sicherungsautomat, Sicherung, Motorschutzschalter, FI/LS-Schalter für einen
+Leitungsschutzschalter mit Fehlerstromfunktion, Brandschutzschalter (AFDD) über die
+Eigenschaft *Fehlerlichtbogen-Erkennung (AFDD)* oder `AFDD` / `arc fault` in
+Beschreibung oder technischen Daten seines Artikels, Fehlerstromschutzschalter,
+Überspannungsschutz, Hauptschalter, Schalter), den Typ (`B 16 A`, `40 A RCD 30 mA`,
+der *Überspannungsschutz-Typ*), die Phasen, die vorgeschaltete
+Fehlerstrom-Schutzeinrichtung, den Funktionstext (*Reserve*, wenn dahinter nichts
+angeschlossen ist), die Räume seines Stromkreises, die abgehenden Kabel mit ihrem Typ
+und wo es gezeichnet ist (ein Klick springt dorthin). Die Betriebsmittel-Eigenschaft
+*Sicherungsübersicht* nimmt mit *Anzeigen* jedes andere Betriebsmittel auf, das im
+Verteiler bedient wird (z. B. einen Treppenlichtautomaten), und lässt mit
+*Ausblenden* eines weg. Als Berichtsseiten bekommt mit einem Berichtsblock und *Neue
+Seiten für jede Gruppe* jeder Verteiler eigene Seiten.
+
 ## Formulare
 
 Schriftfelder sind Listen aus Linien, Rechtecken, Texten mit Platzhaltern

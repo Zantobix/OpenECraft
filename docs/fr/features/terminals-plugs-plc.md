@@ -31,6 +31,21 @@ doivent rester sur un seul étage. Commandes :
 `list_strips`, `get_strip`, `set_terminal`, `set_jumper_kind`, `set_strip`,
 `renumber_strip`.
 
+**Plan de bornes avec cibles raccordées** (rapport *Plan de bornes avec cibles
+raccordées*, `terminal_wiring`) : une ligne par borne dans l'ordre du bornier avec son
+texte de fonction, de chaque côté l'appareil et le point de raccordement qui y est
+directement câblé (et non tous les appareils du potentiel comme dans le plan de
+bornes), le câble et le conducteur et l'endroit où la cible est dessinée, au milieu la
+borne, son étage, son pont avec les bornes qu'il couvre (`1 (1 – 3)`) et son
+potentiel ; un côté avec plusieurs fils se poursuit dans les lignes suivantes.
+**Barres** : le type de pont *Barre de pontage* (`set_jumper_kind kind=busbar`) est la
+barre sur laquelle sont montées les bornes N ou PE d'un tableau – un seul étage,
+bornes PE permises, pas d'article de pont ; une barre N interrompue (une section par
+dispositif différentiel) est une barre par section, et la première borne d'une
+section indique la barre dont elle est séparée (`barre 2 (N3 – N4), séparée de 1`).
+Les bornes à étages sont listées étage par étage avec leurs ponts ; un pont filaire
+relie les étages.
+
 ## Connecteurs
 
 **Connecteurs** (*Appareils › Connecteurs…*, groupe de symboles *Connecteurs*) : broche

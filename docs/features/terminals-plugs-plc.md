@@ -27,6 +27,20 @@ level, no part); plug-in and saddle jumpers must stay on one level. Commands:
 `list_strips`, `get_strip`, `set_terminal`, `set_jumper_kind`, `set_strip`,
 `renumber_strip`.
 
+**Terminal wiring diagram** (report *Terminal wiring diagram*, `terminal_wiring`):
+one row per terminal in the order of the strip with its function text, on each side
+the device and connection point wired directly to it (not every device of the
+potential, as the terminal diagram lists them), the cable and core and where the
+target is drawn, and in the middle the terminal, its level, its jumper with the
+terminals the jumper spans (`1 (1 – 3)`) and its potential; a side with more wires
+continues in the rows below. **Busbars**: the jumper kind *Busbar bridge*
+(`set_jumper_kind kind=busbar`) is the bar N or PE terminals of a distribution board
+sit on – one level, PE terminals allowed, no jumper part; an interrupted N busbar (one
+section per residual current device) is one busbar per section, and the first
+terminal of a section says which busbar it is separated from
+(`busbar 2 (N3 – N4), separated from 1`). Multi-level terminals are listed level by
+level with their jumpers; a wire jumper bridges the levels.
+
 ## Plugs
 
 **Plugs** (*Devices › Plugs…*, symbol group *Plugs*): pin and socket (mated pair, two

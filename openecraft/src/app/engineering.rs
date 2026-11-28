@@ -471,7 +471,7 @@ impl App {
                         ui.label(tr_fmt!("Jumper {}", j.number));
                         let mut kind = j.kind;
                         egui::ComboBox::from_id_salt(("jkind", j.number)).selected_text(strips::jumper_kind_title(kind)).show_ui(ui, |ui| {
-                            for k in [JumperKind::PlugIn, JumperKind::Saddle, JumperKind::Wire] {
+                            for k in JumperKind::ALL {
                                 ui.selectable_value(&mut kind, k, strips::jumper_kind_title(k));
                             }
                         });

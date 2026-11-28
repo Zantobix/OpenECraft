@@ -29,6 +29,23 @@ The cable picker includes project-local parts as well as the configured catalog;
 local metadata and classifications take precedence for repeated article numbers.
 `list_cable_parts` exposes the project and built-in choices to plugins and CLI/MCP.
 
+**Fuse overview** (report *Fuse overview of the distribution boards*, `fuse_overview`):
+board by board – the cabinet a device is placed in, else the location of its tag
+(`+UV1`) – every protective device fed from the mains, every residual current and
+surge protective device, the main switches and switches on the mains of the board,
+in the order of the schematic. Each row has the kind (circuit breaker, fuse, motor
+protection switch, RCBO for a breaker with a residual current function, arc fault
+detection device by the property *Arc fault detection (AFDD)* or `AFDD` / `arc fault`
+in the description or tech data of its part, residual current device, surge
+protective device, main switch, switch), the type (`B 16 A`, `40 A RCD 30 mA`, the
+*Surge protection type*), the phases, the residual current device protecting it, the
+function text (*Spare* when nothing is connected behind it), the rooms of its circuit,
+the cables leaving it with their type and where it is drawn (a click jumps there).
+The device property *Fuse overview* shows any other device the user operates in a
+board (e.g. a staircase timer) with *Show* and leaves a device out with *Hide*. As
+report pages, a report block with *New pages for every group* gives every board its
+own pages.
+
 ## Forms
 
 Title blocks are lists of lines, rectangles, texts with placeholders

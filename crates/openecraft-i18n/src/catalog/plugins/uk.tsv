@@ -1104,7 +1104,7 @@ node, segment, place, outline, bond or accessory	node, segment, place, outline, 
 numbers or letters	numbers або letters
 parallel (on roof hooks), tilted or east_west (flat roofs); freestanding: ground (on posts)	parallel (на покрівельних гаках), tilted (з нахилом) або east_west (схід-захід, пласкі дахи); наземне поле: ground (на стійках)
 plate, door, left, right, rear, roof or bottom	plate, door, left, right, rear, roof або bottom
-plug_in, saddle or wire	plug_in, saddle або wire
+plug_in, saddle, wire or busbar	plug_in, saddle, busbar або wire
 profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp or canopen	profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp або canopen
 project, page, device, function, terminal, plc or cable	project, page, device, function, terminal, plc або cable
 project, page, device, function, terminal, plc, cable or part	project, page, device, function, terminal, plc, cable або part

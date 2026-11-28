@@ -444,10 +444,14 @@ pub enum ReportKind {
     RackElevation,
     PvStrings,
     InstallationCircuits,
+    /// Protective and residual current devices of each distribution board.
+    FuseOverview,
+    /// Every terminal with the devices wired directly to its two sides.
+    TerminalWiring,
 }
 
 impl ReportKind {
-    pub const ALL: [ReportKind; 48] = [
+    pub const ALL: [ReportKind; 50] = [
         ReportKind::TableOfContents,
         ReportKind::DeviceList,
         ReportKind::BillOfMaterials,
@@ -496,6 +500,8 @@ impl ReportKind {
         ReportKind::RackElevation,
         ReportKind::PvStrings,
         ReportKind::InstallationCircuits,
+        ReportKind::FuseOverview,
+        ReportKind::TerminalWiring,
     ];
 
     /// English catalog key of the title.
@@ -549,6 +555,8 @@ impl ReportKind {
             ReportKind::RackElevation => tr_const!("19-inch rack elevation"),
             ReportKind::PvStrings => tr_const!("PV strings"),
             ReportKind::InstallationCircuits => tr_const!("Installation circuits (cable lengths, voltage drop)"),
+            ReportKind::FuseOverview => tr_const!("Fuse overview of the distribution boards"),
+            ReportKind::TerminalWiring => tr_const!("Terminal wiring diagram"),
         }
     }
 
@@ -608,6 +616,8 @@ impl ReportKind {
             ReportKind::RackElevation => "rack_elevation",
             ReportKind::PvStrings => "pv_strings",
             ReportKind::InstallationCircuits => "installation_circuits",
+            ReportKind::FuseOverview => "fuse_overview",
+            ReportKind::TerminalWiring => "terminal_wiring",
         }
     }
 
@@ -1619,6 +1629,13 @@ pub enum JumperKind {
     Saddle,
     /// Wire jumper: a wire from terminal to terminal, any level, no jumper part.
     Wire,
+    /// Busbar the terminals sit on (N or PE busbar of a distribution board): one level,
+    /// PE terminals too, no jumper part. An interrupted busbar is two of them.
+    Busbar,
+}
+
+impl JumperKind {
+    pub const ALL: [JumperKind; 4] = [JumperKind::PlugIn, JumperKind::Saddle, JumperKind::Wire, JumperKind::Busbar];
 }
 
 /// PLC card (I/O module) data.

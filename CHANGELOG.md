@@ -5,6 +5,22 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **Fuse overview and terminal wiring diagram:** the report *Fuse overview of the
+  distribution boards* (`fuse_overview`) lists board by board (the cabinet a device is
+  placed in, else the location of its tag) every protective device of the mains, every
+  residual current and surge protective device and the main switches and switches on
+  the mains, with kind (circuit breaker, fuse, RCBO, arc fault detection device by the
+  new property *Arc fault detection (AFDD)* or its part, …), type (`B 16 A`,
+  `40 A RCD 30 mA`), phases, the residual current device protecting it, function text or
+  *Spare*, the rooms of its circuit, its outgoing cables and where it is drawn; the new
+  device property *Fuse overview* shows any other device (*Show*) or leaves one out
+  (*Hide*). The report *Terminal wiring diagram* (`terminal_wiring`) gives every
+  terminal, level by level, one row with the device and connection point wired directly
+  to each side, cable and core, where the target is drawn, the potential and the jumper
+  with the terminals it spans. The new jumper kind *Busbar bridge* (`busbar`) is the N
+  or PE busbar terminals sit on (PE terminals allowed, no jumper part); an interrupted
+  N busbar is one busbar per section, and the report names the section a busbar is
+  separated from ([#277](https://github.com/nilres/OpenECraft/issues/277)).
 - **Exchange with KiCad and FreeCAD:** a board designed in KiCad becomes a device of
   the project from its netlist (*File › Import › Import KiCad board as device…*,
   `import_kicad`): a device box with a connection point for every pin of its

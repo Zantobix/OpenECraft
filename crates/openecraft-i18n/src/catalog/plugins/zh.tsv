@@ -1098,7 +1098,7 @@ node, segment, place, outline, bond or accessory	node, segment, place, outline, 
 numbers or letters	numbers 或 letters
 parallel (on roof hooks), tilted or east_west (flat roofs); freestanding: ground (on posts)	parallel（在屋面挂钩上）、tilted（倾斜）或 east_west（东西向，平屋顶）；地面安装：ground（在立柱上）
 plate, door, left, right, rear, roof or bottom	plate、door、left、right、rear、roof 或 bottom
-plug_in, saddle or wire	plug_in, saddle 或 wire
+plug_in, saddle, wire or busbar	plug_in, saddle, busbar 或 wire
 profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp or canopen	profinet、ethercat、ethernet_ip、profibus_dp、modbus_tcp 或 canopen
 project, page, device, function, terminal, plc or cable	project, page, device, function, terminal, plc 或 cable
 project, page, device, function, terminal, plc, cable or part	project, page, device, function, terminal, plc, cable 或 part

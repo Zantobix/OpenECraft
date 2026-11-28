@@ -1104,7 +1104,7 @@ node, segment, place, outline, bond or accessory	node, segment, place, outline, 
 numbers or letters	numbers vagy letters
 parallel (on roof hooks), tilted or east_west (flat roofs); freestanding: ground (on posts)	parallel (tetőkampókon), tilted (döntve) vagy east_west (kelet-nyugat, lapostetők); szabadföldi: ground (oszlopokon)
 plate, door, left, right, rear, roof or bottom	plate, door, left, right, rear, roof vagy bottom
-plug_in, saddle or wire	plug_in, saddle vagy wire
+plug_in, saddle, wire or busbar	plug_in, saddle, busbar vagy wire
 profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp or canopen	profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp vagy canopen
 project, page, device, function, terminal, plc or cable	project, page, device, function, terminal, plc vagy cable
 project, page, device, function, terminal, plc, cable or part	project, page, device, function, terminal, plc, cable vagy part

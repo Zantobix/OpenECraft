@@ -1098,7 +1098,7 @@ node, segment, place, outline, bond or accessory	node, segment, place, outline, 
 numbers or letters	numbers 또는 letters
 parallel (on roof hooks), tilted or east_west (flat roofs); freestanding: ground (on posts)	parallel (지붕 후크 위), tilted (기울임) 또는 east_west (동서, 평지붕); 지상형: ground (말뚝 위)
 plate, door, left, right, rear, roof or bottom	plate, door, left, right, rear, roof 또는 bottom
-plug_in, saddle or wire	plug_in, saddle 또는 wire
+plug_in, saddle, wire or busbar	plug_in, saddle, busbar 또는 wire
 profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp or canopen	profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp 또는 canopen
 project, page, device, function, terminal, plc or cable	project, page, device, function, terminal, plc 또는 cable
 project, page, device, function, terminal, plc, cable or part	project, page, device, function, terminal, plc, cable 또는 part

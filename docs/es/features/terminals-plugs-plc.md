@@ -30,6 +30,20 @@ enchufables y los de silleta deben quedarse en un mismo nivel. Comandos:
 `list_strips`, `get_strip`, `set_terminal`, `set_jumper_kind`, `set_strip`,
 `renumber_strip`.
 
+**Plano de bornes con destinos conectados** (informe *Plano de bornes con destinos
+conectados*, `terminal_wiring`): una fila por borne en el orden de la regleta con su
+texto de función, en cada lado el dispositivo y el punto de conexión cableados
+directamente a él (no todos los dispositivos del potencial como en el plano de
+bornes), el cable y el conductor y dónde está dibujado el destino, en el centro el
+borne, su piso, su puente con los bornes que abarca (`1 (1 – 3)`) y su potencial; un
+lado con varios hilos continúa en las filas siguientes. **Barras**: el tipo de puente
+*Barra de puenteo* (`set_jumper_kind kind=busbar`) es la barra sobre la que van los
+bornes N o PE de un cuadro – un solo piso, bornes PE permitidos, sin artículo de
+puente; una barra N interrumpida (un tramo por diferencial) es una barra por tramo, y
+el primer borne de un tramo indica de qué barra está separado
+(`barra 2 (N3 – N4), separada de 1`). Los bornes de varios pisos se listan piso a piso
+con sus puentes; un puente de hilo une los pisos.
+
 ## Conectores
 
 **Conectores** (*Dispositivos › Conectores…*, grupo de símbolos *Conectores*): macho y

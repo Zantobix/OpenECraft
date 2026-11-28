@@ -172,3 +172,248 @@ pub(super) fn verification(prj: &Project, conns: &[Connection]) -> Table {
     }
     t
 }
+
+/// The distribution board of protective device `tag`: the cabinet it is placed in, else
+/// the location of its tag (empty when it has none).
+fn board_name(prj: &Project, tag: &str) -> String {
+    match crate::installation::board_of(prj, tag) {
+        Some(ei) => prj.layout.enclosures[ei].name.clone(),
+        None => {
+            let loc = crate::structure::Dt::parse(tag).location;
+            if loc.is_empty() { loc } else { format!("+{loc}") }
+        }
+    }
+}
+
+/// The cables leaving the load side (even designations) of the symbols of device `tag`,
+/// with type or cross-section, in schematic order.
+fn outgoing_cables(prj: &Project, conns: &[Connection], tag: &str) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for c in conns {
+        for (at, other) in [(c.a, c.b), (c.b, c.a)] {
+            let s = &prj.pages[at.page].symbols[at.sym];
+            if s.tag != tag || prj.pages[other.page].symbols[other.sym].tag == tag || !crate::sizing::designation_number(s, at.pin).is_some_and(|d| d % 2 == 0) {
+                continue;
+            }
+            let text = match prj.cables.iter().find(|x| !c.cable.is_empty() && x.tag == c.cable) {
+                Some(x) if !x.cable_type.is_empty() => format!("{} {}", x.tag, x.cable_type),
+                Some(x) => format!("{} {}", x.tag, x.cross_section).trim().to_string(),
+                None if !c.cable.is_empty() => c.cable.clone(),
+                None => c.cross_section.clone(),
+            };
+            if !text.is_empty() && !out.contains(&text) {
+                out.push(text);
+            }
+        }
+    }
+    out
+}
+
+/// The type of a protective device: characteristic and rated current ("B 16 A"), else
+/// the rated current of its part.
+fn protection_type(prj: &Project, tag: &str) -> String {
+    match crate::protection::of_device(prj, tag) {
+        Some(p) => format!("{} {} A", p.characteristic.title(), num(p.rated, if p.rated.fract() == 0.0 { 0 } else { 1 })),
+        None => crate::sizing::device_parts(prj, tag).iter().map(|p| p.current.trim()).find(|c| !c.is_empty()).unwrap_or("").to_string(),
+    }
+}
+
+/// `text` holds `word` as a whole word, ignoring case.
+fn has_word(text: &str, word: &str) -> bool {
+    let lower = text.to_lowercase();
+    lower.split(|c: char| !c.is_alphanumeric()).any(|w| w == word)
+}
+
+/// Device `tag` detects arc faults: the property *Arc fault detection (AFDD)*, or a part
+/// whose description or tech data names it (`AFDD`, `arc fault`).
+fn is_afdd(prj: &Project, tag: &str) -> bool {
+    let obj = crate::properties::Object::Device(tag.into());
+    if let Some(v) = crate::properties::stored(prj, &obj, "device.afdd") {
+        return v == "true";
+    }
+    crate::sizing::device_parts(prj, tag).iter().any(|p| {
+        let text = format!("{} {}", p.description, p.tech_data);
+        has_word(&text, "afdd") || text.to_lowercase().contains("arc fault")
+    })
+}
+
+/// Whether the property *Fuse overview* of device `tag` shows (`Some(true)`) or hides
+/// (`Some(false)`) it; `None`: as its kind says.
+fn listed(prj: &Project, tag: &str) -> Option<bool> {
+    match crate::properties::stored(prj, &crate::properties::Object::Device(tag.into()), "device.fuse_overview")? {
+        "Show" => Some(true),
+        "Hide" => Some(false),
+        _ => None,
+    }
+}
+
+/// What a device of the fuse overview is.
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum Role {
+    /// A protective device fed from the mains.
+    Protective,
+    Rcd,
+    Spd,
+    /// A switch on the mains in a distribution board (main switch, switch disconnector).
+    Switch,
+    /// Any other device shown by its property.
+    Other,
+}
+
+/// The kind of a device for the fuse overview: circuit breaker, fuse, RCBO, AFDD …
+fn kind_text(prj: &Project, tag: &str, role: Role, sym: &str) -> String {
+    use crate::parts::FnKind as F;
+    let kinds: Vec<F> = crate::sizing::device_parts(prj, tag).iter().flat_map(|p| p.functions.iter().map(|f| f.kind)).collect();
+    let afdd = is_afdd(prj, tag);
+    let text = match role {
+        Role::Protective if afdd => tr("Arc fault detection device"),
+        Role::Protective if kinds.contains(&F::ResidualCurrent) => tr("RCBO"),
+        Role::Protective => match crate::parts::kind_of_symbol(sym) {
+            Some(F::Fuse | F::Fuse3) => tr("Fuse"),
+            Some(F::MotorProtection) => tr("Motor protection switch"),
+            _ => tr("Circuit breaker"),
+        },
+        Role::Rcd if afdd => tr("Arc fault detection device"),
+        Role::Rcd if kinds.iter().any(|k| matches!(k, F::Breaker1 | F::Breaker2 | F::Breaker3 | F::Breaker4)) => tr("RCBO"),
+        Role::Rcd => tr("Residual current device"),
+        Role::Spd => tr("Surge protective device"),
+        Role::Switch if crate::parts::kind_of_symbol(sym) == Some(F::Disconnector3) => tr("Main switch"),
+        Role::Switch => tr("Switch"),
+        Role::Other => match kinds.first() {
+            Some(k) => tr(k.title()),
+            None => prj.symbol(sym).map(|d| tr(d.name)).unwrap_or(""),
+        },
+    };
+    text.to_string()
+}
+
+/// Fuse overview of the distribution boards: every protective device fed from the mains,
+/// every residual current device and surge protective device, the switches on the mains
+/// in the boards and every device shown by its property *Fuse overview* (and none it
+/// hides), grouped by the board they are placed in (or the location of their tags), in
+/// the order of the schematic, with kind, type, phases, the residual current device
+/// protecting it, function text, the rooms and the cables of its circuit and where it
+/// is drawn.
+pub(super) fn fuse_overview(prj: &Project, an: &crate::analysis::Analysis) -> Table {
+    use crate::parts::FnKind as F;
+    let mut t = Table::with_widths(&[
+        (tr_const!("Distribution board"), 0.7),
+        (tr_const!("Device"), 0.7),
+        (tr_const!("Kind"), 1.0),
+        (tr_const!("Type"), 0.8),
+        (tr_const!("Phases"), 0.6),
+        (tr_const!("RCD"), 0.8),
+        (tr_const!("Function text"), 1.4),
+        (tr_const!("Rooms"), 1.0),
+        (tr_const!("Cable"), 1.3),
+        (tr_const!("Location"), 0.6),
+    ]);
+    let (nl, conns) = (&an.netlist, &an.connections);
+    let feeds = crate::electrical::feeds(prj, nl);
+    let spare: Vec<String> = crate::installation::breakers(prj, nl).into_iter().filter(|b| b.spare).map(|b| b.tag).collect();
+    let circuits = crate::installation::circuits(prj, nl, conns, None);
+    let mains = crate::electrical::mains(prj, nl);
+    let on_mains = |s: &SymbolInst| (0..s.pins.len()).any(|pin| nl.pin_net.get(&(s.id, pin)).is_some_and(|n| mains.contains_key(n)));
+    struct Item {
+        page: usize,
+        pos: crate::geom::P,
+        tag: String,
+        sym: String,
+        id: u64,
+        role: Role,
+    }
+    let mut items: Vec<Item> = Vec::new();
+    // Switches count only in a board of the other devices (not those of the rooms).
+    let mut switches: Vec<Item> = Vec::new();
+    for (pi, pg) in prj.pages.iter().enumerate().filter(|(_, p)| p.kind == PageKind::Schematic) {
+        for s in &pg.symbols {
+            if s.tag.is_empty() || items.iter().chain(&switches).any(|i| i.tag == s.tag) || listed(prj, &s.tag) == Some(false) {
+                continue;
+            }
+            let kind = crate::parts::kind_of_symbol(&s.sym);
+            let role = if feeds.iter().any(|f| f.device == s.tag && f.symbol == s.id) {
+                Role::Protective
+            } else if kind == Some(F::ResidualCurrent) {
+                Role::Rcd
+            } else if kind == Some(F::SurgeProtection) {
+                Role::Spd
+            } else if matches!(kind, Some(F::Disconnector3 | F::SwitchNo | F::SwitchNc)) && on_mains(s) {
+                Role::Switch
+            } else if listed(prj, &s.tag) == Some(true) {
+                Role::Other
+            } else {
+                continue;
+            };
+            let item = Item { page: pi, pos: s.pos, tag: s.tag.clone(), sym: s.sym.clone(), id: s.id, role };
+            if role == Role::Switch && listed(prj, &s.tag) != Some(true) { switches.push(item) } else { items.push(item) }
+        }
+    }
+    let known: Vec<String> = items.iter().map(|i| board_name(prj, &i.tag)).collect();
+    items.extend(switches.into_iter().filter(|i| crate::installation::board_of(prj, &i.tag).is_some() || known.contains(&board_name(prj, &i.tag))));
+    items.sort_by(|a, b| (a.page, a.pos.x, a.pos.y).partial_cmp(&(b.page, b.pos.x, b.pos.y)).unwrap_or(std::cmp::Ordering::Equal));
+    // The boards in the order of their first device.
+    let mut boards: Vec<String> = Vec::new();
+    for i in &items {
+        let b = board_name(prj, &i.tag);
+        if !boards.contains(&b) {
+            boards.push(b);
+        }
+    }
+    let phases_of = |tag: &str| -> String {
+        let mut v: Vec<&String> = Vec::new();
+        for s in prj.pages.iter().filter(|p| p.kind == PageKind::Schematic).flat_map(|p| p.symbols.iter()).filter(|s| s.tag == tag) {
+            for pin in 0..s.pins.len() {
+                if let Some(ph) = nl.pin_net.get(&(s.id, pin)).and_then(|n| mains.get(n)) {
+                    if !v.contains(&ph) {
+                        v.push(ph);
+                    }
+                }
+            }
+        }
+        v.sort();
+        v.into_iter().cloned().collect::<Vec<_>>().join(", ")
+    };
+    for board in &boards {
+        for i in items.iter().filter(|i| &board_name(prj, &i.tag) == board) {
+            let tag = &i.tag;
+            let obj = crate::properties::Object::Device(tag.clone());
+            let kind = match i.role {
+                Role::Rcd => {
+                    let ma = crate::electrical::stated_residual_current(prj, tag).unwrap_or(30.0);
+                    format!("{} {}", protection_type(prj, tag), tr_fmt!("RCD {} mA", num(ma, 0))).trim().to_string()
+                }
+                Role::Spd => crate::properties::stored(prj, &obj, "device.spd_type").map(String::from).unwrap_or_else(|| protection_type(prj, tag)),
+                _ => protection_type(prj, tag),
+            };
+            let protecting = match i.role {
+                Role::Rcd => String::new(),
+                _ => feeds.iter().find(|f| &f.device == tag).and_then(|f| f.rcd.clone()).unwrap_or_default(),
+            };
+            let mut text = crate::installation::text_of(prj, tag).replace('\n', " ");
+            if text.is_empty() && spare.contains(tag) {
+                text = tr("Spare").to_string();
+            }
+            let circuit = circuits.iter().find(|c| &c.breaker == tag);
+            let mut rooms: Vec<&str> = circuit.map(|c| c.devices.iter().filter_map(|d| d.placed).map(|(ri, _)| prj.layout.enclosures[ri].name.as_str()).collect()).unwrap_or_default();
+            rooms.sort();
+            rooms.dedup();
+            let cables = if i.role == Role::Rcd { Vec::new() } else { outgoing_cables(prj, conns, tag) };
+            t.push(
+                vec![
+                    board.clone(),
+                    tag.clone(),
+                    kind_text(prj, tag, i.role, &i.sym),
+                    kind,
+                    phases_of(tag),
+                    protecting,
+                    text,
+                    rooms.join(", "),
+                    cables.join(", "),
+                    super::loc_str(prj, i.page, i.pos),
+                ],
+                Some((i.page, i.id)),
+            );
+        }
+    }
+    t
+}

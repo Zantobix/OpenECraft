@@ -1104,7 +1104,7 @@ node, segment, place, outline, bond or accessory	node, segment, place, outline, 
 numbers or letters	numbers eller letters
 parallel (on roof hooks), tilted or east_west (flat roofs); freestanding: ground (on posts)	parallel (på takkrokar), tilted (lutat) eller east_west (öst-väst, platta tak); markmonterat: ground (på stolpar)
 plate, door, left, right, rear, roof or bottom	plate, door, left, right, rear, roof eller bottom
-plug_in, saddle or wire	plug_in, saddle eller wire
+plug_in, saddle, wire or busbar	plug_in, saddle, busbar eller wire
 profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp or canopen	profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp eller canopen
 project, page, device, function, terminal, plc or cable	project, page, device, function, terminal, plc eller cable
 project, page, device, function, terminal, plc, cable or part	project, page, device, function, terminal, plc, cable eller part

@@ -102,6 +102,8 @@ Applied directives	Angewandte Richtlinien	Directives appliquées	Directivas apli
 Approval date	Freigabedatum	Date d'approbation	Fecha de aprobación
 Approvals	Zulassungen	Homologations	Homologaciones
 Approved by	Freigegeben von	Approuvé par	Aprobado por
+Arc fault detection (AFDD)	Fehlerlichtbogen-Erkennung (AFDD)	Détection d'arc électrique (DDA)	Detección de arco eléctrico (AFDD)
+Arc fault detection device	Brandschutzschalter (AFDD)	Détecteur d'arc électrique (DDA)	Detector de arco eléctrico (AFDD)
 Arms {} and {}	Arme {} und {}	Bras {} et {}	Brazos {} y {}
 Asset number	Anlagennummer	Numéro d'inventaire	Número de activo
 Assigned part position	Position des zugeordneten Artikels	Position de la pièce affectée	Posición de la pieza asignada
@@ -178,6 +180,7 @@ Bus address	Busadresse	Adresse bus	Dirección de bus
 Bus connection to {}: the station does not exist	Busverbindung zu {}: Die Station existiert nicht	Liaison bus vers {} : la station n'existe pas	Conexión de bus a {}: la estación no existe
 Bus connection {} - {}: cable {} does not exist	Busverbindung {} - {}: Kabel {} existiert nicht	Liaison bus {} - {} : le câble {} n'existe pas	Conexión de bus {} - {}: el cable {} no existe
 Bus coupler	Buskoppler	Coupleur de bus	Acoplador de bus
+Busbar bridge	Sammelschiene	Barre de pontage	Barra de puenteo
 Busbar machine	Schienenbearbeitungsmaschine	Machine à barres	Máquina de pletinas
 Busbar system	Sammelschienensystem	Système de barres	Sistema de pletinas
 Busbar systems	Sammelschienensysteme	Systèmes de jeux de barres	Sistemas de embarrado
@@ -255,6 +258,7 @@ Checked	Geprüft	Vérifiés	Comprobados
 Checked by	Geprüft von	Vérifié par	Revisado por
 Checking the project	Projekt wird geprüft	Vérification du projet	Comprobando el proyecto
 Choose the pages of the subproject	Wählen Sie die Seiten des Teilprojekts	Choisissez les pages du sous-projet	Elija las páginas del subproyecto
+Circuit breaker	Sicherungsautomat	Disjoncteur	Interruptor automático
 Circuit breaker (single-line)	Leistungsschalter (einpolig dargestellt)	Disjoncteur (unifilaire)	Interruptor automático (unifilar)
 Circuit breaker 1-pole	Leitungsschutzschalter 1-polig	Disjoncteur 1 pôle	Interruptor automático 1 polo
 Circuit breaker 1-pole (NFPA)	Leitungsschutzschalter 1-polig (NFPA)	Disjoncteur unipolaire (NFPA)	Interruptor automático unipolar (NFPA)
@@ -590,6 +594,9 @@ Exports the positions and sizes of the devices in the panel layout; imports posi
 Exports the project and page metadata with the revisions; imports document numbers, revisions and states	Exportiert die Projekt- und Seitenmetadaten mit den Revisionen; importiert Dokumentnummern, Revisionen und Status	Exporte les métadonnées du projet et des pages avec les révisions ; importe les numéros de document, révisions et états	Exporta los metadatos del proyecto y de las páginas con las revisiones; importa números de documento, revisiones y estados
 Exports the wires with cut length, stripping and ferrules for wire processing machines; imports the processing feedback as wiring marks	Exportiert die Drähte mit Schnittlänge, Abisolierung und Aderendhülsen für Drahtkonfektionierautomaten; importiert die Rückmeldung der Bearbeitung als Verdrahtungsmarkierungen	Exporte les fils avec longueur de coupe, dénudage et embouts pour les machines de traitement de fils ; importe le retour de traitement comme marques de câblage	Exporta los cables con longitud de corte, pelado y punteras para máquinas de procesado de cables; importa la respuesta del procesado como marcas de cableado
 External	Extern	Externe	Externo
+External cable	Kabel extern	Câble externe	Cable externo
+External connection point	Anschluss extern	Point de raccordement externe	Punto de conexión externo
+External location	Ort extern	Emplacement externe	Ubicación externa
 External target	Externes Ziel	Cible externe	Destino externo
 Fail-safe	Fehlersicher	Sécurité positive	A prueba de fallos
 Fan	Lüfter	Ventilateur	Ventilador
@@ -691,6 +698,8 @@ Fuse disconnector 3-pole	Sicherungstrennschalter 3-polig	Sectionneur-fusible 3 p
 Fuse disconnector with motor circuit breaker 1-pole	Sicherungstrennschalter mit Motorschutzschalter 1-polig	Sectionneur-fusible avec disjoncteur-moteur 1 pôle	Seccionador-fusible con guardamotor 1 polo
 Fuse disconnector with motor circuit breaker 2-pole	Sicherungstrennschalter mit Motorschutzschalter 2-polig	Sectionneur-fusible avec disjoncteur-moteur 2 pôles	Seccionador-fusible con guardamotor 2 polos
 Fuse disconnector with motor circuit breaker 3-pole	Sicherungstrennschalter mit Motorschutzschalter 3-polig	Sectionneur-fusible avec disjoncteur-moteur 3 pôles	Seccionador-fusible con guardamotor 3 polos
+Fuse overview	Sicherungsübersicht	Tableau des protections	Cuadro de protecciones
+Fuse overview of the distribution boards	Sicherungsübersicht der Verteiler	Tableau des protections des tableaux de distribution	Cuadro de protecciones de los cuadros de distribución
 Fuse rated current	Sicherungsnennstrom	Courant assigné du fusible	Corriente nominal del fusible
 Fuse ratio 1.6	Sicherungsverhältnis 1,6	Rapport des fusibles 1,6	Relación de fusibles 1,6
 Fuse size	Sicherungsgröße	Taille du fusible	Tamaño del fusible
@@ -765,6 +774,7 @@ Heating element	Heizelement	Élément chauffant	Elemento calefactor
 Heating element (installation)	Heizelement (Installation)	Élément chauffant (installation)	Elemento calefactor (instalación)
 Heating element three-phase	Heizelement dreiphasig	Élément chauffant triphasé	Elemento calefactor trifásico
 Heating water	Heizungswasser	Eau de chauffage	Agua de calefacción
+Hide	Ausblenden	Masquer	Ocultar
 Higher-level product (-)	Übergeordnetes Produkt (-)	Produit de niveau supérieur (-)	Producto de nivel superior (-)
 Higher-level product of the page	Übergeordnetes Produkt der Seite	Produit de niveau supérieur de la page	Producto de nivel superior de la página
 Highest (°C)	Höchstens (°C)	Maximum (°C)	Máximo (°C)
@@ -870,6 +880,9 @@ Intermediate relay coil KA (GB)	Spule Hilfsrelais KA (GB)	Bobine de relais auxil
 Intermediate switch (installation)	Kreuzschalter (Installation)	Permutateur (installation)	Interruptor de cruce (instalación)
 Intermediate switch, manually operated	Kreuzschalter, handbetätigt	Permutateur, à commande manuelle	Conmutador de cruce, accionado manualmente
 Internal	Intern	Interne	Interno
+Internal cable	Kabel intern	Câble interne	Cable interno
+Internal connection point	Anschluss intern	Point de raccordement interne	Punto de conexión interno
+Internal location	Ort intern	Emplacement interne	Ubicación interna
 Internal target	Internes Ziel	Cible interne	Destino interno
 Interruption point '{}' has no counterpart	Unterbrechungspunkt '{}' hat keine Gegenstelle	Le point d'interruption '{}' n'a pas de correspondant	El punto de interrupción '{}' no tiene contraparte
 Invalid bend {}	Ungültige Biegung {}	Pliage invalide {}	Doblez no válido {}
@@ -1502,6 +1515,7 @@ Pyramid roof	Zeltdach	Toit en pavillon	Cubierta piramidal
 QR code	QR-Code	Code QR	Código QR
 Qty	Menge	Qté	Cant.
 Quick coupling (outlet)	Schnellkupplung (Entnahmestelle)	Raccord rapide (prise)	Acoplamiento rápido (toma)
+RCBO	FI/LS-Schalter	Disjoncteur différentiel	Interruptor diferencial combinado
 RCD {} mA	RCD {} mA	DDR {} mA	DDR {} mA
 Radiation	Strahlung	Rayonnement	Radiación
 Rails, ducts and busbars	Schienen, Kanäle und Sammelschienen	Rails, goulottes et jeux de barres	Carriles, canaletas y barras colectoras
@@ -1834,6 +1848,7 @@ Terminal box	Klemmenkasten	Boîte à bornes	Caja de bornes
 Terminal connection diagram	Klemmenanschlussplan	Plan de raccordement des bornes	Esquema de conexión de bornes
 Terminal data	Klemmendaten	Données de bornes	Datos de bornes
 Terminal description	Klemmenbeschreibung	Description de la borne	Descripción del borne
+Terminal level	Etage	Étage	Piso
 Terminal line-up	Klemmenaufreihung	Alignement des bornes	Disposición de bornes
 Terminal marker	Klemmenmarkierer	Repère de borne	Marcador de borna
 Terminal of the motor circuit	Klemme des Motorstromkreises	Borne du circuit moteur	Borne del circuito del motor
@@ -1841,6 +1856,7 @@ Terminal parts	Artikel der Leitungsenden	Articles des extrémités	Artículos de
 Terminal strip data of {} without terminals	Klemmleistendaten von {} ohne Klemmen	Données du bornier {} sans bornes	Datos de la regleta {} sin bornes
 Terminal strip overview	Klemmenleistenübersicht	Vue d'ensemble des borniers	Vista general de regletas
 Terminal strips and PLC addresses	Klemmenleisten und SPS-Adressen	Borniers et adresses API	Regleteros y direcciones de PLC
+Terminal wiring diagram	Klemmenplan mit Anschlusszielen	Plan de bornes avec cibles raccordées	Plano de bornes con destinos conectados
 Termination (from)	Abschluss (von)	Terminaison (de)	Terminación (desde)
 Termination (to)	Abschluss (nach)	Terminaison (à)	Terminación (hasta)
 Text file	Textdatei	Fichier texte	Archivo de texto
@@ -2150,6 +2166,8 @@ black	schwarz	noir	negro
 blue	blau	bleu	azul
 break off at {}	ausbrechen bei {}	à casser en {}	romper en {}
 brown	braun	marron	marrón
+busbar {} ({} – {})	Sammelschiene {} ({} – {})	barre {} ({} – {})	barra {} ({} – {})
+busbar {} ({} – {}), separated from {}	Sammelschiene {} ({} – {}), getrennt von {}	barre {} ({} – {}), séparée de {}	barra {} ({} – {}), separada de {}
 changed	geändert	modifié	cambiado
 closed	geschlossen	clôturée	cerrada
 coding key	Kodiernase	détrompeur	clave de codificación

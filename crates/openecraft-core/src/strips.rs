@@ -411,6 +411,7 @@ pub fn jumper_kind_title(k: JumperKind) -> &'static str {
         JumperKind::PlugIn => tr("Plug-in jumper"),
         JumperKind::Saddle => tr("Saddle jumper"),
         JumperKind::Wire => tr("Wire jumper"),
+        JumperKind::Busbar => tr("Busbar bridge"),
     }
 }
 
@@ -446,11 +447,16 @@ pub fn strip_jumpers(prj: &Project, strip: &str) -> Vec<Jumper> {
         } else {
             elements.iter().filter_map(|e| e.at_level(level)).map(String::from).collect()
         };
-        let broken: Vec<String> = if kind == JumperKind::Wire { Vec::new() } else { span.iter().filter(|l| !group.contains(l)).cloned().collect() };
+        let broken: Vec<String> = if matches!(kind, JumperKind::Wire | JumperKind::Busbar) { Vec::new() } else { span.iter().filter(|l| !group.contains(l)).cloned().collect() };
         let first = &layout[lo].part;
         let pe = part_by_number(prj, first).is_some_and(is_pe_part);
         if kind == JumperKind::Wire {
             let problem = pe.then_some(JumperProblem::Pe);
+            out.push(Jumper { number, kind, level, part: String::new(), poles: 0, span, broken, problem });
+            continue;
+        }
+        if kind == JumperKind::Busbar {
+            let problem = mixed_levels.then_some(JumperProblem::DifferentLevels);
             out.push(Jumper { number, kind, level, part: String::new(), poles: 0, span, broken, problem });
             continue;
         }

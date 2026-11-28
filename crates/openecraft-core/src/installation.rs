@@ -682,7 +682,7 @@ impl Breaker {
 }
 
 /// The function text of device `tag` (of the first of its symbols with one).
-fn text_of(prj: &Project, tag: &str) -> String {
+pub(crate) fn text_of(prj: &Project, tag: &str) -> String {
     prj.pages.iter().flat_map(|pg| pg.symbols.iter()).find(|s| s.tag == tag && !s.function_text.is_empty()).map(|s| s.function_text.clone()).unwrap_or_default()
 }
 

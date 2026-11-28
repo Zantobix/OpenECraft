@@ -28,6 +28,21 @@ Etage, kein Artikel); Steck- und Sattelbrücken müssen auf einer Etage bleiben.
 `list_strips`, `get_strip`, `set_terminal`, `set_jumper_kind`, `set_strip`,
 `renumber_strip`.
 
+**Klemmenplan mit Anschlusszielen** (Bericht *Klemmenplan mit Anschlusszielen*,
+`terminal_wiring`): je Klemme eine Zeile in der Reihenfolge der Leiste mit ihrem
+Funktionstext, auf jeder Seite das direkt angeschlossene Betriebsmittel mit seinem
+Anschluss (nicht alle Betriebsmittel des Potentials wie im Klemmenplan), Kabel und
+Ader und wo das Ziel gezeichnet ist, in der Mitte die Klemme, ihre Etage, ihre Brücke
+mit den Klemmen, die die Brücke überspannt (`1 (1 – 3)`), und ihr Potential; eine
+Seite mit mehreren Leitungen setzt sich in den Zeilen darunter fort.
+**Sammelschienen**: die Brückenart *Sammelschiene* (`set_jumper_kind kind=busbar`) ist
+die Schiene, auf der die N- oder PE-Klemmen eines Verteilers sitzen – eine Etage,
+PE-Klemmen erlaubt, kein Brückenartikel; eine unterbrochene N-Schiene (ein Abschnitt
+je Fehlerstrom-Schutzeinrichtung) ist eine Sammelschiene je Abschnitt, und die erste
+Klemme eines Abschnitts nennt die Schiene, von der er getrennt ist
+(`Sammelschiene 2 (N3 – N4), getrennt von 1`). Etagenklemmen stehen Etage für Etage mit
+ihren Brücken da; eine Drahtbrücke verbindet die Etagen.
+
 ## Stecker
 
 **Stecker** (*Betriebsmittel › Stecker…*, Symbolgruppe *Stecker*): Stift und Buchse

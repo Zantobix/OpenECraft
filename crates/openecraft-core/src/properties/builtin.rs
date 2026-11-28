@@ -238,6 +238,8 @@ pub(super) const ROWS: &[Row] = &[
     r("device.spd_type", tr_const!("Surge protection type"), Device, Protection, Choice, "").of(&["Type 1", "Type 2", "Type 3", "Type 1+2"]),
     r("device.protection_level", tr_const!("Voltage protection level"), Device, Protection, Real, "kV"),
     r("device.discharge_current", tr_const!("Nominal discharge current"), Device, Protection, Real, "kA"),
+    r("device.afdd", tr_const!("Arc fault detection (AFDD)"), Device, Protection, Bool, ""),
+    r("device.fuse_overview", tr_const!("Fuse overview"), Device, Protection, Choice, "").of(&["Show", "Hide"]),
     // Motor
     r("device.speed", tr_const!("Rated speed"), Device, Motor, Real, "rpm"),
     r("device.power_factor", tr_const!("Power factor"), Device, Motor, Real, ""),

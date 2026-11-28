@@ -1104,7 +1104,7 @@ node, segment, place, outline, bond or accessory	node, segment, place, outline, 
 numbers or letters	numbers veya letters
 parallel (on roof hooks), tilted or east_west (flat roofs); freestanding: ground (on posts)	parallel (çatı kancaları üzerinde), tilted (eğimli) veya east_west (doğu-batı, düz çatılar); arazi tipi: ground (direkler üzerinde)
 plate, door, left, right, rear, roof or bottom	plate, door, left, right, rear, roof veya bottom
-plug_in, saddle or wire	plug_in, saddle veya wire
+plug_in, saddle, wire or busbar	plug_in, saddle, busbar veya wire
 profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp or canopen	profinet, ethercat, ethernet_ip, profibus_dp, modbus_tcp veya canopen
 project, page, device, function, terminal, plc or cable	project, page, device, function, terminal, plc veya cable
 project, page, device, function, terminal, plc, cable or part	project, page, device, function, terminal, plc, cable veya part

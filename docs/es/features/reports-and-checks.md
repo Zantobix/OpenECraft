@@ -32,6 +32,25 @@ configurado; los metadatos y las clasificaciones locales tienen prioridad para l
 números de artículo repetidos. `list_cable_parts` expone las opciones del proyecto y las
 integradas a los plugins y a CLI/MCP.
 
+**Cuadro de protecciones** (informe *Cuadro de protecciones de los cuadros de
+distribución*, `fuse_overview`): cuadro por cuadro – el armario en el que está
+colocado un dispositivo, si no la ubicación de su identificador (`+UV1`) – cada
+dispositivo de protección alimentado por la red, cada diferencial y protector contra
+sobretensiones, los interruptores principales e interruptores en la red del cuadro,
+en el orden del esquema. Cada fila indica la clase (interruptor automático, fusible,
+guardamotor, interruptor diferencial combinado para un automático con función
+diferencial, detector de arco eléctrico (AFDD) por la propiedad *Detección de arco
+eléctrico (AFDD)* o `AFDD` / `arc fault` en la descripción o los datos técnicos de su
+artículo, interruptor diferencial, protector contra sobretensiones, interruptor
+principal, interruptor), el tipo (`B 16 A`, `40 A RCD 30 mA`, el *Tipo de protección
+contra sobretensiones*), las fases, el diferencial que lo protege, el texto de
+función (*Reserva* cuando no hay nada conectado detrás), las salas de su circuito,
+los cables que salen de él con su tipo y dónde está dibujado (un clic lleva allí). La
+propiedad de dispositivo *Cuadro de protecciones* añade con *Mostrar* cualquier otro
+dispositivo que se maniobra en un cuadro (p. ej. un temporizador de escalera) y quita
+uno con *Ocultar*. Como páginas de informe, un bloque de informe con *Páginas nuevas
+para cada grupo* da a cada cuadro sus propias páginas.
+
 ## Formularios
 
 Los cajetines son listas de líneas, rectángulos, textos con marcadores de posición

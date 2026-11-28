@@ -8,7 +8,7 @@ use crate::netlist::{pin_designation, Connection, Netlist, PinRef};
 use crate::panel::ItemKind;
 use crate::strips::ElementKind;
 use crate::symbols::{Func, PinKind};
-use openecraft_i18n::{tr, tr_const};
+use openecraft_i18n::{tr, tr_const, tr_fmt};
 use std::collections::BTreeMap;
 
 /// Connection columns shared by the connection diagrams: target, wire number, cable,
@@ -84,6 +84,91 @@ pub(super) fn terminal_connections(prj: &Project, conns: &[Connection]) -> Table
             let pin = |pin| PinRef { page: term.page, sym: term.sym, pin };
             let sides = [(pin(0), tr("External")), (pin(1), tr("Internal"))];
             push_point(&mut t, prj, conns, vec![strip.clone(), term.label.clone()], &sides);
+        }
+    }
+    t
+}
+
+/// Terminal wiring diagram: one row per terminal (in the order of the strip, every
+/// level) with the function text, the device and connection point wired directly to
+/// its external and internal side (not every device of the potential), their cables
+/// and cores and where they are drawn, its level and potential, and the jumper or
+/// busbar the terminal belongs to with the terminals it spans; the first terminal of a
+/// busbar after another busbar of the strip on the same level names the busbar it is
+/// separated from (an interrupted N busbar). A side with several wires continues in
+/// the rows below.
+pub(super) fn terminal_wiring(prj: &Project, nl: &Netlist, open: &Netlist, conns: &[Connection]) -> Table {
+    let mut t = Table::with_widths(&[
+        (tr_const!("Strip"), 0.6),
+        (tr_const!("Function text"), 1.2),
+        (tr_const!("External target"), 0.8),
+        (tr_const!("External connection point"), 0.5),
+        (tr_const!("External location"), 0.6),
+        (tr_const!("External cable"), 0.8),
+        (tr_const!("Terminal"), 0.5),
+        (tr_const!("Terminal level"), 0.4),
+        (tr_const!("Jumper"), 1.0),
+        (tr_const!("Potential"), 0.6),
+        (tr_const!("Internal target"), 0.8),
+        (tr_const!("Internal connection point"), 0.5),
+        (tr_const!("Internal location"), 0.6),
+        (tr_const!("Internal cable"), 0.8),
+    ]);
+    // Device, connection point, location and cable of the other end of each wire.
+    let side = |pin: PinRef| -> Vec<[String; 4]> {
+        conns
+            .iter()
+            .filter_map(|c| if c.a == pin { Some((c.b, c)) } else if c.b == pin { Some((c.a, c)) } else { None })
+            .map(|(other, c)| {
+                let s = &prj.pages[other.page].symbols[other.sym];
+                let full = pin_designation(prj, other);
+                let point = full.strip_prefix(s.tag.as_str()).map(|p| p.trim_start_matches(':')).filter(|_| !s.tag.is_empty()).unwrap_or(&full).to_string();
+                [s.tag.clone(), point, loc_str(prj, other.page, s.pos), format!("{} {}", c.cable, c.core).trim().to_string()]
+            })
+            .collect()
+    };
+    for strip in crate::strips::strip_tags(prj) {
+        let mut rows = crate::strips::rows(prj, &strip, nl, open);
+        let jumpers = crate::strips::strip_jumpers(prj, &strip);
+        let jumpered = prj.strips.get(&strip).map(|d| d.jumpers.clone()).unwrap_or_default();
+        // The busbar of the terminal before on each level.
+        let mut last_bar: BTreeMap<u8, Option<u32>> = BTreeMap::new();
+        for e in crate::strips::strip_layout(prj, &strip) {
+            if !matches!(e.kind, ElementKind::Terminal(_) | ElementKind::Spare(_)) {
+                continue;
+            }
+            for label in e.designations() {
+                let Some(i) = rows.iter().position(|r| r.label == label) else { continue };
+                let r = rows.remove(i);
+                let jumper = jumpered.get(&r.label).copied().filter(|n| *n > 0).and_then(|n| jumpers.iter().find(|j| j.number == n));
+                let bar = jumper.filter(|j| j.kind == JumperKind::Busbar).map(|j| j.number);
+                let before = last_bar.insert(r.level, bar).flatten();
+                let jumper_text = match jumper {
+                    Some(j) => {
+                        let (a, b) = (j.span.first().cloned().unwrap_or_default(), j.span.last().cloned().unwrap_or_default());
+                        match (j.kind, before) {
+                            (JumperKind::Busbar, Some(prev)) if prev != j.number && a == r.label => tr_fmt!("busbar {} ({} – {}), separated from {}", j.number, a, b, prev),
+                            (JumperKind::Busbar, _) => tr_fmt!("busbar {} ({} – {})", j.number, a, b),
+                            _ => format!("{} ({a} – {b})", j.number),
+                        }
+                    }
+                    None => jumpered.get(&r.label).copied().filter(|n| *n > 0).map(|n| n.to_string()).unwrap_or_default(),
+                };
+                let (ext, int) = match &r.terminal {
+                    Some(term) => (side(PinRef { page: term.page, sym: term.sym, pin: 0 }), side(PinRef { page: term.page, sym: term.sym, pin: 1 })),
+                    None => (Vec::new(), Vec::new()),
+                };
+                let target = r.terminal.as_ref().map(|t| (t.page, t.id));
+                let level = if e.levels.is_empty() { String::new() } else { r.level.to_string() };
+                let lines = ext.len().max(int.len()).max(1);
+                for n in 0..lines {
+                    let [ed, ep, el, ec] = ext.get(n).cloned().unwrap_or_default();
+                    let [id, ip, il, ic] = int.get(n).cloned().unwrap_or_default();
+                    let first = n == 0;
+                    let pick = |v: &String| if first { v.clone() } else { String::new() };
+                    t.push(vec![strip.clone(), pick(&r.function_text), ed, ep, el, ec, pick(&r.label), pick(&level), pick(&jumper_text), pick(&r.potential), id, ip, il, ic], target);
+                }
+            }
         }
     }
     t

@@ -309,3 +309,117 @@ fn the_drilling_pattern_lists_every_hole_and_cutout_from_the_bottom_left() {
     assert!(t.rows.iter().any(|r| r[5] == "Ø4.2" && r[6] == "M5" && r[7] == crate::panel::Fastening::Tapped.title()));
     assert!(crate::reports::builtin().iter().any(|r| r.name == "drilling_pattern"));
 }
+
+/// Board +UV1: main switch -Q0, surge protective device -F9 (type 2), residual
+/// current device -Q1 (40 A, 30 mA) feeding -F1 (B16, a socket outlet through cable -W1),
+/// the spare -F2 and the arc fault detection device -F4, and a staircase timer -K1
+/// shown by its property; board +UV2 with -F3 (hidden by its property) and the RCBO -F5
+/// straight from L1; a switch -Q9 of a room on the mains.
+fn boards() -> crate::testkit::Kit {
+    use crate::parts::FnKind;
+    let mut k = crate::testkit::Kit::new();
+    let l1 = k.sym("pot_l1", 100.0, 20.0, "", "L1");
+    let q0 = k.sym("disc3", 40.0, 60.0, "+UV1-Q0", "");
+    let f9 = k.sym("spd", 70.0, 60.0, "+UV1-F9", "");
+    let q1 = k.sym("rcd4", 100.0, 40.0, "+UV1-Q1", "");
+    let f1 = k.sym("cb1", 100.0, 80.0, "+UV1-F1", "");
+    let f2 = k.sym("cb1", 140.0, 80.0, "+UV1-F2", "");
+    let f4 = k.sym("cb1", 180.0, 80.0, "+UV1-F4", "");
+    k.sym("coil", 220.0, 80.0, "+UV1-K1", "");
+    let x1 = k.sym("socket", 100.0, 140.0, "+R1-XD1", "");
+    let f3 = k.sym("cb1", 300.0, 40.0, "+UV2-F3", "");
+    let f5 = k.sym("cb1", 340.0, 40.0, "+UV2-F5", "");
+    let q9 = k.sym("disc3", 400.0, 60.0, "+R1-Q9", "");
+    for (sym, pin) in [(q0, "1"), (f9, "L"), (q1, "1"), (f3, "1"), (f5, "1"), (q9, "1")] {
+        k.wire((l1, ""), (sym, pin));
+    }
+    for f in [f1, f2, f4] {
+        k.wire((q1, "2"), (f, "1"));
+    }
+    let socket = k.prj.symbol("socket").unwrap().pins[0].label.to_string();
+    k.core((f1, "2"), (x1, &socket), "+UV1-W1", "1");
+    k.cable("+UV1-W1", "1 2 3", "1.5 mm\u{b2}", 12.0);
+    k.prj.cables.last_mut().unwrap().cable_type = "NYM-J 3x1.5".into();
+    k.part("+UV1-Q1", FnKind::ResidualCurrent, "1 3 5 N 2 4 6 N'", |p| {
+        p.current = "40 A".into();
+        p.tech_data = "Rated residual current: 30 mA".into();
+    });
+    for t in ["+UV1-F1", "+UV1-F2", "+UV2-F3", "+UV2-F5"] {
+        k.part(t, FnKind::Breaker1, "1 2", |p| p.current = "16 A".into());
+    }
+    k.part("+UV1-F4", FnKind::Breaker1, "1 2", |p| {
+        p.current = "16 A".into();
+        p.description = "Arc fault detection device (AFDD) with circuit breaker".into();
+    });
+    k.part("+UV1-K1", FnKind::Coil, "A1 A2", |_| {});
+    // The RCBO: a breaker with a residual current function.
+    let rcbo = k.prj.parts.iter_mut().find(|p| p.number.contains("UV2-F5")).unwrap();
+    rcbo.functions.push(crate::parts::FunctionTemplate::new(FnKind::ResidualCurrent, "1 2"));
+    let device = |t: &str| crate::properties::Object::Device(t.into());
+    crate::properties::set(&mut k.prj, &device("+UV1-F9"), "device.spd_type", "Type 2").unwrap();
+    crate::properties::set(&mut k.prj, &device("+UV1-K1"), "device.fuse_overview", "Show").unwrap();
+    crate::properties::set(&mut k.prj, &device("+UV2-F3"), "device.fuse_overview", "Hide").unwrap();
+    let page = &mut k.prj.pages[0];
+    page.symbols.iter_mut().find(|s| s.tag == "+UV1-F1").unwrap().function_text = "Kitchen sockets".into();
+    k
+}
+
+#[test]
+fn fuse_overview_lists_the_devices_of_each_board() {
+    let k = boards();
+    let an = Analysis::checked(&k.prj);
+    let t = an.report(&k.prj, ReportKind::FuseOverview).unwrap();
+    assert!(t.rows.iter().all(|r| r.len() == t.headers.len()));
+    let devices: Vec<(&str, &str)> = t.rows.iter().map(|r| (r[0].as_str(), r[1].as_str())).collect();
+    assert_eq!(
+        devices,
+        [("+UV1", "+UV1-Q0"), ("+UV1", "+UV1-F9"), ("+UV1", "+UV1-Q1"), ("+UV1", "+UV1-F1"), ("+UV1", "+UV1-F2"), ("+UV1", "+UV1-F4"), ("+UV1", "+UV1-K1"), ("+UV2", "+UV2-F5")]
+    );
+    let row = |tag: &str| t.rows.iter().find(|r| r[1] == tag).unwrap();
+    let kind = |tag: &str| row(tag)[2].clone();
+    assert_eq!(kind("+UV1-Q0"), "Main switch");
+    assert_eq!(kind("+UV1-F9"), "Surge protective device");
+    assert_eq!(kind("+UV1-Q1"), "Residual current device");
+    assert_eq!(kind("+UV1-F1"), "Circuit breaker");
+    assert_eq!(kind("+UV1-F4"), "Arc fault detection device");
+    assert_eq!(kind("+UV1-K1"), "Coil");
+    assert_eq!(kind("+UV2-F5"), "RCBO");
+    assert_eq!(row("+UV1-Q1")[3], "40 A RCD 30 mA");
+    assert_eq!(row("+UV1-F9")[3], "Type 2");
+    let f1 = row("+UV1-F1");
+    assert!(f1[3].ends_with("16 A"), "{f1:?}");
+    assert_eq!((f1[4].as_str(), f1[5].as_str(), f1[6].as_str()), ("L1", "+UV1-Q1", "Kitchen sockets"));
+    assert_eq!(f1[8], "+UV1-W1 NYM-J 3x1.5");
+    assert!(!f1[9].is_empty(), "where it is drawn");
+    // The spare breaker and the one without residual current device.
+    assert_eq!(row("+UV1-F2")[6], "Spare");
+    assert_eq!(row("+UV2-F5")[5], "");
+    assert!(t.targets.iter().all(|t| t.is_some()), "every row jumps to its device");
+    // Found by the words of practice.
+    assert!(keywords(ReportKind::FuseOverview).contains(&"Panel schedule"));
+}
+
+/// The property says it: `device.afdd` false overrides the description of the part.
+#[test]
+fn fuse_overview_follows_the_afdd_property() {
+    let mut k = boards();
+    crate::properties::set(&mut k.prj, &crate::properties::Object::Device("+UV1-F4".into()), "device.afdd", "false").unwrap();
+    let an = Analysis::checked(&k.prj);
+    let t = an.report(&k.prj, ReportKind::FuseOverview).unwrap();
+    assert_eq!(t.rows.iter().find(|r| r[1] == "+UV1-F4").unwrap()[2], "Circuit breaker");
+}
+
+/// The board of a protective device is the cabinet it is placed in.
+#[test]
+fn fuse_overview_takes_the_board_from_the_layout() {
+    let prj = crate::sample::example("electrical_room").unwrap();
+    let an = Analysis::checked(&prj);
+    let t = an.report(&prj, ReportKind::FuseOverview).unwrap();
+    assert!(!t.rows.is_empty());
+    for r in &t.rows {
+        if let Some(ei) = crate::installation::board_of(&prj, &r[1]) {
+            assert_eq!(r[0], prj.layout.enclosures[ei].name, "{r:?}");
+        }
+    }
+    assert!(t.rows.iter().any(|r| crate::installation::board_of(&prj, &r[1]).is_some()), "{:?}", t.rows);
+}

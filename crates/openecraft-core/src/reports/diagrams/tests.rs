@@ -122,3 +122,110 @@ fn panel_legend_lists_profiles_with_section_and_cut_length() {
     let kinds: Vec<ItemKind> = cab[first..].iter().map(|r| prj.layout.enclosures[0].items.iter().find(|i| i.kind.is_profile() && i.part == r[4]).unwrap().kind).collect();
     assert!(kinds.windows(2).all(|w| w[0].layer() <= w[1].layer()), "{kinds:?}");
 }
+
+#[test]
+fn terminal_wiring_names_the_wired_ends_of_both_sides() {
+    let mut prj = demo_project();
+    let data = prj.strips.entry("-X1".into()).or_default();
+    data.jumpers.insert("1".into(), 1);
+    data.jumpers.insert("3".into(), 1);
+    let an = Analysis::checked(&prj);
+    let t = &an.report(&prj, ReportKind::TerminalWiring).unwrap();
+    assert_eq!(t.headers.len(), 14);
+    assert!(t.rows.iter().all(|r| r.len() == t.headers.len()));
+    let x1 = rows(t, "-X1");
+    // One terminal after the other in the order of the strip, no accessories.
+    let labels: Vec<&str> = x1.iter().map(|r| r[6].as_str()).filter(|l| !l.is_empty()).collect();
+    assert_eq!(labels, ["1", "2", "3", "PE"]);
+    // Terminal 1: the motor through cable -W1 on one side, -K1 on the other; only the
+    // device wired to it, not every device of the potential.
+    let one = x1.iter().find(|r| r[6] == "1").unwrap();
+    let sides = [(&one[2], &one[3], &one[5]), (&one[10], &one[11], &one[13])];
+    assert!(sides.iter().any(|s| s.0 == "-M1" && s.1 == "U1" && s.2.starts_with("-W1")), "{one:?}");
+    assert!(sides.iter().any(|s| s.0.starts_with("-K1")), "{one:?}");
+    assert!(!one[2].contains(',') && !one[10].contains(','), "{one:?}");
+    assert!(!one[4].is_empty() || !one[12].is_empty(), "the location of a target: {one:?}");
+    assert!(!one[9].is_empty(), "the potential: {one:?}");
+    // The jumper with the terminals it spans, on each of its terminals.
+    assert_eq!(one[8], "1 (1 – 3)");
+    assert_eq!(x1.iter().find(|r| r[6] == "3").unwrap()[8], "1 (1 – 3)");
+    assert_eq!(x1.iter().find(|r| r[6] == "2").unwrap()[8], "");
+    assert!(t.targets.iter().all(|t| t.is_some()), "every row jumps to its terminal");
+}
+
+/// Two wires at one side of a terminal: the second continues in the next row.
+#[test]
+fn terminal_wiring_continues_a_side_with_several_wires() {
+    use crate::testkit::Kit;
+    let mut k = Kit::new();
+    k.sym("term", 100.0, 100.0, "-X2", "1");
+    for (tag, x, y) in [("-E1", 60.0, 140.0), ("-E2", 140.0, 140.0), ("-E3", 100.0, 40.0)] {
+        k.sym("lamp", x, y, tag, "");
+    }
+    // Connection point `i` of the symbol of `tag`.
+    let at = |prj: &Project, tag: &str, i: usize| {
+        let s = prj.pages[0].symbols.iter().find(|s| s.tag == tag).unwrap();
+        prj.symbol(&s.sym).unwrap().pin_world(i, s.pos, s.rot, s.mirror)
+    };
+    // The bottom (internal) side to -E1 and -E2, the top one to -E3.
+    for (a, b) in [(at(&k.prj, "-X2", 1), at(&k.prj, "-E1", 0)), (at(&k.prj, "-X2", 1), at(&k.prj, "-E2", 0)), (at(&k.prj, "-X2", 0), at(&k.prj, "-E3", 1))] {
+        let id = k.prj.new_id();
+        k.prj.pages[0].wires.push(Wire { id, a, b, ..Default::default() });
+    }
+    let an = Analysis::checked(&k.prj);
+    let t = &an.report(&k.prj, ReportKind::TerminalWiring).unwrap();
+    let x2 = rows(t, "-X2");
+    assert_eq!(x2.len(), 2, "{x2:?}");
+    assert_eq!(x2[0][6], "1");
+    assert_eq!(x2[1][6], "", "the continuation has no terminal of its own");
+    assert!(x2[1][9].is_empty(), "nor potential: {x2:?}");
+    let mut internal: Vec<&str> = x2.iter().map(|r| r[10].as_str()).collect();
+    internal.sort();
+    assert_eq!(internal, ["-E1", "-E2"], "{x2:?}");
+    assert_eq!((x2[0][2].as_str(), x2[1][2].as_str()), ("-E3", ""), "{x2:?}");
+}
+
+/// An N busbar interrupted between N2 and N3 (two busbars), a PE busbar, and a
+/// wire jumper between the levels of a double-level terminal.
+#[test]
+fn terminal_wiring_shows_busbars_their_interruption_and_levels() {
+    use crate::testkit::Kit;
+    let mut k = Kit::new();
+    for (i, n) in ["N1", "N2", "N3", "N4"].iter().enumerate() {
+        k.sym("term_n", 100.0 + 10.0 * i as f32, 100.0, "-XN", n);
+    }
+    for (i, n) in ["PE1", "PE2"].iter().enumerate() {
+        k.sym("term_pe", 100.0 + 10.0 * i as f32, 150.0, "-XPE", n);
+    }
+    for (i, n) in ["1", "2"].iter().enumerate() {
+        k.sym("term", 100.0 + 10.0 * i as f32, 200.0, "-X3", n);
+    }
+    let bar = |k: &mut Kit, strip: &str, terminals: &[&str], number: u32| {
+        let data = k.prj.strips.entry(strip.into()).or_default();
+        for t in terminals {
+            data.jumpers.insert((*t).into(), number);
+        }
+        data.jumper_kinds.insert(number, JumperKind::Busbar);
+    };
+    bar(&mut k, "-XN", &["N1", "N2"], 1);
+    bar(&mut k, "-XN", &["N3", "N4"], 2);
+    bar(&mut k, "-XPE", &["PE1", "PE2"], 1);
+    let data = k.prj.strips.entry("-X3".into()).or_default();
+    data.levels.insert("2".into(), 2);
+    data.jumpers.insert("1".into(), 1);
+    data.jumpers.insert("2".into(), 1);
+    data.jumper_kinds.insert(1, JumperKind::Wire);
+    let an = Analysis::checked(&k.prj);
+    let t = &an.report(&k.prj, ReportKind::TerminalWiring).unwrap();
+    let cell = |strip: &str, terminal: &str, col: usize| t.rows.iter().find(|r| r[0] == strip && r[6] == terminal).map(|r| r[col].clone()).unwrap_or_else(|| panic!("{strip}:{terminal} {:?}", t.rows));
+    assert_eq!(cell("-XN", "N1", 8), "busbar 1 (N1 – N2)");
+    assert_eq!(cell("-XN", "N2", 8), "busbar 1 (N1 – N2)");
+    assert_eq!(cell("-XN", "N3", 8), "busbar 2 (N3 – N4), separated from 1");
+    assert_eq!(cell("-XN", "N4", 8), "busbar 2 (N3 – N4)");
+    // PE terminals on a busbar are fine, a plug-in jumper there is not.
+    assert_eq!(cell("-XPE", "PE1", 8), "busbar 1 (PE1 – PE2)");
+    assert!(crate::strips::strip_jumpers(&k.prj, "-XPE").iter().all(|j| j.problem.is_none()));
+    // Both levels of the block, bridged by a wire.
+    assert_eq!((cell("-X3", "1", 7), cell("-X3", "2", 7)), ("1".to_string(), "2".to_string()));
+    assert_eq!(cell("-X3", "2", 8), "1 (1 – 2)");
+}

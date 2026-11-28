@@ -34,6 +34,25 @@ d'article répétés.
 `list_cable_parts` expose les choix du projet et les choix intégrés aux plugins et à la
 CLI/MCP.
 
+**Tableau des protections** (rapport *Tableau des protections des tableaux de
+distribution*, `fuse_overview`) : tableau par tableau – l'armoire où un appareil est
+placé, sinon l'emplacement de son repère (`+UV1`) – chaque appareil de protection
+alimenté par le réseau, chaque dispositif différentiel et parafoudre, les
+interrupteurs principaux et interrupteurs sur le réseau du tableau, dans l'ordre du
+schéma. Chaque ligne donne le type d'appareil (disjoncteur, fusible,
+disjoncteur-moteur, disjoncteur différentiel pour un disjoncteur avec fonction
+différentielle, détecteur d'arc électrique (DDA) par la propriété *Détection d'arc
+électrique (DDA)* ou `AFDD` / `arc fault` dans la description ou les données
+techniques de son article, interrupteur différentiel, parafoudre, interrupteur
+principal, interrupteur), le type (`B 16 A`, `40 A RCD 30 mA`, le *Type de
+parafoudre*), les phases, le dispositif différentiel qui le protège, le texte de
+fonction (*Réserve* lorsque rien n'est raccordé en aval), les salles de son circuit,
+les câbles qui en partent avec leur type et l'endroit où il est dessiné (un clic y
+mène). La propriété d'appareil *Tableau des protections* ajoute avec *Afficher* tout
+autre appareil manœuvré dans un tableau (p. ex. une minuterie d'escalier) et en
+retire un avec *Masquer*. En pages de rapport, un bloc de rapport avec *Nouvelles
+pages pour chaque groupe* donne à chaque tableau ses propres pages.
+
 ## Formulaires
 
 Les cartouches sont des listes de lignes, de rectangles, de textes avec des espaces
