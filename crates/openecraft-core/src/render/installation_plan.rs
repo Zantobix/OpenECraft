@@ -181,13 +181,16 @@ pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &P
         let up = i.facing.map(|f| p(-f[0], -f[1]));
         // Devices of circuits the legend does not list (in neighbouring rooms) stay black.
         symbol_sized(d, prj, &i.symbol, c, up, ink_of(k.filter(|k| shown.contains(k))), sym);
-        if view.tags && !i.tag.is_empty() {
+        let lines = device_lines(view, i);
+        if !lines.is_empty() {
             let into = up.map_or(p(0.0, 1.0), |u| p(-u.x, -u.y));
             let reach = if up.is_some() { 2.0 * sym + 1.8 } else { sym + 1.8 };
             let at = p(c.x + into.x * reach, c.y + into.y * reach);
             let h = if into.x > 0.5 { Anchor::Left } else if into.x < -0.5 { Anchor::Right } else { Anchor::Center };
-            let tag = view.tag_parts.apply(&i.tag);
-            d.text(at, &tag, pt_to_mm(view.tag_size), h, VAnchor::Middle, Ink::Text);
+            let size = pt_to_mm(view.tag_size);
+            for (y, text) in line_offsets(lines.len(), size, into).into_iter().zip(&lines) {
+                d.text(p(at.x, at.y + y), text, size, h, VAnchor::Middle, Ink::Text);
+            }
         }
         if let Some(page) = k.and_then(|k| circuits[k].page) {
             d.link(p(c.x - sym, c.y - sym), p(c.x + sym, c.y + sym), page);
@@ -201,6 +204,41 @@ pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &P
     let scale = if fixed { tr_fmt!("Scale {}", n_text) } else { tr_fmt!("Scale {} (fitted)", n_text) };
     let caption = format!("{} {}  -  {}", building.name, lv.name, scale);
     d.text(p(a.min.x + 8.0, a.max.y - 7.0), &caption, 3.0, Anchor::Left, VAnchor::Middle, Ink::Text);
+}
+
+/// The lines written beside a device: its tag (when the page shows tags), the marks of
+/// its option values and its text.
+pub(crate) fn device_lines(view: &PlanView, i: &installation::Placed) -> Vec<String> {
+    let mut out = Vec::new();
+    if view.tags && !i.tag.is_empty() {
+        out.push(view.tag_parts.apply(&i.tag));
+    }
+    if !i.marks.is_empty() {
+        out.push(i.marks.join(" "));
+    }
+    if !i.text.is_empty() {
+        out.push(i.text.clone());
+    }
+    out
+}
+
+/// Vertical offsets of `n` lines of height `size` written at a point on the side
+/// `into` of a symbol: away from the symbol below or above it, centred on the point
+/// beside it.
+fn line_offsets(n: usize, size: f32, into: P) -> Vec<f32> {
+    let step = size * 1.25;
+    (0..n)
+        .map(|k| {
+            let k = k as f32;
+            if into.y > 0.5 {
+                k * step
+            } else if into.y < -0.5 {
+                -((n as f32 - 1.0) - k) * step
+            } else {
+                (k - (n as f32 - 1.0) / 2.0) * step
+            }
+        })
+        .collect()
 }
 
 /// The text of the legend line of circuit `c`: its protective device and function text.

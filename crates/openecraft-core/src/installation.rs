@@ -248,8 +248,13 @@ pub struct Placed {
     /// Into the room from the wall it is on (x, z of the plant); `None` on the ceiling
     /// or the floor.
     pub facing: Option<[f32; 2]>,
-    /// Its symbol on installation plans ([`plan_symbol`]).
+    /// Its symbol on installation plans ([`plan_symbol`], or that of the variant of its
+    /// device family).
     pub symbol: String,
+    /// Marks of the option values of its device family shown beside the symbol (`IP44`).
+    pub marks: Vec<String>,
+    /// Text shown at its symbol (what is connected to it).
+    pub text: String,
 }
 
 /// Height of the floor of a room above the ground (the level it is on).
@@ -281,8 +286,19 @@ pub fn placed(prj: &Project, poses: &[SitePose], ri: usize, it: &PanelItem) -> O
         let v = poses.get(ri)?.turn([w.normal[0], 0.0, w.normal[1]]);
         Some([v[0], v[2]])
     });
-    let symbol = panel::part_by_number(prj, &it.part).map_or_else(|| default_plan_symbol(kind, None).to_string(), |p| plan_symbol(prj, p, kind));
-    Some(Placed { room: ri, item: it.id, part: it.part.clone(), tag: it.tag.clone(), kind, at, height, floor: floor_of(prj, ri), ceiling: e.height, level: e.level, facing, symbol })
+    let mut symbol = panel::part_by_number(prj, &it.part).map_or_else(|| default_plan_symbol(kind, None).to_string(), |p| plan_symbol(prj, p, kind));
+    let choice = crate::families::of_item(prj, it);
+    let mut marks = Vec::new();
+    if !choice.family.is_empty() {
+        if let Ok(r) = crate::families::resolve(prj, &choice.family, &choice.values) {
+            if !r.plan_symbol.is_empty() && prj.symbol(&r.plan_symbol).is_some() {
+                symbol = r.plan_symbol;
+            }
+            marks = r.marks;
+        }
+    }
+    let text = choice.text.trim().to_string();
+    Some(Placed { room: ri, item: it.id, part: it.part.clone(), tag: it.tag.clone(), kind, at, height, floor: floor_of(prj, ri), ceiling: e.height, level: e.level, facing, symbol, marks, text })
 }
 
 /// Every item of the installation in the rooms.
@@ -1202,6 +1218,116 @@ pub fn name_item(prj: &mut Project, item: u64, tag: &str) -> Result<(), String> 
         return Err(tr_fmt!("{} is used already", tag));
     }
     adopt(prj, tag, item, None)
+}
+
+/// What [`set_family`] changed.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct FamilyChange {
+    /// The item's part before and after.
+    pub old_part: String,
+    pub part: String,
+    /// The item, taken off the wall or the ceiling and put up again (a light that goes
+    /// from the ceiling to the wall): its new id.
+    pub item: u64,
+    /// Symbols of the device in the schematic that took the variant's symbol.
+    pub symbols: usize,
+    /// Symbols of the device in the schematic that kept theirs: the variant's has
+    /// another number of connection points (another circuit, e.g. a two-way switch).
+    pub kept: Vec<String>,
+}
+
+/// Sets the device family, the option values and the text at the symbol of item `id`
+/// of a room: the item becomes the part of the variant the values stand for (its size
+/// follows; a light going from the ceiling to a wall or back is put up again at its
+/// place), the device of its tag gets the part, and its symbols in the schematic take
+/// the variant's symbol where it has as many connection points. An empty family only
+/// sets the text. Nothing changes when anything is wrong.
+pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::FamilyChoice) -> Result<FamilyChange, String> {
+    let ri = panel::rooms(&prj.layout).into_iter().find(|&ri| prj.layout.enclosures[ri].item(id).is_some()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
+    let it = prj.layout.enclosures[ri].item(id).cloned().ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
+    if !matches!(it.kind, ItemKind::Device | ItemKind::Accessory) || find_part(prj, &it.part).and_then(kind_of).is_none() {
+        return Err(tr_fmt!("No socket outlet, switch or light {}", id));
+    }
+    let text = choice.text.trim().to_string();
+    if choice.family.is_empty() {
+        let e = &mut prj.layout.enclosures[ri];
+        if let Some(x) = e.items.iter_mut().find(|i| i.id == id) {
+            x.family = crate::model::families::FamilyChoice { text, ..Default::default() };
+        }
+        return Ok(FamilyChange { old_part: it.part.clone(), part: it.part, item: id, ..Default::default() });
+    }
+    let r = crate::families::resolve(prj, &choice.family, &choice.values)?;
+    let new = find_part(prj, &r.part).cloned().ok_or_else(|| tr_fmt!("Unknown part: {}", r.part))?;
+    let kind = kind_of(&new).ok_or_else(|| tr_fmt!("{} is no socket outlet, switch or light", r.part))?;
+    if !r.schematic_symbol.is_empty() && prj.symbol(&r.schematic_symbol).is_none() {
+        return Err(tr_fmt!("Unknown symbol {}", r.schematic_symbol));
+    }
+    let family = crate::model::families::FamilyChoice { family: choice.family.clone(), values: r.values.clone(), text };
+    let mut change = FamilyChange { old_part: it.part.clone(), part: r.part.clone(), item: id, ..Default::default() };
+    take_part(prj, &r.part);
+    if it.part != r.part {
+        let moves = (it.face == Face::Roof) != on_ceiling(&new);
+        if moves {
+            // Taken down and put up again at its place in the plant, keeping its id.
+            let poses = panel::site_poses(prj);
+            let at = placed(prj, &poses, ri, &it).map(|pl| pl.at).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
+            let before = prj.layout.enclosures[ri].items.clone();
+            prj.layout.enclosures[ri].items.retain(|i| i.id != id);
+            let fresh = match mount(prj, ri, &r.part, at, None) {
+                Ok(fresh) => fresh,
+                Err(e) => {
+                    prj.layout.enclosures[ri].items = before;
+                    return Err(e);
+                }
+            };
+            if let Some(x) = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == fresh) {
+                x.id = id;
+                x.tag.clone_from(&it.tag);
+            }
+        } else {
+            let [w, h, d] = new.size().unwrap_or([it.w, it.h, it.d]);
+            if let Some(x) = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == id) {
+                let (cx, cy) = (x.x + x.w / 2.0, x.y + x.h / 2.0);
+                x.x = cx - w / 2.0;
+                x.y = cy - h / 2.0;
+                x.w = w;
+                x.h = h;
+                x.d = d;
+                x.part.clone_from(&r.part);
+            }
+        }
+        crate::parts::replace_device_part(prj, &it.tag, &it.part, &r.part);
+    }
+    if let Some(x) = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == id) {
+        x.family = family;
+    }
+    if !it.tag.is_empty() {
+        let sym = match r.schematic_symbol.as_str() {
+            "" => symbol_for(prj, kind, Some(&new)),
+            s => prj.symbol(s).map(|d| {
+                let labels = d.pins.iter().map(|x| x.label.to_string()).collect();
+                (d, labels)
+            }),
+        };
+        if let Some((def, labels)) = sym {
+            let pages = prj.layout.installation_pages.clone();
+            for pg in prj.pages.iter_mut().filter(|pg| pages.contains(&pg.id)) {
+                for s in pg.symbols.iter_mut().filter(|s| s.tag == it.tag) {
+                    if s.sym == def.key {
+                        continue;
+                    }
+                    if s.pins.len() == def.pins.len() {
+                        s.sym = def.key.to_string();
+                        s.pins.clone_from(&labels);
+                        change.symbols += 1;
+                    } else {
+                        change.kept.push(s.sym.clone());
+                    }
+                }
+            }
+        }
+    }
+    Ok(change)
 }
 
 /// Device tag `t` is used: a device, a symbol or an item of the layout has it.

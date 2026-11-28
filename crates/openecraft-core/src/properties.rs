@@ -273,7 +273,7 @@ pub fn builtin() -> &'static [PropDef] {
 
 impl Library {
     pub fn is_empty(&self) -> bool {
-        self.properties.is_empty() && self.functions.is_empty() && self.schemes.is_empty()
+        self.properties.is_empty() && self.functions.is_empty() && self.schemes.is_empty() && self.families.is_empty()
     }
 
     pub fn to_json(&self) -> String {
@@ -305,6 +305,13 @@ impl Library {
             match self.functions.iter_mut().find(|x| x.key == f.key) {
                 Some(x) => *x = f,
                 None => self.functions.push(f),
+            }
+            n += 1;
+        }
+        for f in other.families {
+            match self.families.iter_mut().find(|x| x.key == f.key) {
+                Some(x) => *x = f,
+                None => self.families.push(f),
             }
             n += 1;
         }

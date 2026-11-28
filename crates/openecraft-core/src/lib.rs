@@ -32,6 +32,7 @@ pub mod forms;
 pub mod freecad;
 pub mod formula;
 pub mod functions;
+pub mod families;
 pub mod frame;
 pub mod graphics;
 pub mod grips;

@@ -19,6 +19,9 @@ pub struct Library {
     pub functions: Vec<FunctionDef>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub schemes: Vec<super::props::Scheme>,
+    /// Device families (see `crate::families`).
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub families: Vec<super::families::DeviceFamily>,
 }
 
 /// Definition of a property.

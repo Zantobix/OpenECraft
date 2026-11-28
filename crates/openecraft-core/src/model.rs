@@ -54,6 +54,7 @@ pub mod routing3d;
 pub mod panel;
 pub mod ops;
 pub mod functions;
+pub mod families;
 pub mod safety;
 pub mod rules;
 pub mod electrofluid;

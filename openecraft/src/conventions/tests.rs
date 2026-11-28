@@ -178,7 +178,8 @@ const CORE_RULES: &[(&str, &[&str])] = &[
     ("options", &["model"]),
     ("potentials", &["model", "netlist", "wirenum"]),
     ("functions", &["model", "parts", "properties", "props", "symbols"]),
-    ("properties", &["frame", "functions", "model", "parts", "props", "references", "sections", "structure", "symbols"]),
+    ("families", &["model", "parts", "symbols"]),
+    ("properties", &["families", "frame", "functions", "model", "parts", "props", "references", "sections", "structure", "symbols"]),
     ("props", &["geom", "model", "properties", "symbols", "symlib"]),
     // 5 feature logic and page editing
     ("ops", &["device_boxes", "electrofluid", "geom", "graphics", "harness", "model", "plc_hw", "sections", "structure", "symbols", "symlib", "text"]),
@@ -201,7 +202,7 @@ const CORE_RULES: &[(&str, &[&str])] = &[
     ("plc", &["frame", "model", "netlist", "plc_hw", "symbols", "symlib", "text"]),
     ("plc_hw", &["devdesc", "issue", "model", "ops", "parts", "plc"]),
     ("devdesc", &["model", "parts", "xml"]),
-    ("installation", &["electrical", "frame", "geom", "issue", "loads", "model", "netlist", "ops", "panel", "parts", "protection", "rules", "shortcircuit", "sizing", "symbols"]),
+    ("installation", &["electrical", "families", "frame", "geom", "issue", "loads", "model", "netlist", "ops", "panel", "parts", "protection", "rules", "shortcircuit", "sizing", "symbols"]),
     ("electrical", &["model", "netlist", "parts", "potentials", "properties", "protection", "sizing"]),
     ("protection", &["electrical", "model", "parts", "sizing"]),
     ("sizing", &["issue", "model", "netlist", "parts", "potentials", "production", "rules", "symbols", "wirenum"]),

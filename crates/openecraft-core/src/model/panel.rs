@@ -985,7 +985,9 @@ pub struct PanelItem {
     /// A panel of a cabinet's field grid shown without its plastic cover (taken off, as
     /// while it is wired).
     #[serde(skip_serializing_if = "std::ops::Not::not")]
-    pub uncovered: bool,
+    pub uncovered: bool,    /// Devices of the installation: family, option values and text at the symbol.
+    #[serde(skip_serializing_if = "super::families::FamilyChoice::is_empty")]
+    pub family: super::families::FamilyChoice,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]

@@ -9,7 +9,10 @@ use crate::params::{optional, param, Args, Kind};
 use crate::{Info, Plugin, Registry};
 use super::{add_commands, info, Spec};
 use openecraft_core::analysis::Analysis;
+use openecraft_core::families;
 use openecraft_core::installation as inst;
+use openecraft_core::model::families::{DeviceFamily, FamilyChoice};
+use std::collections::BTreeMap;
 use openecraft_core::model::Project;
 use openecraft_core::netlist::Netlist;
 use openecraft_core::panel;
@@ -31,6 +34,9 @@ impl Plugin for Installation {
 const BREAKER: &str = tr_const!("Device tag of its protective device (circuit breaker, RCBO, fuse) in the schematic");
 const ROOM: &str = tr_const!("Room (location, e.g. +ROOM1)");
 const X: &str = tr_const!("x in the plant in mm");
+const FAMILY: &str = tr_const!("Device family key, e.g. socket.schuko");
+const VALUES: &str = tr_const!("Option values, e.g. {\"outlets\": \"2\"} (the others at their defaults)");
+const TEXT: &str = tr_const!("Text shown at the symbol, e.g. what is connected");
 const Z: &str = tr_const!("z in the plant (towards the front) in mm");
 
 pub static COMMANDS: &[Spec] = &[
@@ -50,12 +56,51 @@ pub static COMMANDS: &[Spec] = &[
         run: set_plan_symbol,
     },
     Spec {
+        name: "list_device_families",
+        help: tr_const!("Lists the device families: variants of socket outlets, switches, lights and boxes chosen by option values, each a part with its schematic symbol, plan symbol and 3D model; with their base family"),
+        params: &[optional("query", Kind::Str, tr_const!("Text in the key or name"))],
+        run: list_device_families,
+    },
+    Spec {
+        name: "device_family",
+        help: tr_const!("Shows a device family: its options with their values (those of its base families too), its variants and suggested texts; with values the variant they stand for"),
+        params: &[param("family", Kind::Str, FAMILY), optional("values", Kind::Object, VALUES)],
+        run: device_family,
+    },
+    Spec {
+        name: "define_device_family",
+        help: tr_const!("Defines a device family of the project or changes it (a built-in key gives the project's own version): key, name, base family, options with values and marks, variants with their option values, part and symbols, suggested texts"),
+        params: &[param("family", Kind::Object, tr_const!("The family as JSON: key, name, parent, options [{key, name, choices [{key, name, mark}], default}], variants [{when {option: value}, part, plan_symbol, schematic_symbol}], texts"))],
+        run: define_device_family,
+    },
+    Spec {
+        name: "remove_device_family",
+        help: tr_const!("Removes a device family of the project (a built-in one comes back as it was)"),
+        params: &[param("family", Kind::Str, FAMILY)],
+        run: remove_device_family,
+    },
+    Spec {
+        name: "set_device_variant",
+        help: tr_const!("Sets the device family, option values and text at the symbol of a socket outlet, switch, light or box in a room: it becomes the part of the variant, the device in the schematic gets the part and, with as many connection points, the variant's symbol"),
+        params: &[
+            optional("item", Kind::Int, tr_const!("Id of the item in the room")),
+            optional("device", Kind::Str, tr_const!("Device tag instead of the item id")),
+            optional("family", Kind::Str, tr_const!("Device family (default: the one of its part); empty: only the text")),
+            optional("values", Kind::Object, VALUES),
+            optional("text", Kind::Str, TEXT),
+        ],
+        run: set_device_variant,
+    },
+    Spec {
         name: "place_installation",
         help: tr_const!("Puts a socket outlet, switch, light, heating element, junction box or device connection box for a protective device into a room at a point of the plant (a ceiling light on the ceiling there, anything else on the nearest wall at its mounting height; outside the room on the outside of its nearest wall) and into the schematic: a new device on the installation page of the circuit with a cable from the device before it or from the device given; without a protective device only into the room (data and antenna outlets, smoke alarms)"),
         params: &[
             optional("breaker", Kind::Str, BREAKER),
             param("room", Kind::Str, ROOM),
-            param("part", Kind::Str, tr_const!("Part number, e.g. GEN.SOCKET-F-UP, GEN.SW-ONOFF-UP, GEN.LAMP-CEILING-LED, GEN.JBOX-UP, GEN.SOCKET-CEE-16-5P")),
+            optional("part", Kind::Str, tr_const!("Part number, e.g. GEN.SOCKET-F-UP, GEN.SW-ONOFF-UP, GEN.LAMP-CEILING-LED, GEN.JBOX-UP, GEN.SOCKET-CEE-16-5P")),
+            optional("family", Kind::Str, tr_const!("Device family instead of the part: the part of the variant of the values")),
+            optional("values", Kind::Object, VALUES),
+            optional("text", Kind::Str, TEXT),
             param("x", Kind::Num, X),
             param("z", Kind::Num, Z),
             optional("from", Kind::Str, tr_const!("Device or junction box of the circuit the cable comes from (default: the device before it)")),
@@ -178,12 +223,26 @@ fn place_installation(prj: &mut Project, a: &Args) -> Result<Value, String> {
         length: num_in(a, "length", 0.0, 100_000.0)?,
         height: num_in(a, "height", 0.0, 100_000.0)?,
     };
-    let part = a.req("part").trim();
+    let choice = family_choice(prj, a)?;
+    let resolved = match &choice {
+        Some(c) if !c.family.is_empty() => Some(families::resolve(prj, &c.family, &c.values)?.part),
+        _ => None,
+    };
+    let part = match (a.str("part").map(str::trim).filter(|p| !p.is_empty()), resolved) {
+        (Some(p), Some(r)) if p != r => return Err(tr_fmt!("Part {} is not the variant {} of the values", p, r)),
+        (_, Some(r)) => r,
+        (Some(p), None) => p.to_string(),
+        (None, None) => return Err(tr("Give a part or a device family").to_string()),
+    };
+    let part = part.as_str();
     let Some(breaker) = text("breaker") else {
         // Only into the room, with the device tag given.
         let id = inst::place_at(prj, ri, part, at, opts.height)?;
         if let Some(tag) = &opts.tag {
             inst::name_item(prj, id, tag).inspect_err(|_| prj.layout.enclosures[ri].items.retain(|i| i.id != id))?;
+        }
+        if let Some(c) = choice {
+            inst::set_family(prj, id, c).inspect_err(|_| prj.layout.enclosures[ri].items.retain(|i| i.id != id))?;
         }
         let e = &prj.layout.enclosures[ri];
         let it = e.item(id).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
@@ -191,6 +250,11 @@ fn place_installation(prj: &mut Project, a: &Args) -> Result<Value, String> {
         return Ok(json!({ "id": id, "device": device, "part": it.part, "room": e.name, "face": panel::room_face_key(e, it.face), "x": it.x, "y": it.y }));
     };
     let tag = inst::add_device(prj, &breaker, part, ri, at, &opts)?;
+    if let Some(c) = choice {
+        if let Some(id) = prj.layout.enclosures.get(ri).and_then(|e| e.items.iter().find(|i| i.tag == tag)).map(|i| i.id) {
+            inst::set_family(prj, id, c)?;
+        }
+    }
     let mut out = placed_json(prj, &tag)?;
     let page = prj.pages.iter().find(|pg| prj.layout.installation_pages.contains(&pg.id) && pg.symbols.iter().any(|s| s.tag == tag)).map(|pg| pg.name.clone());
     let cable = prj.cables.iter().find(|c| c.values.get("cable.target").is_some_and(|t| *t == tag));
@@ -263,6 +327,135 @@ fn set_plan_symbol(prj: &mut Project, a: &Args) -> Result<Value, String> {
     let part = part.clone();
     let shown = inst::kind_of(&part).map(|k| inst::plan_symbol(prj, &part, k));
     Ok(json!({ "part": part.number, "plan_symbol": part.plan_symbol, "shown": shown }))
+}
+
+/// The option values of argument `values` (an object of strings or numbers).
+fn values_arg(a: &Args) -> Result<BTreeMap<String, String>, String> {
+    let Some(v) = a.value("values") else { return Ok(BTreeMap::new()) };
+    let obj = v.as_object().ok_or_else(|| tr("The option values must be an object").to_string())?;
+    obj.iter()
+        .map(|(k, v)| match v {
+            Value::String(s) => Ok((k.clone(), s.clone())),
+            Value::Number(n) => Ok((k.clone(), n.to_string())),
+            Value::Bool(b) => Ok((k.clone(), b.to_string())),
+            _ => Err(tr_fmt!("Option {} needs a text value", k)),
+        })
+        .collect()
+}
+
+/// The family, values and text given (`None`: none of them).
+fn family_choice(prj: &Project, a: &Args) -> Result<Option<FamilyChoice>, String> {
+    let family = a.str("family").map(|f| f.trim().to_string());
+    let values = values_arg(a)?;
+    let text = a.str("text").map(|t| t.trim().to_string());
+    if family.is_none() && values.is_empty() && text.is_none() {
+        return Ok(None);
+    }
+    let family = family.unwrap_or_default();
+    if family.is_empty() && !values.is_empty() {
+        return Err(tr("Option values need a device family").to_string());
+    }
+    if !family.is_empty() && families::get(prj, &family).is_none() {
+        return Err(tr_fmt!("Unknown device family {}", family));
+    }
+    Ok(Some(FamilyChoice { family, values, text: text.unwrap_or_default() }))
+}
+
+fn family_json(prj: &Project, f: &DeviceFamily) -> Value {
+    let base = families::get(prj, &f.parent);
+    json!({
+        "key": f.key,
+        "name": families::title(f),
+        "parent": if f.parent.is_empty() { Value::Null } else { json!(f.parent) },
+        "parent_name": base.map(families::title),
+        "builtin": f.builtin,
+        "variants": f.variants.len(),
+    })
+}
+
+fn list_device_families(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let q = a.str("query").unwrap_or_default().to_lowercase();
+    let list: Vec<Value> = families::all(prj).into_iter().filter(|f| q.is_empty() || f.key.to_lowercase().contains(&q) || families::title(f).to_lowercase().contains(&q)).map(|f| family_json(prj, f)).collect();
+    Ok(json!(list))
+}
+
+fn device_family(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let key = a.req("family").trim();
+    let f = families::get(prj, key).ok_or_else(|| tr_fmt!("Unknown device family {}", key))?;
+    let values = values_arg(a)?;
+    let chosen = families::values(prj, key, &values)?;
+    let options: Vec<Value> = families::options(prj, key)
+        .into_iter()
+        .map(|(of, o)| {
+            let choices: Vec<Value> = o
+                .choices
+                .iter()
+                .map(|c| json!({ "key": c.key, "name": families::name_of(of, &c.name), "mark": c.mark, "reachable": families::reachable(prj, key, &chosen, &o.key, &c.key) }))
+                .collect();
+            json!({ "key": o.key, "name": families::name_of(of, &o.name), "from": of.key, "default": o.default, "value": chosen.get(&o.key), "choices": choices })
+        })
+        .collect();
+    let lineage = families::lineage(prj, key);
+    let variants: Vec<Value> = lineage.iter().flat_map(|x| x.variants.iter().map(move |v| json!({ "family": x.key, "when": v.when, "part": v.part, "plan_symbol": v.plan_symbol, "schematic_symbol": v.schematic_symbol }))).collect();
+    let mut out = family_json(prj, f);
+    out["options"] = json!(options);
+    out["variants"] = json!(variants);
+    out["texts"] = json!(families::texts(prj, key));
+    out["resolved"] = match families::resolve(prj, key, &values) {
+        Ok(r) => json!({ "part": r.part, "plan_symbol": r.plan_symbol, "schematic_symbol": r.schematic_symbol, "marks": r.marks, "values": r.values }),
+        Err(e) => json!({ "error": e }),
+    };
+    Ok(out)
+}
+
+fn define_device_family(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let v = a.value("family").cloned().unwrap_or(Value::Null);
+    let f: DeviceFamily = serde_json::from_value(v).map_err(|e| tr_fmt!("Not a valid device family: {}", e))?;
+    let key = f.key.clone();
+    families::define(prj, f)?;
+    let f = families::get(prj, &key).ok_or_else(|| tr_fmt!("Unknown device family {}", key))?;
+    Ok(family_json(prj, f))
+}
+
+fn remove_device_family(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let key = a.req("family").trim();
+    let removed = families::remove(prj, key)?;
+    if !removed && families::builtin_family(key).is_none() {
+        return Err(tr_fmt!("Unknown device family {}", key));
+    }
+    Ok(json!({ "removed": removed }))
+}
+
+fn set_device_variant(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let id = match (a.int("item"), a.str("device").map(str::trim).filter(|t| !t.is_empty())) {
+        (Some(id), None) => id as u64,
+        (None, Some(tag)) => panel::rooms(&prj.layout)
+            .into_iter()
+            .find_map(|ri| prj.layout.enclosures[ri].items.iter().find(|i| i.tag == tag).map(|i| i.id))
+            .ok_or_else(|| tr_fmt!("Device {} is in no room", tag))?,
+        _ => return Err(tr("Give either the item or the device").to_string()),
+    };
+    let item = panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].item(id).cloned()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
+    let current = families::of_item(prj, &item);
+    let mut choice = family_choice(prj, a)?.unwrap_or_else(|| current.clone());
+    if a.str("family").is_none() {
+        choice.family.clone_from(&current.family);
+        if !current.family.is_empty() {
+            // Values given change those it has.
+            let mut values = current.values.clone();
+            values.extend(choice.values);
+            choice.values = values;
+        }
+    }
+    if a.str("text").is_none() {
+        choice.text.clone_from(&current.text);
+    }
+    if choice.family.is_empty() && !choice.values.is_empty() {
+        return Err(tr("Option values need a device family").to_string());
+    }
+    let c = inst::set_family(prj, id, choice)?;
+    let item = panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].item(c.item).cloned()).unwrap_or_default();
+    Ok(json!({ "item": c.item, "device": item.tag, "old_part": c.old_part, "part": c.part, "family": item.family.family, "values": item.family.values, "text": item.family.text, "schematic_symbols": c.symbols, "kept_symbols": c.kept }))
 }
 
 #[cfg(test)]

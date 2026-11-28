@@ -553,3 +553,51 @@ fn only_circuits_of_the_legend_are_coloured() {
         }
     }
 }
+
+#[test]
+fn devices_show_the_marks_of_their_options_and_their_text() {
+    let (mut prj, level) = office();
+    let poses = panel::site_poses(&prj);
+    let socket = installation::items(&prj, &poses).into_iter().find(|i| i.level == level && i.part == "GIRA.418803").expect("socket outlet");
+    let choice = crate::model::families::FamilyChoice {
+        family: "socket.schuko".into(),
+        values: [("design".to_string(), "lid".to_string())].into(),
+        text: "Washing machine".into(),
+    };
+    let change = installation::set_family(&mut prj, socket.item, choice).unwrap();
+    assert_eq!((change.old_part.as_str(), change.part.as_str()), ("GIRA.418803", "GEN.SOCKET-F-LID-UP"));
+    let rec = draw(&prj);
+    assert!(rec.texts.iter().any(|t| t == "IP44"), "mark of the hinged lid");
+    assert!(rec.texts.iter().any(|t| t == "Washing machine"), "text at the symbol");
+    // A variant of a project family with its own plan symbol.
+    let mut f = crate::families::derive(&prj, crate::families::builtin_family("socket.schuko").unwrap());
+    f.key = "user.sockets".into();
+    for v in &mut f.variants {
+        v.plan_symbol = "inst_socket_cee".into();
+    }
+    crate::families::define(&mut prj, f).unwrap();
+    let choice = crate::model::families::FamilyChoice { family: "user.sockets".into(), ..Default::default() };
+    installation::set_family(&mut prj, socket.item, choice).unwrap();
+    let poses = panel::site_poses(&prj);
+    let item = installation::items(&prj, &poses).into_iter().find(|i| i.item == socket.item).unwrap();
+    assert_eq!((item.symbol.as_str(), item.part.as_str(), item.text.as_str()), ("inst_socket_cee", "GEN.SOCKET-F-UP", ""));
+}
+
+#[test]
+fn lines_beside_a_symbol_go_away_from_it_and_do_not_overlap() {
+    for into in [p(0.0, 1.0), p(0.0, -1.0), p(1.0, 0.0), p(-1.0, 0.0)] {
+        for n in 1..6 {
+            let ys = line_offsets(n, 2.5, into);
+            assert_eq!(ys.len(), n);
+            for w in ys.windows(2) {
+                assert!((w[1] - w[0] - 2.5 * 1.25).abs() < 1e-4, "{into:?} {ys:?}");
+            }
+            if into.y > 0.5 {
+                assert!(ys[0].abs() < 1e-4, "the first line next to the symbol");
+            }
+            if into.y < -0.5 {
+                assert!(ys[n - 1].abs() < 1e-4, "the last line next to the symbol");
+            }
+        }
+    }
+}

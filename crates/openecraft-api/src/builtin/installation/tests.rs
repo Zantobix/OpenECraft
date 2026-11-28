@@ -318,3 +318,66 @@ fn a_wrong_plan_option_leaves_the_page_as_it_was() {
     let first = s.project().unwrap().pages[0].name.clone();
     assert!(run(&mut s, "set_page", json!({ "page": first, "legend": false })).is_err());
 }
+
+#[test]
+fn devices_are_placed_and_changed_by_their_family() {
+    let (mut s, room, at) = room_session();
+    let breakers = run(&mut s, "list_breakers", json!({})).unwrap();
+    let f2 = breakers.as_array().unwrap().iter().find(|b| b["breaker"].as_str().unwrap().ends_with("-F2")).unwrap()["breaker"].clone();
+    let fams = run(&mut s, "list_device_families", json!({ "query": "socket" })).unwrap();
+    assert!(fams.as_array().unwrap().iter().any(|f| f["key"] == "socket.schuko" && f["parent"] == "socket"), "{fams}");
+    let fam = run(&mut s, "device_family", json!({ "family": "socket.schuko", "values": { "outlets": 2 } })).unwrap();
+    assert_eq!(fam["resolved"]["part"], "GEN.SOCKET-F-2X-UP");
+    assert!(fam["texts"].as_array().unwrap().iter().any(|t| t == "Fridge"), "{fam}");
+    // Placed by family and values, with a text.
+    let q = at(s.project().unwrap(), 0.02, 0.5);
+    let placed = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "family": "socket.schuko", "values": { "outlets": "2" }, "text": "Fridge", "x": q[0], "z": q[1] })).unwrap();
+    assert_eq!(placed["part"], "GEN.SOCKET-F-2X-UP", "{placed}");
+    let tag = placed["device"].as_str().unwrap().to_string();
+    // Part and values that disagree are refused.
+    assert!(run(&mut s, "place_installation", json!({ "room": room, "part": "GEN.SOCKET-F-UP", "family": "socket.schuko", "values": { "outlets": "2" }, "x": q[0], "z": q[1] })).is_err());
+    // Another value: another part, in the room and for the device of the schematic.
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "outlets": "1", "design": "lid" } })).unwrap();
+    assert_eq!((c["old_part"].as_str(), c["part"].as_str(), c["text"].as_str()), (Some("GEN.SOCKET-F-2X-UP"), Some("GEN.SOCKET-F-LID-UP"), Some("Fridge")), "{c}");
+    let prj = s.project().unwrap();
+    assert!(prj.devices[&tag].parts.iter().any(|p| p.number == "GEN.SOCKET-F-LID-UP"));
+    // Values without a variant change nothing.
+    let before = s.project().unwrap().clone();
+    assert!(run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "outlets": "2" } })).is_err());
+    assert!(run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "colour": "red" } })).is_err());
+    assert!(*s.project().unwrap() == before);
+    // Only the text.
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "text": "Freezer" })).unwrap();
+    assert_eq!((c["part"].as_str(), c["text"].as_str()), (Some("GEN.SOCKET-F-LID-UP"), Some("Freezer")));
+}
+
+#[test]
+fn a_switch_keeps_its_schematic_symbol_for_another_circuit() {
+    let (mut s, room, at) = room_session();
+    let breakers = run(&mut s, "list_breakers", json!({})).unwrap();
+    let f2 = breakers.as_array().unwrap().iter().find(|b| b["breaker"].as_str().unwrap().ends_with("-F2")).unwrap()["breaker"].clone();
+    let q = at(s.project().unwrap(), 0.02, 0.3);
+    let sw = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "part": "GEN.SW-ONOFF-UP", "x": q[0], "z": q[1] })).unwrap();
+    let tag = sw["device"].as_str().unwrap().to_string();
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "function": "intermediate" } })).unwrap();
+    assert_eq!((c["family"].as_str(), c["part"].as_str()), (Some("switch"), Some("GEN.SW-INTER-UP")), "{c}");
+    assert_eq!(c["kept_symbols"].as_array().map(Vec::len), Some(1), "{c}");
+}
+
+#[test]
+fn project_device_families_are_defined_and_removed() {
+    let (mut s, room, at) = room_session();
+    let fam = json!({ "key": "user.outdoor", "name": "Outdoor socket", "parent": "socket", "options": [{ "key": "lid", "name": "Lid", "choices": [{ "key": "yes", "name": "Yes", "mark": "IP44" }] }], "variants": [{ "when": { "lid": "yes" }, "part": "GEN.SOCKET-F-LID-UP" }], "texts": ["Terrace"] });
+    let d = run(&mut s, "define_device_family", json!({ "family": fam })).unwrap();
+    assert_eq!((d["key"].as_str(), d["builtin"].as_bool()), (Some("user.outdoor"), Some(false)));
+    assert!(run(&mut s, "define_device_family", json!({ "family": { "key": "user.bad", "name": "Bad", "parent": "nope" } })).is_err());
+    let f = run(&mut s, "device_family", json!({ "family": "user.outdoor" })).unwrap();
+    assert_eq!(f["resolved"]["marks"], json!(["IP44"]));
+    assert!(f["texts"].as_array().unwrap().iter().any(|t| t == "Terrace") && f["texts"].as_array().unwrap().iter().any(|t| t == "Fridge"));
+    // Placed without a circuit, then removed: the item keeps its part.
+    let q = at(s.project().unwrap(), 0.02, 0.6);
+    let p = run(&mut s, "place_installation", json!({ "room": room, "family": "user.outdoor", "x": q[0], "z": q[1] })).unwrap();
+    assert_eq!(p["part"], "GEN.SOCKET-F-LID-UP");
+    assert_eq!(run(&mut s, "remove_device_family", json!({ "family": "user.outdoor" })).unwrap()["removed"], true);
+    assert!(run(&mut s, "remove_device_family", json!({ "family": "user.outdoor" })).is_err());
+}

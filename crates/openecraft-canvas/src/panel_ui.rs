@@ -22,6 +22,7 @@ use std::sync::Arc;
 use view3d::default_cam;
 
 mod accessory_drop;
+mod family_ui;
 mod gpu3d;
 mod nav3d;
 mod new_enclosure;
@@ -687,6 +688,8 @@ struct InstallationPick {
     focus: String,
     breaker: Option<String>,
     part_height: f32,
+    /// Text at the symbol of the parts placed.
+    text: String,
 }
 
 /// The parts of the catalogs shipped with OpenECraft, read once.
@@ -2073,6 +2076,7 @@ impl PanelUi {
                 self.selection_tools(ui, prj, ei, &sel);
                 self.passage_tools(ui, prj, ei, id);
                 self.schematic_tools(ui, prj, ei, id);
+                self.family_tools(ui, prj, ei, id);
             }
             // Wires at this device
             if let Some(it) = prj.layout.enclosures[ei].items.iter().find(|i| i.id == id) {
@@ -3803,6 +3807,7 @@ impl PanelUi {
         match openecraft_core::installation::place_at(prj, ri, part, at, height) {
             Ok(id) => {
                 self.status = tr("Placed").to_string();
+                self.apply_pick_text(prj, id);
                 self.put_into_schematic(prj, part, id);
                 self.select_item(id);
             }
@@ -3893,6 +3898,7 @@ impl PanelUi {
         let beside = (pick.part_height - row).max(0.0);
         let height = (shown.len().max(1) as f32 * row).max(beside).min(limit);
         let mut part_height = pick.part_height;
+        let mut refocus: Option<String> = None;
         ui.horizontal_top(|ui| {
             // The list: the number and the description of each part over the whole width
             // the part picked leaves.
@@ -3946,6 +3952,15 @@ impl PanelUi {
                 if let Some(h) = p.tech_value("Mounting height") {
                     ui.label(tr_fmt!("Mounting height: {}", h.trim()));
                 }
+                // The variants of its device family: another value picks another part.
+                let family = openecraft_core::families::of_part(prj, &p.number);
+                if let Some(c) = &family {
+                    ui.add_space(4.0);
+                    if let Some((part, _)) = family_ui::option_buttons(ui, prj, c) {
+                        refocus = Some(part);
+                    }
+                }
+                family_ui::text_field(ui, prj, family.as_ref().map_or("", |c| c.family.as_str()), &mut pick.text);
                 ui.add_space(4.0);
                 if ui.add(egui::Button::new(RichText::new(tr("Place the part")).strong()).min_size(vec2(INSTALLATION_PART, 26.0))).clicked() {
                     chosen = Some((*p).clone());
@@ -3954,6 +3969,13 @@ impl PanelUi {
             part_height = shown_part.response.rect.height();
         });
         pick.part_height = part_height;
+        if let Some(part) = refocus {
+            // The variant may be of another type than the filter shows.
+            pick.subgroup.clear();
+            pick.maker.clear();
+            pick.search.clear();
+            pick.focus = part;
+        }
         // Heating: a generic manifold of any number of circuits.
         if INSTALLATION[pick.tab].2.contains(&"Heating circuit manifold") {
             ui.separator();
@@ -4393,6 +4415,7 @@ impl PanelUi {
                     let h = if self.in_room && self.face == Face::Bottom { probe.d } else { probe.h };
                     if let Some(id) = panel::place_accessory(prj, ei, &part, self.face, p(q.x - probe.w / 2.0, q.y - h / 2.0)) {
                         if self.in_room {
+                            self.apply_pick_text(prj, id);
                             self.put_into_schematic(prj, &part, id);
                         }
                         self.select_item(id);
