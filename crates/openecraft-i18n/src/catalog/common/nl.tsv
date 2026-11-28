@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Optie {}: {} is geen van de keuzes
 Order number	Bestelnummer
 Other	Overig
 Outer diameter	Buitendiameter
+Outlets	Contactdozen
 Output	Uitgang
 Output voltage (V)	Uitgangsspanning (V)
 Overview	Overzicht
@@ -478,6 +479,7 @@ Protection	Beveiliging
 Protective conductor (Ω)	Beschermingsleiding (Ω)
 Protective device	Beveiligingsapparaat
 Protective measure	Beschermingsmaatregel
+Push button	Drukknop
 Quantity	Hoeveelheid
 Quantity (default 1)	Aantal (standaard 1)
 Quantity unit	Hoeveelheidseenheid

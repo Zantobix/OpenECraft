@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Opzione {}: {} non è una delle sue scel
 Order number	Codice d'ordine
 Other	Altro
 Outer diameter	Diametro esterno
+Outlets	Prese
 Output	Uscita
 Output voltage (V)	Tensione di uscita (V)
 Overview	Panoramica
@@ -478,6 +479,7 @@ Protection	Protezione
 Protective conductor (Ω)	Conduttore di protezione (Ω)
 Protective device	Dispositivo di protezione
 Protective measure	Misura di protezione
+Push button	Pulsante
 Quantity	Quantità
 Quantity (default 1)	Quantità (predefinito 1)
 Quantity unit	Unità di quantità

@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	{} opció: a(z) {} nem tartozik a válas
 Order number	Rendelési szám
 Other	Egyéb
 Outer diameter	Külső átmérő
+Outlets	Aljzatok
 Output	Kimenet
 Output voltage (V)	Kimeneti feszültség (V)
 Overview	Áttekintés
@@ -478,6 +479,7 @@ Protection	Védelem
 Protective conductor (Ω)	Védővezető (Ω)
 Protective device	Védőkészülék
 Protective measure	Védelmi intézkedés
+Push button	Nyomógomb
 Quantity	Mennyiség
 Quantity (default 1)	Mennyiség (alapértelmezés: 1)
 Quantity unit	Mennyiségi egység

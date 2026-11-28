@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Vaihtoehto {}: {} ei ole sen valinnoissa
 Order number	Tilausnumero
 Other	Muu
 Outer diameter	Ulkohalkaisija
+Outlets	Pistorasiat
 Output	Lähtö
 Output voltage (V)	Lähtöjännite (V)
 Overview	Yleiskatsaus
@@ -478,6 +479,7 @@ Protection	Suojaus
 Protective conductor (Ω)	Suojajohdin (Ω)
 Protective device	Suojalaite
 Protective measure	Suojaus
+Push button	Painike
 Quantity	Määrä
 Quantity (default 1)	Määrä (oletus 1)
 Quantity unit	Määräyksikkö

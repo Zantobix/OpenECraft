@@ -384,6 +384,7 @@ Option {}: {} is not one of its choices	옵션 {0}: {1}은(는) 선택 항목에
 Order number	주문 번호
 Other	기타
 Outer diameter	외경
+Outlets	콘센트
 Output	출력
 Output voltage (V)	출력 전압 (V)
 Overview	개요
@@ -475,6 +476,7 @@ Protection	보호
 Protective conductor (Ω)	보호 도체 (Ω)
 Protective device	보호 장치
 Protective measure	보호 조치
+Push button	푸시 버튼
 Quantity	수량
 Quantity (default 1)	수량(기본값 1)
 Quantity unit	수량 단위

@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Opțiunea {}: {} nu este una dintre opț
 Order number	Număr de comandă
 Other	Altele
 Outer diameter	Diametru exterior
+Outlets	Prize
 Output	Ieșire
 Output voltage (V)	Tensiune de ieșire (V)
 Overview	Prezentare generală
@@ -478,6 +479,7 @@ Protection	Protecție
 Protective conductor (Ω)	Conductor de protecție (Ω)
 Protective device	Dispozitiv de protecție
 Protective measure	Măsură de protecție
+Push button	Buton
 Quantity	Cantitate
 Quantity (default 1)	Cantitate (implicit 1)
 Quantity unit	Unitate de cantitate

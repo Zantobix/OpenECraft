@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Indstillingen {}: {} er ikke en af dens 
 Order number	Bestillingsnummer
 Other	Andet
 Outer diameter	Udvendig diameter
+Outlets	Stikkontakter
 Output	Udgang
 Output voltage (V)	Udgangsspænding (V)
 Overview	Oversigt
@@ -478,6 +479,7 @@ Protection	Beskyttelse
 Protective conductor (Ω)	Beskyttelsesleder (Ω)
 Protective device	Beskyttelsesenhed
 Protective measure	Beskyttelsesforanstaltning
+Push button	Trykknap
 Quantity	Mængde
 Quantity (default 1)	Antal (standard 1)
 Quantity unit	Mængdeenhed

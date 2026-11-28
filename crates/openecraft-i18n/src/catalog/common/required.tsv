@@ -411,6 +411,7 @@ Option {}: {} is not one of its choices	Option {}: {} ist keiner ihrer Auswahlwe
 Order number	Bestellnummer	Référence de commande	Número de pedido
 Other	Sonstiges	Autre	Otro
 Outer diameter	Außendurchmesser	Diamètre extérieur	Diámetro exterior
+Outlets	Dosen	Prises	Tomas
 Output	Ausgang	Sortie	Salida
 Output voltage (V)	Ausgangsspannung (V)	Tension de sortie (V)	Tensión de salida (V)
 Overview	Übersicht	Vue d'ensemble	Vista general
@@ -458,6 +459,7 @@ Pin side	Stiftseite	Côté broche	Lado macho
 Place	Platz	Emplacement	Posición
 Placed wire labels	Platzierte Aderbeschriftungen	Étiquettes de fils placées	Etiquetas de cables colocadas
 Placement scheme	Platzierungsschema	Schéma de placement	Esquema de colocación
+Plan symbol	Plansymbol	Symbole de plan	Símbolo de plano
 Plinth	Sockel	Socle	Zócalo
 Plot	Grundstück	Terrain	Parcela
 Plot frame	Plotrahmen	Cadre	Marco
@@ -503,6 +505,7 @@ Protection	Schutz	Protection	Protección
 Protective conductor (Ω)	Schutzleiter (Ω)	Conducteur de protection (Ω)	Conductor de protección (Ω)
 Protective device	Schutzorgan	Appareil de protection	Dispositivo de protección
 Protective measure	Schutzmaßnahme	Mesure de protection	Medida de protección
+Push button	Taster	Bouton-poussoir	Pulsador
 Quantity	Menge	Quantité	Cantidad
 Quantity (default 1)	Menge (Standard 1)	Quantité (1 par défaut)	Cantidad (1 por defecto)
 Quantity unit	Mengeneinheit	Unité de quantité	Unidad de cantidad
@@ -676,6 +679,7 @@ Unit	Einheit	Unité	Unidad
 Unknown	Unbekannt	Inconnu	Desconocido
 Unknown column: {}	Unbekannte Spalte: {}	Colonne inconnue : {}	Columna desconocida: {}
 Unknown connector: {}	Unbekannter Konnektor: {}	Connecteur inconnu : {}	Conector desconocido: {}
+Unknown device family {}	Unbekannte Gerätefamilie {}	Famille d'appareils inconnue {}	Familia de dispositivos desconocida {}
 Unknown device or part: {}	Unbekanntes Gerät oder unbekannter Artikel: {}	Appareil ou article inconnu : {}	Equipo o artículo desconocido: {}
 Unknown enclosure system: {}	Unbekanntes Gehäusesystem: {}	Système d'armoire inconnu : {}	Sistema de armario desconocido: {}
 Unknown face: {}	Unbekannte Fläche: {}	Face inconnue : {}	Cara desconocida: {}

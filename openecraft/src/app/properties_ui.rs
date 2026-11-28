@@ -18,6 +18,7 @@ enum Tab {
     #[default]
     Definitions,
     Functions,
+    Families,
     Schemes,
     Values,
 }
@@ -58,6 +59,7 @@ pub struct PropertiesUi {
     new_scheme: String,
     target: Target,
     target_key: String,
+    pub(super) families: super::families_ui::FamiliesUi,
     pub device_grid: GridState,
     pub function_grid: GridState,
     values_grid: GridState,
@@ -80,6 +82,7 @@ impl App {
             ui.horizontal(|ui| {
                 ui.selectable_value(&mut st.tab, Tab::Definitions, tr("Property definitions"));
                 ui.selectable_value(&mut st.tab, Tab::Functions, tr("Function definitions"));
+                ui.selectable_value(&mut st.tab, Tab::Families, tr("Device families"));
                 ui.selectable_value(&mut st.tab, Tab::Schemes, tr("Placement schemes"));
                 ui.selectable_value(&mut st.tab, Tab::Values, tr("Values"));
                 ui.separator();
@@ -95,6 +98,7 @@ impl App {
             match st.tab {
                 Tab::Definitions => definitions_tab(ui, prj, st, &mut action),
                 Tab::Functions => functions_tab(ui, prj, st, &mut action),
+                Tab::Families => super::families_ui::families_tab(ui, prj, st),
                 Tab::Schemes => schemes_tab(ui, prj, st, &mut action),
                 Tab::Values => values_tab(ui, prj, st),
             }

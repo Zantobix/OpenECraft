@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Параметр {}: {} не входи�
 Order number	Номер для заказа
 Other	Прочее
 Outer diameter	Наружный диаметр
+Outlets	Розетки
 Output	Выход
 Output voltage (V)	Выходное напряжение (В)
 Overview	Обзор
@@ -478,6 +479,7 @@ Protection	Защита
 Protective conductor (Ω)	Защитный проводник (Ом)
 Protective device	Защитное устройство
 Protective measure	Мера защиты
+Push button	Кнопка
 Quantity	Количество
 Quantity (default 1)	Количество (по умолчанию 1)
 Quantity unit	Единица количества

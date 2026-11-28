@@ -143,6 +143,7 @@ Black box 2 + 2 connections	Black Box 2 + 2 Anschlüsse	Boîte noire 2 + 2 conne
 Black box 4 + 4 connections	Black Box 4 + 4 Anschlüsse	Boîte noire 4 + 4 connexions	Caja negra 4 + 4 conexiones
 Black boxes	Black Boxes	Boîtes noires	Cajas negras
 Black boxes / PLC boxes	Black Boxes / SPS-Boxen	Boîtes noires / boîtiers API	Cajas negras / cajas PLC
+Blind	Jalousieschalter	Volet roulant	Persiana
 Blind rivet	Blindniet	Rivet aveugle	Remache ciego
 Blind switch (installation)	Jalousieschalter (Installation)	Interrupteur de volet (installation)	Interruptor de persiana (instalación)
 Bonding conductor {} refers to the unknown bonding point {}	Potentialausgleichsleiter {} verweist auf den unbekannten Anschlusspunkt {}	Le conducteur d'équipotentialité {} fait référence au point inconnu {}	El conductor equipotencial {} hace referencia al punto desconocido {}
@@ -349,6 +350,7 @@ Control voltage type	Steuerspannungsart	Type de tension de commande	Tipo de tens
 Conventional touch voltage limit UL (V)	Vereinbarte Grenze der Berührungsspannung UL (V)	Tension limite conventionnelle de contact UL (V)	Tensión límite convencional de contacto UL (V)
 Converted from file format {} to {}: {}	Von Dateiformat {} nach {} konvertiert: {}	Converti du format de fichier {} au format {} : {}	Convertido del formato de archivo {} al {}: {}
 Conveyor	Förderer	Convoyeur	Transportador
+Cooker	Herd	Cuisinière	Cocina
 Coolant	Kühlmittel	Liquide de refroidissement	Refrigerante
 Cooler	Kühler	Refroidisseur	Refrigerador
 Cooling method	Kühlart	Mode de refroidissement	Método de refrigeración
@@ -429,12 +431,16 @@ Description and part	Beschreibung und Artikel	Description et article	Descripció
 Description of the last revision	Beschreibung der letzten Revision	Description de la dernière révision	Descripción de la última revisión
 Description of the page's function (structure management)	Beschreibung der Funktion der Seite (Strukturkennzeichenverwaltung)	Description de la fonction de la page (gestion de structure)	Descripción de la función de la página (gestión de estructura)
 Description of the page's location (structure management)	Beschreibung des Orts der Seite (Strukturkennzeichenverwaltung)	Description de l'emplacement de la page (gestion de structure)	Descripción de la ubicación de la página (gestión de estructura)
+Design	Ausführung	Exécution	Ejecución
 Designer	Konstrukteur	Concepteur	Proyectista
 Device connection box	Geräteanschlussdose	Boîte de raccordement d'appareil	Caja de conexión de aparato
 Device connection diagram	Geräteanschlussplan	Plan de raccordement des appareils	Esquema de conexión de equipos
 Device connection outlet	Geräteanschlussdose	Boîte de raccordement d'appareil	Caja de conexión de aparato
 Device data of {} without symbol or panel item	Gerätedaten von {} ohne Symbol oder Aufbauelement	Données d'appareil de {} sans symbole ni élément d'implantation	Datos de dispositivo de {} sin símbolo ni elemento de montaje
 Device description file	Gerätebeschreibungsdatei	Fichier de description d'appareil	Archivo de descripción del equipo
+Device family {} cannot be its own base	Gerätefamilie {} kann nicht ihre eigene Basis sein	La famille d'appareils {} ne peut pas être sa propre base	La familia de dispositivos {} no puede ser su propia base
+Device family {} has no option {}	Gerätefamilie {} hat keine Option {}	La famille d'appareils {} n'a pas d'option {}	La familia de dispositivos {} no tiene la opción {}
+Device family {} is the base of {}	Gerätefamilie {} ist die Basis von {}	La famille d'appareils {} est la base de {}	La familia de dispositivos {} es la base de {}
 Device group {} defined twice	Gerätegruppe {} doppelt definiert	Groupe d'appareils {} défini deux fois	Grupo de dispositivos {} definido dos veces
 Device group {}: {} devices on {} places	Gerätegruppe {}: {} Geräte auf {} Plätzen	Groupe d'appareils {} : {} appareils sur {} emplacements	Grupo de dispositivos {}: {} dispositivos en {} posiciones
 Device group {}: {} is not a fluid device	Gerätegruppe {}: {} ist kein Fluidgerät	Groupe d'appareils {} : {} n'est pas un appareil fluidique	Grupo de dispositivos {}: {} no es un dispositivo de fluidos
@@ -459,6 +465,7 @@ Different wire numbers in one connection: {}	Unterschiedliche Leitungsnummern in
 Digital input / output module	Digitalein-/-ausgabebaugruppe	Module d'entrées / sorties TOR	Módulo de entradas / salidas digitales
 Digital input module	Digitaleingabebaugruppe	Module d'entrées TOR	Módulo de entradas digitales
 Digital output module	Digitalausgabebaugruppe	Module de sorties TOR	Módulo de salidas digitales
+Dimmer	Dimmer	Variateur	Regulador
 Dimmer (installation)	Dimmer (Installation)	Variateur (installation)	Regulador (instalación)
 Diode	Diode	Diode	Diodo
 Directional valve	Wegeventil	Distributeur	Válvula distribuidora
@@ -474,6 +481,7 @@ Disconnector 3-pole DS (JIS)	Trennschalter 3-polig DS (JIS)	Sectionneur 3 pôles
 Disconnector 3-pole QS (GB)	Trennschalter 3-polig QS (GB)	Sectionneur 3 pôles QS (GB)	Seccionador 3 polos QS (GB)
 Disconnector 3-pole QS (GOST)	Trennschalter 3-polig QS (GOST)	Sectionneur 3 pôles QS (GOST)	Seccionador 3 polos QS (GOST)
 Disconnector 3-pole, lockable	Trennschalter 3-polig, abschließbar	Sectionneur 3 pôles, cadenassable	Seccionador 3 polos, bloqueable
+Dishwasher	Geschirrspüler	Lave-vaisselle	Lavavajillas
 Displacement	Verdrängungsvolumen	Cylindrée	Cilindrada
 Distribution board	Verteiler	Tableau de distribution	Cuadro de distribución
 Distribution board (IEC 61439)	Verteiler (IEC 61439)	Tableau de distribution (IEC 61439)	Cuadro de distribución (IEC 61439)
@@ -492,6 +500,7 @@ Door intercom	Türsprechstelle	Interphone de porte	Interfono de puerta
 Door leaf {}	Türflügel {}	Vantail {}	Hoja de puerta {}
 Door leaf {} (front view)	Türflügel {} (Frontansicht)	Vantail {} (vue de face)	Hoja de puerta {} (vista frontal)
 Doors and windows go into walls	Türen und Fenster kommen in Wände	Les portes et fenêtres se placent dans les murs	Las puertas y ventanas van en las paredes
+Double	Zweifach	Double	Doble
 Double socket outlet with PE	Doppelsteckdose mit Schutzkontakt	Prise double avec terre	Toma doble con tierra
 Downstream	Nachgeschaltet	Aval	Aguas abajo
 Drag chain	Energiekette	Chaîne porte-câbles	Cadena portacables
@@ -577,6 +586,7 @@ Environment	Umgebung	Environnement	Entorno
 Equipment accessible for operation, inspection and maintenance	Betriebsmittel für Bedienung, Prüfung und Wartung zugänglich	Matériel accessible pour l'exploitation, la vérification et la maintenance	Equipos accesibles para el manejo, la inspección y el mantenimiento
 Equipment and protective measures suit the external influences	Betriebsmittel und Schutzmaßnahmen passend zu den äußeren Einflüssen	Matériel et mesures de protection adaptés aux influences externes	Equipos y medidas de protección adecuados a las influencias externas
 Equipment grounding conductors must be green (NFPA 79, 13.2.2)	Schutzleiter müssen grün sein (NFPA 79, 13.2.2)	Les conducteurs de mise à la terre doivent être verts (NFPA 79, 13.2.2)	Los conductores de puesta a tierra deben ser verdes (NFPA 79, 13.2.2)
+Every variant needs a part	Jede Variante braucht einen Artikel	Chaque variante a besoin d'un article	Cada variante necesita un artículo
 Excel workbook	Excel-Arbeitsmappe	Classeur Excel	Libro de Excel
 Exhaust {} open to the atmosphere (no silencer)	Entlüftung {} offen zur Atmosphäre (kein Schalldämpfer)	Échappement {} ouvert à l'atmosphère (sans silencieux)	Escape {} abierto a la atmósfera (sin silenciador)
 Explosion protection marking	Ex-Kennzeichnung	Marquage de protection contre les explosions	Marcado de protección contra explosiones
@@ -591,6 +601,7 @@ Exports the project and page metadata with the revisions; imports document numbe
 Exports the wires with cut length, stripping and ferrules for wire processing machines; imports the processing feedback as wiring marks	Exportiert die Drähte mit Schnittlänge, Abisolierung und Aderendhülsen für Drahtkonfektionierautomaten; importiert die Rückmeldung der Bearbeitung als Verdrahtungsmarkierungen	Exporte les fils avec longueur de coupe, dénudage et embouts pour les machines de traitement de fils ; importe le retour de traitement comme marques de câblage	Exporta los cables con longitud de corte, pelado y punteras para máquinas de procesado de cables; importa la respuesta del procesado como marcas de cableado
 External	Extern	Externe	Externo
 External target	Externes Ziel	Cible externe	Destino externo
+Extractor hood	Dunstabzugshaube	Hotte aspirante	Campana extractora
 Fail-safe	Fehlersicher	Sécurité positive	A prueba de fallos
 Fan	Lüfter	Ventilateur	Ventilador
 Fan 1-phase	Lüfter 1-phasig	Ventilateur monophasé	Ventilador monofásico
@@ -660,8 +671,10 @@ Free air (mm)	Freie Verlegung (mm)	Air libre (mm)	Aire libre (mm)
 Free run	Freie Verlegung	Pose libre	Tendido libre
 FreeCAD panel layout (macro, .FCStd)	FreeCAD-Schaltschrankaufbau (Makro, .FCStd)	Implantation d'armoire FreeCAD (macro, .FCStd)	Diseño de armario para FreeCAD (macro, .FCStd)
 Freestanding on posts	Freiflächenanlage auf Pfosten	Au sol sur pieux	Sobre suelo en postes
+Freezer	Gefriergerät	Congélateur	Congelador
 Frequency converter	Frequenzumrichter	Variateur de fréquence	Variador de frecuencia
 Frequency meter	Frequenzmesser	Fréquencemètre	Frecuencímetro
+Fridge	Kühlschrank	Réfrigérateur	Frigorífico
 From end	Vom Ende	Depuis la fin	Desde el final
 From start	Vom Anfang	Depuis le début	Desde el inicio
 From the supply (%)	Ab Einspeisung (%)	Depuis l'alimentation (%)	Desde la alimentación (%)
@@ -772,9 +785,11 @@ Highest voltage of SELV and PELV, AC (V)	Höchste Spannung von SELV und PELV, AC
 Highest voltage of SELV and PELV, DC (V)	Höchste Spannung von SELV und PELV, DC (V)	Tension maximale TBTS et TBTP, CC (V)	Tensión máxima MBTS y MBTP, CC (V)
 Hinged left, opens inwards	Anschlag links, öffnet nach innen	Paumelles à gauche, ouvre vers l'intérieur	Bisagras a la izquierda, abre hacia dentro
 Hinged left, opens outwards	Anschlag links, öffnet nach außen	Paumelles à gauche, ouvre vers l'extérieur	Bisagras a la izquierda, abre hacia fuera
+Hinged lid, IP44	Klappdeckel, IP44	Couvercle à charnière, IP44	Tapa abatible, IP44
 Hinged right, opens inwards	Anschlag rechts, öffnet nach innen	Paumelles à droite, ouvre vers l'intérieur	Bisagras a la derecha, abre hacia dentro
 Hinged right, opens outwards	Anschlag rechts, öffnet nach außen	Paumelles à droite, ouvre vers l'extérieur	Bisagras a la derecha, abre hacia fuera
 Hip roof	Walmdach	Toit à quatre pans	Cubierta a cuatro aguas
+Hob	Kochfeld	Plaque de cuisson	Placa de cocción
 Hold-up time	Netzausfallüberbrückung	Temps de maintien	Tiempo de mantenimiento
 Holding power	Halteleistung	Puissance de maintien	Potencia de mantenimiento
 Holes and cutouts {}	Bohrungen und Ausschnitte {}	Perçages et découpes {}	Taladros y recortes {}
@@ -866,6 +881,7 @@ Insulation class	Isolierstoffklasse	Classe d'isolation	Clase de aislamiento
 Insulation test voltage of SELV and PELV (V)	Messspannung Isolation SELV und PELV (V)	Tension d'essai d'isolement TBTS et TBTP (V)	Tensión de ensayo de aislamiento MBTS y MBTP (V)
 Integer	Ganzzahl	Entier	Entero
 Integrated EMC filter	Integrierter EMV-Filter	Filtre CEM intégré	Filtro CEM integrado
+Intermediate	Kreuzschalter	Permutateur	Cruzamiento
 Intermediate relay coil KA (GB)	Spule Hilfsrelais KA (GB)	Bobine de relais auxiliaire KA (GB)	Bobina de relé auxiliar KA (GB)
 Intermediate switch (installation)	Kreuzschalter (Installation)	Permutateur (installation)	Interruptor de cruce (instalación)
 Intermediate switch, manually operated	Kreuzschalter, handbetätigt	Permutateur, à commande manuelle	Conmutador de cruce, accionado manualmente
@@ -1016,6 +1032,7 @@ Mechanical endurance (operating cycles)	Mechanische Lebensdauer (Schaltspiele)	E
 Medium temperature range	Mediumstemperaturbereich	Plage de température du fluide	Rango de temperatura del medio
 Message levels	Meldungsstufen	Niveaux des messages	Niveles de mensajes
 Metal cable carrier	Metallischer Kabelträger	Support de câbles métallique	Soporte de cables metálico
+Microwave oven	Mikrowelle	Four à micro-ondes	Microondas
 Minimum ambient temperature	Minimale Umgebungstemperatur	Température ambiante minimale	Temperatura ambiente mínima
 Minimum bending radius	Minimaler Biegeradius	Rayon de courbure minimal	Radio de curvatura mínimo
 Minimum clearance	Mindestabstand	Distance minimale	Distancia mínima
@@ -1140,6 +1157,7 @@ No template of the user is named {}	Keine Vorlage des Benutzers heißt {}	Aucun 
 No terminal {}	Keine Klemme {}	Aucune borne {}	No hay borne {}
 No twin ferrule for {} at {} (wire to {})	Keine Zwillingsaderendhülse für {} an {} (Leitung nach {})	Aucun embout double pour {} en {} (fil vers {})	Ninguna puntera doble para {} en {} (cable hacia {})
 No user defined property {}	Keine benutzerdefinierte Eigenschaft {}	Aucune propriété utilisateur {}	No hay propiedad de usuario {}
+No variant of device family {} for these values	Keine Variante der Gerätefamilie {} für diese Werte	Aucune variante de la famille d'appareils {} pour ces valeurs	Ninguna variante de la familia de dispositivos {} para estos valores
 No wall near the point	Keine Wand in der Nähe des Punkts	Aucun mur près du point	No hay ninguna pared cerca del punto
 No wall {}	Keine Wand {}	Pas de mur {}	No hay pared {}
 No wires at the pins of {}	Keine Verbindungen an den Pins von {}	Aucun fil aux broches de {}	No hay cables en los pines de {}
@@ -1190,6 +1208,7 @@ Numbers (1, 2, 3)	Zahlen (1, 2, 3)	Chiffres (1, 2, 3)	Números (1, 2, 3)
 OK, Not OK or Not applicable	OK, Nicht OK oder Entfällt	OK, Non conforme ou Sans objet	OK, No conforme o No aplicable
 Ohmmeter	Widerstandsmesser	Ohmmètre	Óhmetro
 Oil resistant	Ölbeständig	Résistant à l'huile	Resistente al aceite
+On / off	Ausschalter	Simple allumage	Interruptor simple
 One schematic page with +24V / 0V potentials, push buttons, a selector switch, lamps and a fuse; parts and the bill of materials.	Eine Schaltplanseite mit den Potentialen +24V / 0V, Tastern, einem Wahlschalter, Leuchten und einer Sicherung; Artikel und Stückliste.	Une page de schéma avec les potentiels +24V / 0V, des boutons-poussoirs, un commutateur, des voyants et un fusible ; articles et nomenclature.	Una página de esquema con los potenciales +24V / 0V, pulsadores, un selector, pilotos y un fusible; artículos y lista de materiales.
 One schematic page, the potentials of IEC 60204-1	Eine Schaltplanseite, die Potenziale nach IEC 60204-1	Une page de schéma, les potentiels de l'IEC 60204-1	Una página de esquema, los potenciales de IEC 60204-1
 One-way flow control valve	Drosselrückschlagventil	Réducteur de débit unidirectionnel	Válvula reguladora de caudal unidireccional
@@ -1205,7 +1224,11 @@ Operating hours	Betriebsstunden	Heures de fonctionnement	Horas de funcionamiento
 Operating range of the coil	Arbeitsbereich der Spule	Plage de fonctionnement de la bobine	Rango de funcionamiento de la bobina
 Operation	Bearbeitung	Opération	Operación
 Operator desk	Bedienpult	Pupitre de commande	Pupitre de mando
+Option {} has an empty or repeated value	Option {} hat einen leeren oder doppelten Wert	L'option {} a une valeur vide ou répétée	La opción {} tiene un valor vacío o repetido
+Option {} has no value {}	Option {} hat keinen Wert {}	L'option {} n'a pas de valeur {}	La opción {} no tiene el valor {}
+Option {} is defined twice	Option {} ist doppelt definiert	L'option {} est définie deux fois	La opción {} está definida dos veces
 Option {} is inactive: its content is hidden	Option {} ist inaktiv: Ihr Inhalt ist ausgeblendet	L'option {} est inactive : son contenu est masqué	La opción {} está inactiva: su contenido está oculto
+Option {} needs a key and values	Option {} braucht einen Schlüssel und Werte	L'option {} a besoin d'une clé et de valeurs	La opción {} necesita una clave y valores
 Option {}: {}	Option {}: {}	Option {} : {}	Opción {}: {}
 Option {}: {} assigned objects no longer exist	Option {}: {} zugeordnete Objekte existieren nicht mehr	Option {} : {} objets affectés n'existent plus	Opción {}: {} objetos asignados ya no existen
 Optocoupler	Optokoppler	Optocoupleur	Optoacoplador
@@ -1216,6 +1239,7 @@ Other bus device	Sonstiger Busteilnehmer	Autre appareil de bus	Otro dispositivo 
 Other module	Sonstige Baugruppe	Autre module	Otro módulo
 Other properties	Weitere Eigenschaften	Autres propriétés	Otras propiedades
 Outdoor area	Außenbereich	Zone extérieure	Zona exterior
+Outdoors	Außen	Extérieur	Exterior
 Outgoing circuits	Abgänge	Départs	Salidas
 Output current	Ausgangsstrom	Courant de sortie	Corriente de salida
 Output frequency range	Ausgangsfrequenzbereich	Plage de fréquence de sortie	Rango de frecuencia de salida
@@ -1228,6 +1252,7 @@ Outputs to	Ausgänge an	Sorties vers	Salidas a
 Outside	Außerhalb	À l'extérieur	Fuera
 Outside of wall {}	Außenseite Wand {}	Face extérieure du mur {}	Exterior del muro {}
 Outside wall	Außenwand	Mur extérieur	Muro exterior
+Oven	Backofen	Four	Horno
 Overload aux contact NC	Überlast-Hilfskontakt Öffner	Contact auxiliaire de relais thermique NF	Contacto auxiliar de relé térmico NC
 Overload auxiliary contact	Hilfskontakt Überlastrelais	Contact auxiliaire du relais de surcharge	Contacto auxiliar del relé de sobrecarga
 Overload capacity	Überlastfähigkeit	Capacité de surcharge	Capacidad de sobrecarga
@@ -1525,6 +1550,7 @@ Rated short-time withstand current	Bemessungskurzzeitstromfestigkeit	Courant ass
 Rated speed	Bemessungsdrehzahl	Vitesse assignée	Velocidad nominal
 Rated torque	Bemessungsmoment	Couple assigné	Par nominal
 Rated voltage	Bemessungsspannung	Tension assignée	Tensión nominal
+Recessed	Einbau	Encastré	Empotrado
 Recessed light	Einbauleuchte	Encastré lumineux	Luminaria empotrada
 Rectangular punch	Rechteckstempel	Poinçon rectangulaire	Punzón rectangular
 Rectifier / inverter AC/DC, bidirectional	Gleich- / Wechselrichter AC/DC, bidirektional	Redresseur / onduleur AC/DC, bidirectionnel	Rectificador / inversor AC/DC, bidireccional
@@ -1661,6 +1687,7 @@ Sensor and measurement	Sensorik und Messung	Capteurs et mesure	Sensores y medici
 Sensors	Sensoren	Capteurs	Sensores
 Sequential (1, 2, 3 …)	Fortlaufend (1, 2, 3 …)	Séquentiel (1, 2, 3 …)	Secuencial (1, 2, 3 …)
 Serial number	Seriennummer	Numéro de série	Número de serie
+Series	Serienschalter	Double allumage	Doble
 Series switch (installation)	Serienschalter (Installation)	Interrupteur double allumage (installation)	Interruptor doble (instalación)
 Service unit	Wartungseinheit	Unité de conditionnement	Unidad de mantenimiento
 Service unit (filter, regulator, lubricator)	Wartungseinheit (Filter, Regler, Öler)	Unité de conditionnement (filtre, régulateur, lubrificateur)	Unidad de mantenimiento (filtro, regulador, lubricador)
@@ -1695,6 +1722,7 @@ Signal type	Signalart	Type de signal	Tipo de señal
 Signed by	Unterschrieben von	Signé par	Firmado por
 Signed on	Unterschrieben am	Signé le	Firmado el
 Silencer	Schalldämpfer	Silencieux	Silenciador
+Single	Einfach	Simple	Simple
 Single, free-standing	Einzeln, freistehend	Seule, autoportante	Individual, autoportante
 Single, wall mounted	Einzeln, Wandmontage	Seule, montage mural	Individual, montaje mural
 Single-line / overview	Einpolig / Übersicht	Unifilaire / vue d'ensemble	Unifilar / resumen
@@ -1709,6 +1737,7 @@ Sliding to the right	Schiebend nach rechts	Coulissant vers la droite	Corredera h
 Smoke alarm	Rauchwarnmelder	Détecteur de fumée	Detector de humo
 Socket outlet	Steckdose	Prise de courant	Toma de corriente
 Socket outlet three-phase	Steckdose dreiphasig	Prise de courant triphasée	Toma de corriente trifásica
+Socket outlet type F	Schutzkontakt-Steckdose	Prise de type F	Toma tipo F
 Socket outlet with PE	Steckdose mit Schutzkontakt	Prise avec terre	Toma con tierra
 Socket outlet with switch	Steckdose mit Schalter	Prise avec interrupteur	Toma con interruptor
 Socket outlet, splash-proof	Steckdose, spritzwassergeschützt	Prise étanche aux projections	Toma protegida contra salpicaduras
@@ -1821,6 +1850,7 @@ Tapped hole	Gewindebohrung	Trou taraudé	Agujero roscado
 Tapping	Gewindeschneiden	Taraudage	Roscado
 Target	Ziel	Cible	Destino
 Technical characteristics	Technische Kenngrößen	Caractéristiques techniques	Características técnicas
+Television	Fernseher	Téléviseur	Televisor
 Temperature	Temperatur	Température	Temperatura
 Temperature controller	Temperaturregler	Régulateur de température	Regulador de temperatura
 Temperature range	Temperaturbereich	Plage de température	Rango de temperatura
@@ -1868,6 +1898,7 @@ The coordinates of the reference point {} are not valid	Die Koordinaten des Bezu
 The corners of the plot boundary must be numbers	Die Ecken der Grundstücksgrenze müssen Zahlen sein	Les sommets de la limite du terrain doivent être des nombres	Las esquinas del límite de la parcela deben ser números
 The demo project: PLC inputs and outputs, panel layout of the enclosure with rails, ducts and door devices, door harness and motor cable.	Das Demoprojekt: SPS-Ein- und -Ausgänge, Aufbauplan des Gehäuses mit Tragschienen, Kabelkanälen und Türgeräten, Türkabelbaum und Motorkabel.	Le projet de démonstration : entrées et sorties d'automate, implantation de l'armoire avec rails, goulottes et appareils de porte, faisceau de porte et câble moteur.	El proyecto de demostración: entradas y salidas del PLC, disposición del armario con carriles, canaletas y equipos de puerta, mazo de puerta y cable del motor.
 The device box has no device tag	Die Gerätebox hat kein Betriebsmittelkennzeichen	La boîte d'appareil n'a pas de repère d'appareil	La caja de dispositivo no tiene identificador del equipo
+The device family needs a key and a name	Die Gerätefamilie braucht einen Schlüssel und einen Namen	La famille d'appareils a besoin d'une clé et d'un nom	La familia de dispositivos necesita una clave y un nombre
 The device {} has no connection point {}	Das Betriebsmittel {} hat keinen Anschlusspunkt {}	L'appareil {} n'a pas de point de connexion {}	El dispositivo {} no tiene el punto de conexión {}
 The distribution cabinet of an apartment building with an 88 kWp PV system, built from Hager univers parts: busbars with surge arrester and connection point zone, consumption and generation metering with NH1 fuse switch disconnectors on component modules, current transformers, voltage paths and meter cabinets with test terminal blocks, heat pump and inverter feeders, grid and system protection with voltage and frequency relay, buffered 24 V supply, fire brigade switch and a coupling switch with motor operator, undervoltage release and auxiliary switch built in; the cabinet comes with its plinth and lifting eyes.	Der Verteilerschrank eines Mehrfamilienhauses mit einer PV-Anlage von 88 kWp, aufgebaut aus Hager-univers-Teilen: Sammelschienen mit Überspannungsableiter und Abschlusspunkt Zählerplatz (APZ), Bezugs- und Erzeugungsmessung mit NH1-Sicherungslasttrennschaltern auf Bausteinen, Stromwandlern, Spannungspfaden und Zählerschränken mit Prüfklemmen, Abgänge für Wärmepumpen und Wechselrichter, NA-Schutz mit Spannungs- und Frequenzrelais, gepufferter 24-V-Versorgung, Feuerwehrschalter und einem Kuppelschalter mit eingebautem Motorantrieb, Unterspannungsauslöser und Hilfsschalter; der Schrank kommt mit Sockel und Kranösen.	L'armoire de distribution d'un immeuble collectif avec une installation PV de 88 kWc, construite avec des pièces Hager univers : jeux de barres avec parafoudre et zone du point de raccordement, comptage de consommation et de production avec interrupteurs-sectionneurs à fusibles NH1 sur modules de montage, transformateurs de courant, circuits de tension et armoires de comptage avec borniers d'essai, départs des pompes à chaleur et des onduleurs, protection de découplage avec relais de tension et de fréquence, alimentation 24 V secourue, interrupteur pompiers et un disjoncteur de couplage avec commande motorisée, déclencheur à minimum de tension et contact auxiliaire intégrés ; l'armoire est livrée avec son socle et ses anneaux de levage.	El cuadro de distribución de un edificio de viviendas con una instalación FV de 88 kWp, construido con piezas Hager univers: embarrados con descargador de sobretensiones y zona del punto de conexión, medida de consumo y de generación con seccionadores fusibles NH1 sobre módulos de montaje, transformadores de corriente, circuitos de tensión y armarios de contador con regletas de prueba, salidas para bombas de calor e inversores, protección de red e instalación con relé de tensión y frecuencia, alimentación de 24 V con respaldo, interruptor de bomberos y un interruptor de acoplamiento con accionamiento motorizado, bobina de mínima tensión y contacto auxiliar integrados; el armario incluye su zócalo y sus cáncamos.
 The embedded document {} is damaged	Das eingebettete Dokument {} ist beschädigt	Le document intégré {} est endommagé	El documento incrustado {} está dañado
@@ -2003,6 +2034,7 @@ Trunking	Kabelkanal	Goulotte	Canaleta
 Tube	Rohr (Schlauch)	Tube	Tubo flexible
 Tubes	Schläuche	Tuyaux	Tubos
 Tubing / piping list	Rohr- / Schlauchmaterialliste	Liste des tubes / tuyauteries	Lista de tubos / tuberías
+Tumble dryer	Wäschetrockner	Sèche-linge	Secadora
 Turned once (quarter landing)	Einmal gewinkelt (Viertelpodest)	Tournant une fois (palier d'angle)	Girada una vez (descansillo de esquina)
 Turned twice (two quarter landings)	Zweimal gewinkelt (zwei Viertelpodeste)	Tournant deux fois (deux paliers d'angle)	Girada dos veces (dos descansillos de esquina)
 Twin ferrule	Zwillingsaderendhülse	Embout double	Puntera doble
@@ -2015,6 +2047,7 @@ Twin ferrule {} mm² {}	Zwillingsaderendhülse {} mm² {}	Embout double {} mm² 
 Twin ferrules	Zwillingsaderendhülsen	Embouts doubles	Punteras dobles
 Two bayed Hager univers cabinets: two aluminium supplies on busbar terminals for Al, transformer metering isolated by NH strips with solid links, a power analyser for the zero export of the battery storage, feeders on NH fuse switch disconnector strips of a 185 mm busbar system with current transformers clipped in behind them and energy meters on the Tree bus (DC charging station, sub-distributions, air conditioning), heat pumps behind residual current devices of type B, PV inverters and battery storage behind two coupling switches with motor operators, undervoltage releases and auxiliary switches, cable entry flanges for the large cables.	Zwei angereihte Hager-univers-Schränke: zwei Aluminium-Zuleitungen auf Sammelschienenklemmen für Al, Wandlermessung mit Freischaltung durch NH-Leisten mit Trennmessern, ein Netzanalysator für die Nulleinspeisung des Batteriespeichers, Abgänge auf NH-Sicherungslastschaltleisten eines 185-mm-Sammelschienensystems mit dahinter eingeklipsten Stromwandlern und Energiezählern am Tree-Bus (DC-Ladestation, Unterverteilungen, Klimaanlage), Wärmepumpen hinter Fehlerstromschutzschaltern Typ B, PV-Wechselrichter und Batteriespeicher hinter zwei Kuppelschaltern mit Motorantrieben, Unterspannungsauslösern und Hilfsschaltern, Kabeleinführungen für die großen Kabel.	Deux armoires Hager univers juxtaposées : deux arrivées en aluminium sur des bornes de jeu de barres pour Al, comptage sur transformateurs sectionné par des réglettes NH à barrettes de sectionnement, un analyseur de réseau pour l'injection zéro du stockage par batteries, départs sur réglettes interrupteurs-sectionneurs à fusibles NH d'un jeu de barres de 185 mm avec transformateurs de courant clipsés derrière et compteurs d'énergie sur le bus Tree (borne de recharge DC, tableaux divisionnaires, climatisation), pompes à chaleur derrière des interrupteurs différentiels de type B, onduleurs PV et stockage par batteries derrière deux disjoncteurs de couplage avec commandes motorisées, déclencheurs à minimum de tension et contacts auxiliaires, entrées de câbles pour les gros câbles.	Dos armarios Hager univers acoplados: dos acometidas de aluminio en bornes de embarrado para Al, medida indirecta seccionada por regletas NH con cuchillas seccionadoras, un analizador de red para la inyección cero del almacenamiento en baterías, salidas en regletas seccionadoras con fusibles NH de un embarrado de 185 mm con transformadores de corriente encajados detrás y contadores de energía en el bus Tree (punto de recarga DC, cuadros secundarios, climatización), bombas de calor tras interruptores diferenciales tipo B, inversores FV y baterías tras dos interruptores de acoplamiento con accionamientos motorizados, bobinas de mínima tensión y contactos auxiliares, entradas de cables para los cables grandes.
 Two connection symbols on page {} lie on the same point	Zwei Verbindungssymbole auf Seite {} liegen auf demselben Punkt	Deux symboles de liaison en page {} se trouvent au même point	Dos símbolos de conexión en la página {} están en el mismo punto
+Two-way	Wechselschalter	Va-et-vient	Conmutador
 Two-way switch (installation)	Wechselschalter (Installation)	Va-et-vient (installation)	Conmutador (instalación)
 Type numbers	Typnummern	Références de type	Números de tipo
 U max (V)	U max (V)	U max (V)	U máx. (V)
@@ -2081,7 +2114,9 @@ Wall {} is not at a right angle	Wand {} ist nicht rechtwinklig	Le mur {} n'est p
 Wall {} is shorter than {} mm	Wand {} ist kürzer als {} mm	Le mur {} est plus court que {} mm	La pared {} es más corta que {} mm
 Walls {} and {} cross	Die Wände {} und {} kreuzen sich	Les murs {} et {} se croisent	Las paredes {} y {} se cruzan
 Warranty until	Garantie bis	Garantie jusqu'au	Garantía hasta
+Washing machine	Waschmaschine	Lave-linge	Lavadora
 Water	Wasser	Eau	Agua
+Water heater	Durchlauferhitzer	Chauffe-eau	Calentador de agua
 Watt-hour meter	Wirkenergiezähler	Compteur d'énergie active	Contador de energía activa
 Watt-hour meter with maximum demand indicator	Wirkenergiezähler mit Maximumanzeiger	Compteur d'énergie active avec indicateur de maximum	Contador de energía activa con indicador de máxima demanda
 Watt-hour meter with maximum demand recorder	Wirkenergiezähler mit Maximumschreiber	Compteur d'énergie active avec enregistreur de maximum	Contador de energía activa con registrador de máxima demanda
@@ -2125,6 +2160,7 @@ Wiring machine job list (CSV)	Auftragsliste für Drahtkonfektionierautomaten (CS
 Wiring marks	Verdrahtungsmarkierungen	Marques de câblage	Marcas de cableado
 Wiring problem {} – {}: {}	Verdrahtungsproblem {} – {}: {}	Problème de câblage {} – {} : {}	Problema de cableado {} – {}: {}
 Wiring the panels	Schaltschränke werden verdrahtet	Câblage des armoires	Cableando los cuadros
+With USB charger	Mit USB-Ladegerät	Avec chargeur USB	Con cargador USB
 Within a suite, free-standing	Innerhalb einer Reihe, freistehend	Au milieu d'une rangée, autoportante	Dentro de una fila, autoportante
 Within a suite, wall mounted	Innerhalb einer Reihe, Wandmontage	Au milieu d'une rangée, montage mural	Dentro de una fila, montaje mural
 Within a suite, wall mounted, roof covered	Innerhalb einer Reihe, Wandmontage, Dach abgedeckt	Au milieu d'une rangée, montage mural, toit couvert	Dentro de una fila, montaje mural, techo cubierto
@@ -2274,6 +2310,7 @@ yellow	gelb	jaune	amarillo
 {} is neither the protective device nor a device of the circuit of {}	{} ist weder das Schutzorgan noch ein Betriebsmittel des Stromkreises von {}	{} n'est ni l'appareil de protection ni un appareil du circuit de {}	{} no es ni el dispositivo de protección ni un equipo del circuito de {}
 {} is no 19-inch part ({} mm wide)	{} ist kein 19-Zoll-Teil ({} mm breit)	{} n'est pas une pièce 19 pouces ({} mm de large)	{} no es una pieza de 19 pulgadas ({} mm de ancho)
 {} is no protective device of a final circuit in the schematic	{} ist kein Schutzorgan eines Endstromkreises im Schaltplan	{} n'est pas un appareil de protection d'un circuit terminal du schéma	{} no es un dispositivo de protección de un circuito final del esquema
+{} is no socket outlet, switch or light	{} ist keine Steckdose, kein Schalter und keine Leuchte	{} n'est ni une prise, ni un interrupteur, ni un luminaire	{} no es una toma, un interruptor ni una luminaria
 {} is no socket outlet, switch, light or heating element	{} ist weder Steckdose noch Schalter, Leuchte oder Heizelement	{} n'est ni une prise, ni un interrupteur, ni un luminaire, ni un élément chauffant	{} no es una toma de corriente, un interruptor, una luminaria ni un elemento calefactor
 {} is no socket outlet, switch, light or heating element of circuit {}	{} ist keine Steckdose, kein Schalter, keine Leuchte und kein Heizelement des Stromkreises {}	{} n'est ni une prise, ni un interrupteur, ni un luminaire, ni un élément chauffant du circuit {}	{} no es una toma de corriente, un interruptor, una luminaria ni un elemento calefactor del circuito {}
 {} is no valid name: letters, digits and _, not starting with a digit	{} ist kein gültiger Name: Buchstaben, Ziffern und _, nicht mit einer Ziffer am Anfang	{} n'est pas un nom valide : lettres, chiffres et _, sans chiffre au début	{} no es un nombre válido: letras, dígitos y _, sin empezar por un dígito

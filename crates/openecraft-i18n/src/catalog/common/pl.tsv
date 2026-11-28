@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Opcja {}: {} nie jest jedną z jej warto
 Order number	Numer zamówieniowy
 Other	Inne
 Outer diameter	Średnica zewnętrzna
+Outlets	Gniazda
 Output	Wyjście
 Output voltage (V)	Napięcie wyjściowe (V)
 Overview	Przegląd
@@ -478,6 +479,7 @@ Protection	Ochrona
 Protective conductor (Ω)	Przewód ochronny (Ω)
 Protective device	Urządzenie zabezpieczające
 Protective measure	Środek ochrony
+Push button	Przycisk
 Quantity	Ilość
 Quantity (default 1)	Ilość (domyślnie 1)
 Quantity unit	Jednostka ilości

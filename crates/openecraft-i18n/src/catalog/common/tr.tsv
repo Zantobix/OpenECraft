@@ -387,6 +387,7 @@ Option {}: {} is not one of its choices	Seçenek {}: {} geçerli bir seçim değ
 Order number	Sipariş numarası
 Other	Diğer
 Outer diameter	Dış çap
+Outlets	Prizler
 Output	Çıkış
 Output voltage (V)	Çıkış gerilimi (V)
 Overview	Genel bakış
@@ -478,6 +479,7 @@ Protection	Koruma
 Protective conductor (Ω)	Koruma iletkeni (Ω)
 Protective device	Koruma cihazı
 Protective measure	Koruma önlemi
+Push button	Buton
 Quantity	Miktar
 Quantity (default 1)	Miktar (varsayılan 1)
 Quantity unit	Miktar birimi

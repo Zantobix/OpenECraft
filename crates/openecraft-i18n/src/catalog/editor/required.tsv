@@ -100,6 +100,7 @@ A page with the installation plan of this level for printing and the PDF export	
 A picture kept in the form, e.g. the company logo	Ein im Formular gespeichertes Bild, z. B. das Firmenlogo	Une image conservée dans le formulaire, p. ex. le logo de l'entreprise	Una imagen guardada en el formulario, p. ej. el logotipo de la empresa
 A profile maps the neutral fields to the column names of a particular system (e.g. MATNR for the ERP number in SAP). Without a mapping, common names in English and German are recognized.	Ein Profil ordnet die neutralen Felder den Spaltennamen eines bestimmten Systems zu (z. B. MATNR für die ERP-Nummer in SAP). Ohne Zuordnung werden übliche englische und deutsche Namen erkannt.	Un profil affecte les champs neutres aux noms de colonnes d'un système donné (p. ex. MATNR pour le numéro ERP dans SAP). Sans affectation, les noms courants en anglais et en allemand sont reconnus.	Un perfil asigna los campos neutros a los nombres de columna de un sistema concreto (p. ej. MATNR para el número ERP en SAP). Sin asignación se reconocen los nombres habituales en inglés y alemán.
 A project definition based on this one, with its own defaults and scheme	Eine Projektdefinition auf Basis dieser, mit eigenen Vorgabewerten und Schema	Une définition de projet basée sur celle-ci, avec ses propres valeurs par défaut et son schéma	Una definición de proyecto basada en esta, con sus propios valores predeterminados y esquema
+A project family based on this one, to change its options, variants and texts	Eine Projektfamilie auf Grundlage dieser, um Optionen, Varianten und Texte zu ändern	Une famille de projet basée sur celle-ci, pour en modifier les options, variantes et textes	Una familia de proyecto basada en esta, para cambiar sus opciones, variantes y textos
 A project file opened from the file manager opens instead. Unsaved changes of the last session are never dropped without asking.	Eine aus dem Dateimanager geöffnete Projektdatei öffnet stattdessen. Ungespeicherte Änderungen der letzten Sitzung werden nie ohne Rückfrage verworfen.	Un fichier de projet ouvert depuis le gestionnaire de fichiers s'ouvre à la place. Les modifications non enregistrées de la dernière session ne sont jamais abandonnées sans demander.	En su lugar se abre un archivo de proyecto abierto desde el explorador de archivos. Los cambios sin guardar de la última sesión nunca se descartan sin preguntar.
 A reference point at the origin of the plant	Ein Bezugspunkt im Ursprung der Anlage	Un point de référence à l'origine de l'installation	Un punto de referencia en el origen de la instalación
 A report block generates the pages of a report, e.g. one terminal diagram per strip, and updates them.	Ein Auswertungsblock erzeugt die Seiten einer Auswertung, z. B. einen Klemmenplan je Leiste, und aktualisiert sie.	Un bloc de rapports génère les pages d'un rapport, p. ex. un plan de bornes par bornier, et les met à jour.	Un bloque de informes genera las páginas de un informe, p. ej. un esquema de bornes por regleta, y las actualiza.
@@ -268,6 +269,7 @@ Back-up up to (kA)	Back-up bis (kA)	Accompagnement jusqu'à (kA)	Respaldo hasta 
 Background	Hintergrund	Arrière-plan	Fondo
 Ballast	Ballast	Lest	Lastre
 Ballast per module	Ballast je Modul	Lest par module	Lastre por módulo
+Base family	Basisfamilie	Famille de base	Familia base
 Baseline {}	Baseline {}	Référence {}	Línea base {}
 Baseline {} created	Baseline {} angelegt	Référence {} créée	Línea base {} creada
 Baseline {} {}	Baseline {} {}	Référence {} {}	Línea base {} {}
@@ -695,6 +697,7 @@ Depth of the lines in the floor below its surface (in the screed or on the raw f
 Depth of the slots in the walls: flush-mounted lines lie this deep behind the surface	Tiefe der Schlitze in den Wänden: Unterputzleitungen liegen so tief hinter der Oberfläche	Profondeur des saignées dans les murs : les lignes encastrées se trouvent à cette profondeur derrière la surface	Profundidad de las rozas en las paredes: las líneas empotradas quedan a esta profundidad detrás de la superficie
 Derive again	Neu ableiten	Déduire à nouveau	Derivar de nuevo
 Derive project definition	Projektdefinition ableiten	Dériver une définition de projet	Derivar definición de proyecto
+Derive project family	Projektfamilie ableiten	Dériver une famille de projet	Derivar familia de proyecto
 Derived from the routes of the panel layout	Aus den Verlegewegen des Aufbaus abgeleitet	Déduite des cheminements de l'implantation	Derivada de los recorridos del montaje
 Describe a problem with a screenshot and the technical details and open it as a new issue on GitHub	Ein Problem mit Bildschirmfoto und technischen Angaben beschreiben und als neues Issue auf GitHub öffnen	Décrire un problème avec une capture d'écran et les détails techniques et l'ouvrir comme nouveau ticket sur GitHub	Describir un problema con una captura de pantalla y los detalles técnicos y abrirlo como nueva incidencia en GitHub
 Description of the location identifier of the room in the structure management	Beschreibung des Ortskennzeichens des Raums in der Strukturkennzeichenverwaltung	Description du repère d'emplacement de la pièce dans la gestion des structures	Descripción del identificador de ubicación de la sala en la gestión de estructuras
@@ -708,6 +711,8 @@ Device connection point: placed on a device box it is a connection of its device
 Device description (GSDML, ESI)	Gerätebeschreibung (GSDML, ESI)	Description d'appareil (GSDML, ESI)	Descripción de dispositivo (GSDML, ESI)
 Device descriptions	Gerätebeschreibungen	Descriptions d'appareils	Descripciones de dispositivos
 Device descriptions of PROFINET (GSDML) and EtherCAT (ESI) devices	Gerätebeschreibungen von PROFINET- (GSDML) und EtherCAT-Geräten (ESI)	Descriptions d'appareils PROFINET (GSDML) et EtherCAT (ESI)	Descripciones de dispositivos PROFINET (GSDML) y EtherCAT (ESI)
+Device families	Gerätefamilien	Familles d'appareils	Familias de dispositivos
+Device family	Gerätefamilie	Famille d'appareils	Familia de dispositivos
 Device groups	Gerätegruppen	Groupes d'appareils	Grupos de dispositivos
 Device markers	Betriebsmittelschilder	Repères d'appareils	Marcadores de equipos
 Device name only	Nur Gerätename	Nom d'appareil seul	Solo nombre del dispositivo
@@ -731,6 +736,7 @@ Devices of the second channel; empty = like the first	Geräte des zweiten Kanals
 Devices of {}	Betriebsmittel von {}	Appareils de {}	Dispositivos de {}
 Devices on a wall sit on a mounting rail; parts marked for wall mounting go directly on the wall (Layout space › Insert › Wall-mounted part).	Geräte an einer Wand sitzen auf einer Tragschiene; für Wandmontage gekennzeichnete Artikel kommen direkt an die Wand (Layoutbereich › Einfügen › Wandmontage-Artikel).	Les appareils sur un mur se fixent sur un rail ; les articles marqués pour le montage mural vont directement au mur (Espace de montage › Insérer › Article à montage mural).	Los equipos en una pared van sobre un carril; los artículos marcados para montaje mural van directamente en la pared (Espacio de montaje › Insertar › Artículo de montaje mural).
 Devices placed on the page get its structure; their tags are shown without it.	Auf der Seite platzierte Betriebsmittel erhalten deren Struktur; ihre Kennzeichen werden ohne sie angezeigt.	Les appareils placés sur la page reprennent sa structure ; leurs repères sont affichés sans elle.	Los dispositivos colocados en la página adoptan su estructura; sus designaciones se muestran sin ella.
+Devices placed with it keep their part	Damit gesetzte Geräte behalten ihren Artikel	Les appareils placés avec elle gardent leur article	Los dispositivos colocados con ella conservan su artículo
 Devices to place	Zu platzierende Betriebsmittel	Appareils à placer	Dispositivos por colocar
 Devices whose main function lies in the box take the identifiers set here; empty aspects are inherited from the page or an enclosing box.	Betriebsmittel, deren Hauptfunktion im Kasten liegt, erhalten die hier gesetzten Kennzeichen; leere Aspekte werden von der Seite oder einem umgebenden Kasten geerbt.	Les appareils dont la fonction principale se trouve dans le cadre prennent les identifiants définis ici ; les aspects vides sont hérités de la page ou d'un cadre englobant.	Los dispositivos cuya función principal está en el recuadro toman los identificadores definidos aquí; los aspectos vacíos se heredan de la página o de un recuadro que lo contiene.
 Devices, connections and terminals: filter, fill, find and replace, CSV	Betriebsmittel, Verbindungen und Klemmen: filtern, füllen, suchen und ersetzen, CSV	Appareils, liaisons et bornes : filtrer, remplir, rechercher et remplacer, CSV	Equipos, conexiones y bornes: filtrar, rellenar, buscar y reemplazar, CSV
@@ -855,6 +861,7 @@ Duct fill limit	Grenzwert Kanalfüllung	Limite de remplissage des goulottes	Lím
 Duplicate	Duplizieren	Dupliquer	Duplicar
 Each example builds on the one before and shows more of the features.	Jedes Beispiel baut auf dem vorigen auf und zeigt mehr der Funktionen.	Chaque exemple s'appuie sur le précédent et montre davantage de fonctions.	Cada ejemplo se basa en el anterior y muestra más funciones.
 Each point-to-point connection can belong to a harness	Jede Punkt-zu-Punkt-Verbindung kann zu einem Kabelbaum gehören	Chaque liaison point à point peut appartenir à un faisceau	Cada conexión punto a punto puede pertenecer a un mazo
+Each variant is a part: its 3D model, its functions (and so its schematic symbol) and its plan symbol; another plan or schematic symbol can be named	Jede Variante ist ein Artikel: sein 3D-Modell, seine Funktionen (und damit sein Schaltplansymbol) und sein Plansymbol; ein anderes Plan- oder Schaltplansymbol kann angegeben werden	Chaque variante est un article : son modèle 3D, ses fonctions (et donc son symbole de schéma) et son symbole de plan ; un autre symbole de plan ou de schéma peut être indiqué	Cada variante es un artículo: su modelo 3D, sus funciones (y así su símbolo de esquema) y su símbolo de plano; se puede indicar otro símbolo de plano o de esquema
 Earth electrodes	Erder	Prises de terre	Electrodos de tierra
 Earth electrodes of a building (foundation and ring earth electrodes, earth rods clicked into the site plan) and its lightning protection with the air-termination rods clicked onto its roofs	Erder eines Gebäudes (Fundament- und Ringerder, Tiefenerder per Klick in den Lageplan) und sein Blitzschutz mit den per Klick auf die Dächer gesetzten Fangstangen	Prises de terre d'un bâtiment (prises de terre de fondation et boucles, piquets placés par clic dans le plan de situation) et sa protection contre la foudre avec les tiges captrices placées par clic sur ses toits	Electrodos de tierra de un edificio (de cimentación y en anillo, picas colocadas con un clic en el plano de situación) y su protección contra el rayo con las puntas captadoras colocadas con un clic en sus tejados
 Earth rod placed at building {}; click for the next one · Esc: stop	Tiefenerder bei Gebäude {} gesetzt; für den nächsten klicken · Esc: beenden	Piquet de terre placé au bâtiment {} ; cliquer pour le suivant · Échap : arrêter	Pica de tierra colocada en el edificio {}; haga clic para la siguiente · Esc: terminar
@@ -1650,6 +1657,8 @@ Nothing exchanged yet.	Noch nichts ausgetauscht.	Rien n'a encore été échangé
 Nothing left in this list.	Nichts mehr in dieser Liste.	Plus rien dans cette liste.	No queda nada en esta lista.
 Nothing to show	Nichts anzuzeigen	Rien à afficher	Nada que mostrar
 Nothing to show.	Nichts anzuzeigen.	Rien à afficher.	Nada que mostrar.
+Now {}	Jetzt {}	Maintenant {}	Ahora {}
+Now {}; its schematic symbol stays: the variant has another number of connection points	Jetzt {}; sein Schaltplansymbol bleibt: die Variante hat eine andere Zahl von Anschlusspunkten	Maintenant {} ; son symbole de schéma reste : la variante a un autre nombre de points de connexion	Ahora {}; su símbolo de esquema se mantiene: la variante tiene otro número de puntos de conexión
 Number contacts automatically (13/14, 21/22 …)	Kontakte automatisch nummerieren (13/14, 21/22 …)	Numéroter les contacts automatiquement (13/14, 21/22 …)	Numerar los contactos automáticamente (13/14, 21/22 …)
 Number cores	Adern nummerieren	Numéroter les conducteurs	Numerar conductores
 Number devices	Betriebsmittel nummerieren	Numéroter les appareils	Numerar dispositivos
@@ -1672,6 +1681,7 @@ On startup	Beim Start	Au démarrage	Al iniciar
 On the roof, joined to the air-termination conductors; move it to its place	Auf dem Dach, mit den Fangleitungen verbunden; an ihren Platz verschieben	Sur le toit, reliée aux conducteurs de capture ; la déplacer à sa place	En el tejado, unida a los conductores captadores; muévala a su lugar
 One KBL file (VDA 4964) per harness	Eine KBL-Datei (VDA 4964) je Kabelbaum	Un fichier KBL (VDA 4964) par faisceau	Un archivo KBL (VDA 4964) por mazo de cables
 One leaf	Ein Flügel	Un vantail	Una hoja
+One per line; offered for the text at the symbol	Einer je Zeile; angeboten für den Text am Symbol	Un par ligne ; proposés pour le texte au symbole	Uno por línea; se ofrecen para el texto en el símbolo
 One row per label	Eine Zeile je Schild	Une ligne par repère	Una fila por etiqueta
 Only devices on the current page	Nur Betriebsmittel auf der aktuellen Seite	Seulement les appareils de la page courante	Solo los dispositivos de la página actual
 Only frames no page uses can be deleted	Nur Rahmen, die keine Seite verwendet, sind löschbar	Seuls les cadres qu'aucune page n'utilise peuvent être supprimés	Solo se pueden eliminar marcos que ninguna página usa
@@ -1755,7 +1765,6 @@ Otherwise along its way from entry to entry	Sonst entlang ihres Wegs von Einfüh
 Otherwise from the plant layout, or next to the other line-ups	Sonst aus dem Anlagenlayout oder neben den anderen Anreihungen	Sinon d'après le plan d'installation, ou à côté des autres juxtapositions	Si no, según el plano de la instalación o junto a las demás alineaciones
 Out since {} (pages locked)	Ausgelagert seit {} (Seiten gesperrt)	Extrait depuis le {} (pages verrouillées)	Extraído desde {} (páginas bloqueadas)
 Outer diameter (e.g. 8 mm) or DN	Außendurchmesser (z. B. 8 mm) oder DN	Diamètre extérieur (p. ex. 8 mm) ou DN	Diámetro exterior (p. ej. 8 mm) o DN
-Outlets	Dosen	Prises	Tomas
 Outlets, switches, heating	Dosen, Schalter, Heizung	Prises, interrupteurs, chauffage	Tomas, interruptores, calefacción
 Outline	Kontur	Contour	Contorno
 Outlines	Konturen	Contours	Contornos
@@ -2266,6 +2275,7 @@ Saving the sign-in on this device…	Anmeldung wird auf diesem Gerät gespeicher
 Saving to the project server…	Speichern auf dem Projektserver…	Enregistrement sur le serveur de projets…	Guardando en el servidor de proyectos…
 Saving…	Wird gespeichert…	Enregistrement…	Guardando…
 Schematic crosshair	Fadenkreuz des Schaltplans	Croix de repérage du schéma	Cruz filar del esquema
+Schematic symbol	Schaltplansymbol	Symbole de schéma	Símbolo de esquema
 Scheme	Schema	Schéma	Esquema
 Scheme name	Name des Schemas	Nom du schéma	Nombre del esquema
 Scheme placed again at {} symbols	Schema an {} Symbolen neu platziert	Schéma replacé sur {} symboles	Esquema colocado de nuevo en {} símbolos
@@ -2297,6 +2307,7 @@ Segments	Abschnitte	Tronçons	Tramos
 Segregation	Trennung	Séparation	Separación
 Segregation factor	Trennungsfaktor	Facteur de séparation	Factor de separación
 Select / move (Esc)	Auswählen / Verschieben (Esc)	Sélectionner / déplacer (Échap)	Seleccionar / mover (Esc)
+Select a device family. Project families (bold) can be changed and are kept in property libraries.	Eine Gerätefamilie wählen. Projektfamilien (fett) lassen sich ändern und werden in Eigenschaftsbibliotheken gespeichert.	Choisir une famille d'appareils. Les familles du projet (en gras) peuvent être modifiées et sont conservées dans les bibliothèques de propriétés.	Elija una familia de dispositivos. Las familias del proyecto (en negrita) se pueden cambiar y se guardan en las bibliotecas de propiedades.
 Select a file to import it	Datei auswählen, um sie zu importieren	Sélectionnez un fichier pour l'importer	Seleccione un archivo para importarlo
 Select a function definition. Project definitions (bold) can be changed and are kept in property libraries.	Funktionsdefinition auswählen. Projektdefinitionen (fett) können geändert werden und werden in Eigenschaftsbibliotheken gespeichert.	Sélectionnez une définition de fonction. Les définitions de projet (en gras) sont modifiables et enregistrées dans les bibliothèques de propriétés.	Seleccione una definición de función. Las definiciones de proyecto (en negrita) se pueden modificar y se guardan en las bibliotecas de propiedades.
 Select a macro.	Wählen Sie ein Makro.	Sélectionnez une macro.	Selecciona una macro.
@@ -2349,6 +2360,7 @@ Shielded analogue cables	Geschirmte Analogleitungen	Câbles analogiques blindés
 Shielded drive cables	Geschirmte Antriebsleitungen	Câbles de variateur blindés	Cables de accionamiento apantallados
 Short circuit and selectivity	Kurzschluss und Selektivität	Court-circuit et sélectivité	Cortocircuito y selectividad
 Short circuit, selectivity, loads, EMC, functional safety and verification against rule sets	Kurzschluss, Selektivität, Lasten, EMV, funktionale Sicherheit und Prüfung gegen Regelwerke	Court-circuit, sélectivité, charges, CEM, sécurité fonctionnelle et vérification par rapport aux jeux de règles	Cortocircuito, selectividad, cargas, CEM, seguridad funcional y verificación frente a conjuntos de reglas
+Short text beside the plan symbol, e.g. IP44	Kurzer Text neben dem Plansymbol, z. B. IP44	Texte court à côté du symbole de plan, p. ex. IP44	Texto corto junto al símbolo de plano, p. ej. IP44
 Short-circuit currents	Kurzschlussströme	Courants de court-circuit	Corrientes de cortocircuito
 Short-circuit power of the network	Kurzschlussleistung des Netzes	Puissance de court-circuit du réseau	Potencia de cortocircuito de la red
 Shortest profile	Kürzestes Profil	Profilé le plus court	Perfil más corto
@@ -2392,6 +2404,7 @@ Show this wire	Diese Leitung anzeigen	Afficher ce fil	Mostrar este hilo
 Show who may use the project	Anzeigen, wer das Projekt nutzen darf	Afficher qui peut utiliser le projet	Mostrar quién puede usar el proyecto
 Shown	Angezeigt	Affiché	Mostrado
 Shown as \"Name: value\"	Angezeigt als \"Name: Wert\"	Affiché comme \"Nom : valeur\"	Se muestra como \"Nombre: valor\"
+Shown beside the symbol on installation plans, e.g. what is connected	Neben dem Symbol auf Installationsplänen gezeigt, z. B. was angeschlossen ist	Affiché à côté du symbole sur les plans d'installation, p. ex. ce qui est raccordé	Se muestra junto al símbolo en los planos de instalación, p. ej. lo que está conectado
 Shown in title blocks with {prop:Name}	Wird in Schriftfeldern mit {prop:Name} angezeigt	Affiché dans les cartouches avec {prop:Name}	Se muestra en los cajetines con {prop:Name}
 Shown instead of the measured value	Wird statt des gemessenen Werts angezeigt	Affiché à la place de la valeur mesurée	Se muestra en lugar del valor medido
 Shown now: {}	Jetzt angezeigt: {}	Affiché actuellement : {}	Mostrado ahora: {}
@@ -2560,6 +2573,7 @@ Terminals with the same jumper number are bridged (same potential). Spare termin
 Terms separated by ';': key=value (equal), key~text (contains) or text found anywhere	Begriffe durch ';' getrennt: Schlüssel=Wert (gleich), Schlüssel~Text (enthält) oder Text an beliebiger Stelle	Termes séparés par ';' : clé=valeur (égal), clé~texte (contient) ou texte trouvé n'importe où	Términos separados por ';': clave=valor (igual), clave~texto (contiene) o texto en cualquier parte
 Test connection	Verbindung testen	Tester la connexion	Probar conexión
 Test joints	Trennstellen	Bornes de contrôle	Puntos de seccionamiento
+Text at the symbol	Text am Symbol	Texte au symbole	Texto en el símbolo
 Text offset	Textversatz	Décalage du texte	Desplazamiento del texto
 Text size	Textgröße	Taille du texte	Tamaño del texto
 The EPLAN Data Portal only offers searching and reading parts: open the data portal window to add its parts.	Das EPLAN Data Portal bietet nur das Suchen und Lesen von Artikeln: Öffnen Sie das Datenportal-Fenster, um seine Artikel zu übernehmen.	L'EPLAN Data Portal permet seulement de rechercher et de lire des articles : ouvrez la fenêtre du portail de données pour ajouter ses articles.	El EPLAN Data Portal solo permite buscar y leer artículos: abra la ventana del portal de datos para añadir sus artículos.
@@ -2668,6 +2682,7 @@ The terminal parts name no end brackets or end plates (tech data End bracket, En
 The tutorial goes on with terminals, PLC, the panel layout, revisions and automation.	Das Tutorial geht weiter mit Klemmen, SPS, Aufbau, Revisionen und Automatisierung.	Le tutoriel continue avec les bornes, l'API, l'implantation, les révisions et l'automatisation.	El tutorial continúa con bornes, PLC, el montaje, las revisiones y la automatización.
 The tutorial in 13 chapters, from the first project to the automation	Das Tutorial in 13 Kapiteln, vom ersten Projekt bis zur Automatisierung	Le tutoriel en 13 chapitres, du premier projet à l'automatisation	El tutorial en 13 capítulos, desde el primer proyecto hasta la automatización
 The update failed	Das Update ist fehlgeschlagen	La mise à jour a échoué	La actualización ha fallado
+The variants of a device chosen by the values of its options: each a part with its schematic symbol, plan symbol and 3D model	Die Varianten eines Geräts, gewählt über die Werte seiner Optionen: jede ein Artikel mit Schaltplansymbol, Plansymbol und 3D-Modell	Les variantes d'un appareil choisies par les valeurs de ses options : chacune un article avec son symbole de schéma, son symbole de plan et son modèle 3D	Las variantes de un dispositivo elegidas por los valores de sus opciones: cada una un artículo con su símbolo de esquema, símbolo de plano y modelo 3D
 The vertical wire	Die senkrechte Leitung	Le fil vertical	El cable vertical
 The web version is updated on its server.	Die Webversion wird auf ihrem Server aktualisiert.	La version web est mise à jour sur son serveur.	La versión web se actualiza en su servidor.
 The wire tool routes around symbols and other wires	Das Verbindungswerkzeug führt um Symbole und andere Verbindungen herum	L'outil fil contourne les symboles et les autres fils	La herramienta de cable rodea los símbolos y otros cables
@@ -2728,6 +2743,7 @@ Undo brings the page back.	Rückgängig holt die Seite zurück.	Annuler rétabli
 Undo list	Rückgängig-Liste	Liste d'annulation	Lista de deshacer
 Undo {} steps	{} Schritte rückgängig	Annuler {} étapes	Deshacer {} pasos
 Ungroup	Gruppierung aufheben	Dissocier	Desagrupar
+Unknown part	Unbekannter Artikel	Article inconnu	Artículo desconocido
 Unlock all	Alle entsperren	Tout déverrouiller	Desbloquear todo
 Unplaced	Nicht platziert	Non placés	No colocados
 Unplaced ({})	Nicht platziert ({})	Non placés ({})	No colocados ({})
@@ -2766,6 +2782,7 @@ Valve terminals, service units and manifolds: their fluid devices in slot order,
 Variant	Variante	Variante	Variante
 Variant {} of macro {} replaced	Variante {} von Makro {} ersetzt	Variante {} de la macro {} remplacée	Variante {} de la macro {} reemplazada
 Variant {} of macro {} saved	Variante {} von Makro {} gespeichert	Variante {} de la macro {} enregistrée	Variante {} de la macro {} guardada
+Variants	Varianten	Variantes	Variantes
 Vault	Vault	Coffre	Almacén
 Vault Professional 2025.2 or newer (Vault Data API)	Vault Professional 2025.2 oder neuer (Vault Data API)	Vault Professional 2025.2 ou plus récent (Vault Data API)	Vault Professional 2025.2 o posterior (Vault Data API)
 Vault: the session names no vault	Vault: Die Sitzung nennt keinen Vault	Vault : la session n'indique aucun coffre	Vault: la sesión no indica ningún almacén

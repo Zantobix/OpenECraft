@@ -83,6 +83,7 @@ mod part_drop;
 mod sections_ui;
 mod potentials_ui;
 mod projects_ui;
+mod families_ui;
 mod properties_ui;
 mod structure_ui;
 mod preplanning_ui;

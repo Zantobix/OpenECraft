@@ -384,6 +384,7 @@ Option {}: {} is not one of its choices	选项 {}：{} 不是其选项值之一
 Order number	订货号
 Other	其他
 Outer diameter	外径
+Outlets	插座
 Output	输出
 Output voltage (V)	输出电压 (V)
 Overview	概览
@@ -475,6 +476,7 @@ Protection	保护
 Protective conductor (Ω)	保护导体 (Ω)
 Protective device	保护设备
 Protective measure	保护措施
+Push button	按钮
 Quantity	数量
 Quantity (default 1)	数量（默认 1）
 Quantity unit	数量单位

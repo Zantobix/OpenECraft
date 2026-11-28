@@ -384,6 +384,7 @@ Option {}: {} is not one of its choices	オプション {}: {} は選択肢に�
 Order number	注文番号
 Other	その他
 Outer diameter	外径
+Outlets	コンセント
 Output	出力
 Output voltage (V)	出力電圧 (V)
 Overview	概要
@@ -475,6 +476,7 @@ Protection	保護
 Protective conductor (Ω)	保護導体 (Ω)
 Protective device	保護機器
 Protective measure	保護方式
+Push button	押しボタン
 Quantity	量
 Quantity (default 1)	数量 (既定値 1)
 Quantity unit	数量単位

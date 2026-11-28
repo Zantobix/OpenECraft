@@ -94,7 +94,8 @@ fn wrong_definitions_are_refused() {
 #[test]
 fn project_families_go_into_property_libraries() {
     let mut prj = Project::default();
-    define(&mut prj, derive(&prj, builtin_family("light").unwrap())).unwrap();
+    let light = derive(&prj, builtin_family("light").unwrap());
+    define(&mut prj, light).unwrap();
     let json = prj.property_db.to_json();
     let mut other = Project::default();
     assert_eq!(other.property_db.merge(crate::model::properties::Library::from_json(&json).unwrap()), 1);
