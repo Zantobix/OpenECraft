@@ -4,6 +4,7 @@
 (no structure)	(fără structură)
 (optional)	(opțional)
 --json needs a JSON object	--json necesită un obiect JSON
+3D	3D
 3D model	Model 3D
 3D routing	Pozare 3D
 3D view	Vedere 3D
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Opțiunea {}: {} nu este una dintre opț
 Order number	Număr de comandă
 Other	Altele
 Outer diameter	Diametru exterior
-Outlets	Prize
 Output	Ieșire
 Output voltage (V)	Tensiune de ieșire (V)
 Overview	Prezentare generală

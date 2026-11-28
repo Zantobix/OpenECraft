@@ -502,6 +502,7 @@ pub const PLAN_SYMBOLS: &[(&str, &str)] = &[
     ("inst_socket", "Socket outlet with PE"),
     ("inst_socket2", "Double socket outlet with PE"),
     ("inst_socket3", "Triple socket outlet with PE"),
+    ("inst_socket4", "Quadruple socket outlet with PE"),
     ("inst_socket_switched", "Socket outlet with switch"),
     ("inst_socket_ip44", "Socket outlet, splash-proof"),
     ("inst_socket_cee", "CEE socket outlet, three-phase"),

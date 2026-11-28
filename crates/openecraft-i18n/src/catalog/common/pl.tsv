@@ -4,6 +4,7 @@
 (no structure)	(brak struktury)
 (optional)	(opcjonalnie)
 --json needs a JSON object	--json wymaga obiektu JSON
+3D	3D
 3D model	Model 3D
 3D routing	Prowadzenie 3D
 3D view	Widok 3D
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Opcja {}: {} nie jest jedną z jej warto
 Order number	Numer zamówieniowy
 Other	Inne
 Outer diameter	Średnica zewnętrzna
-Outlets	Gniazda
 Output	Wyjście
 Output voltage (V)	Napięcie wyjściowe (V)
 Overview	Przegląd

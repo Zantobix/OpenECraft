@@ -3963,8 +3963,10 @@ impl PanelUi {
                 let family = openecraft_core::families::of_part(prj, &p.number);
                 if let Some(c) = &family {
                     ui.add_space(4.0);
-                    if let Some((part, _)) = family_ui::option_buttons(ui, prj, c) {
-                        refocus = Some(part);
+                    if let Some(next) = family_ui::choice_buttons(ui, prj, c) {
+                        if let Ok(r) = openecraft_core::families::resolve(prj, &next.family, &next.variant, &next.options) {
+                            refocus = Some(r.part);
+                        }
                     }
                 }
                 family_ui::text_field(ui, prj, family.as_ref().map_or("", |c| c.family.as_str()), &mut pick.text);

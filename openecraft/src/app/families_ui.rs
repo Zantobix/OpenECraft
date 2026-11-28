@@ -1,13 +1,14 @@
 //! Tab *Device families* of the property database window: the built-in families and
-//! those of the project as a tree (base families above the ones built on them), a
-//! family's options with their values and marks, its variants (option values, part,
-//! plan and schematic symbol) and suggested texts; project families are edited as a
-//! draft that is taken over when it is valid ([`openecraft_core::families`]).
+//! those of the project as a tree (base families above the ones built on them); a
+//! family's variants with their part, 3D model, plan and schematic symbol, its options
+//! (mark, accessory, the variants they fit), combinations and suggested texts. A family
+//! is edited as a draft taken over when it is valid; a built-in one becomes the
+//! project's own version ([`openecraft_core::families`]).
 
 use super::properties_ui::PropertiesUi;
 use egui::RichText;
 use openecraft_core::families;
-use openecraft_core::model::families::{Choice, DeviceFamily, FamilyOption, Variant};
+use openecraft_core::model::families::{DeviceFamily, FamilyOption, Variant};
 use openecraft_core::model::Project;
 use openecraft_i18n::tr;
 use openecraft_ui::icons::{self, Icon};
@@ -134,7 +135,9 @@ fn details(ui: &mut egui::Ui, prj: &mut Project, fu: &mut FamiliesUi) {
     }
 }
 
-/// The fields of a project family.
+/// The fields of a family: name, base, variants (part, plan and schematic symbol with
+/// their previews), options (mark, accessory, the variants they fit), combinations and
+/// suggested texts.
 fn editor(ui: &mut egui::Ui, prj: &Project, d: &mut DeviceFamily, texts: &mut String) {
     egui::Grid::new("family_edit").num_columns(2).show(ui, |ui| {
         ui.label(tr("Name"));
@@ -150,94 +153,38 @@ fn editor(ui: &mut egui::Ui, prj: &Project, d: &mut DeviceFamily, texts: &mut St
         });
         ui.end_row();
     });
-    ui.label(RichText::new(tr("Options")).strong());
+    // Variants: one row each with its three representations.
+    ui.separator();
+    ui.label(RichText::new(tr("Variants")).strong()).on_hover_text(tr("The forms of the device; exactly one is chosen. Each is a part with its 3D model and functions; its plan and schematic symbol come from the part unless chosen here"));
     let mut remove = None;
-    for (i, o) in d.options.iter_mut().enumerate() {
-        ui.push_id(("family_option", i), |ui| {
-            ui.horizontal(|ui| {
-                ui.add(egui::TextEdit::singleline(&mut o.key).hint_text(tr("Key")).desired_width(90.0));
-                ui.add(egui::TextEdit::singleline(&mut o.name).hint_text(tr("Name")).desired_width(140.0));
-                if icons::button(ui, Icon::Delete, tr("Remove")).clicked() {
-                    remove = Some(i);
-                }
-            });
-            let mut gone = None;
-            for (j, c) in o.choices.iter_mut().enumerate() {
-                ui.push_id(j, |ui| {
-                    ui.horizontal(|ui| {
-                        ui.add_space(16.0);
-                        ui.add(egui::TextEdit::singleline(&mut c.key).hint_text(tr("Key")).desired_width(74.0));
-                        ui.add(egui::TextEdit::singleline(&mut c.name).hint_text(tr("Name")).desired_width(124.0));
-                        ui.add(egui::TextEdit::singleline(&mut c.mark).hint_text(tr("Mark")).desired_width(60.0)).on_hover_text(tr("Short text beside the plan symbol, e.g. IP44"));
-                        if o.default == c.key && !c.key.is_empty() {
-                            ui.weak(tr("default"));
-                        } else if ui.small_button(tr("Default")).clicked() {
-                            o.default = c.key.clone();
-                        }
-                        if icons::button(ui, Icon::Delete, tr("Remove")).clicked() {
-                            gone = Some(j);
-                        }
-                    });
-                });
-            }
-            if let Some(j) = gone {
-                let c = o.choices.remove(j);
-                if o.default == c.key {
-                    o.default.clear();
-                }
-            }
-            ui.horizontal(|ui| {
-                ui.add_space(16.0);
-                if icons::text_button(ui, Icon::Plus, tr("Value")).clicked() {
-                    let n = o.choices.len() + 1;
-                    o.choices.push(Choice { key: n.to_string(), name: n.to_string(), mark: String::new() });
-                }
-            });
-        });
-    }
-    if let Some(i) = remove {
-        d.options.remove(i);
-    }
-    if icons::text_button(ui, Icon::Plus, tr("Option")).clicked() {
-        let n = d.options.len() + 1;
-        d.options.push(FamilyOption { key: format!("option{n}"), name: format!("{} {n}", tr("Option")), choices: vec![Choice { key: "1".into(), name: "1".into(), mark: String::new() }], default: String::new() });
-    }
-    ui.label(RichText::new(tr("Variants")).strong()).on_hover_text(tr("Each variant is a part: its 3D model, its functions (and so its schematic symbol) and its plan symbol; another plan or schematic symbol can be named"));
-    let opts: Vec<FamilyOption> = {
-        let mut base: Vec<FamilyOption> = if d.parent.is_empty() { Vec::new() } else { families::options(prj, &d.parent).into_iter().map(|(_, o)| o.clone()).collect() };
-        base.retain(|o| !d.options.iter().any(|x| x.key == o.key));
-        base.into_iter().chain(d.options.iter().cloned()).collect()
-    };
-    let mut remove = None;
-    egui::Grid::new("family_variants").striped(true).show(ui, |ui| {
-        for o in &opts {
-            ui.label(RichText::new(if o.name.is_empty() { &o.key } else { &o.name }).weak());
+    egui::Grid::new("family_variants").striped(true).num_columns(7).show(ui, |ui| {
+        for h in [tr("Key"), tr("Name"), tr("Part"), tr("3D"), tr("Plan symbol"), tr("Schematic symbol"), ""] {
+            ui.label(RichText::new(h).weak());
         }
-        ui.label(RichText::new(tr("Part")).weak());
-        ui.label(RichText::new(tr("Plan symbol")).weak());
-        ui.label(RichText::new(tr("Schematic symbol")).weak());
         ui.end_row();
         for (i, v) in d.variants.iter_mut().enumerate() {
-            for o in &opts {
-                let shown = v.when.get(&o.key).and_then(|x| o.choices.iter().find(|c| &c.key == x)).map_or_else(|| tr("any").to_string(), |c| c.name.clone());
-                egui::ComboBox::from_id_salt(("variant_when", i, &o.key)).selected_text(shown).show_ui(ui, |ui| {
-                    if ui.selectable_label(!v.when.contains_key(&o.key), tr("any")).clicked() {
-                        v.when.remove(&o.key);
-                    }
-                    for c in &o.choices {
-                        if ui.selectable_label(v.when.get(&o.key) == Some(&c.key), &c.name).clicked() {
-                            v.when.insert(o.key.clone(), c.key.clone());
-                        }
-                    }
-                });
-            }
-            let known = openecraft_core::installation::find_part(prj, &v.part).is_some();
+            ui.add_sized([60.0, 20.0], egui::TextEdit::singleline(&mut v.key));
+            ui.add_sized([110.0, 20.0], egui::TextEdit::singleline(&mut v.name));
+            let part = openecraft_core::installation::find_part(prj, &v.part).cloned();
             let r = ui.add_sized([170.0, 20.0], egui::TextEdit::singleline(&mut v.part));
-            if !known {
+            if part.is_none() {
                 r.on_hover_text(tr("Unknown part"));
             }
-            symbol_combo(ui, prj, ("variant_plan", i), &mut v.plan_symbol, true);
-            symbol_combo(ui, prj, ("variant_schematic", i), &mut v.schematic_symbol, false);
+            let size = egui::vec2(56.0, 44.0);
+            match part.as_ref().and_then(|p| p.model_3d.as_ref()) {
+                Some(mesh) => openecraft_ui::part_editor::mesh_preview(ui, mesh, size),
+                None => openecraft_ui::part_editor::model_2d_preview(ui, part.as_ref().and_then(|p| p.model_2d.as_deref()), size),
+            }
+            ui.horizontal(|ui| {
+                let shown = if v.plan_symbol.is_empty() { part.as_ref().and_then(|p| openecraft_core::installation::kind_of(p).map(|k| openecraft_core::installation::plan_symbol(prj, p, k))).unwrap_or_default() } else { v.plan_symbol.clone() };
+                openecraft_canvas::editor::symbol_icon(ui, prj, &shown, egui::vec2(44.0, 44.0));
+                symbol_combo(ui, prj, ("variant_plan", i), &mut v.plan_symbol, true);
+            });
+            ui.horizontal(|ui| {
+                let shown = if v.schematic_symbol.is_empty() { part.as_ref().and_then(|p| openecraft_core::installation::schematic_symbol(prj, p)).unwrap_or_default() } else { v.schematic_symbol.clone() };
+                openecraft_canvas::editor::symbol_icon(ui, prj, &shown, egui::vec2(44.0, 44.0));
+                symbol_combo(ui, prj, ("variant_schematic", i), &mut v.schematic_symbol, false);
+            });
             if icons::button(ui, Icon::Delete, tr("Remove")).clicked() {
                 remove = Some(i);
             }
@@ -248,8 +195,106 @@ fn editor(ui: &mut egui::Ui, prj: &Project, d: &mut DeviceFamily, texts: &mut St
         d.variants.remove(i);
     }
     if icons::text_button(ui, Icon::Plus, tr("Variant")).clicked() {
-        d.variants.push(Variant { part: "GEN.SOCKET-F-UP".into(), ..Default::default() });
+        let n = d.variants.len() + 1;
+        d.variants.push(Variant { key: n.to_string(), name: n.to_string(), part: d.variants.last().map(|v| v.part.clone()).unwrap_or_else(|| "GEN.SOCKET-F-UP".into()), ..Default::default() });
     }
+    // Options: what a device can be fitted with.
+    let variant_keys: Vec<(String, String)> = families::variants(prj, &d.parent)
+        .into_iter()
+        .map(|(of, v)| (v.key.clone(), families::name_of(of, &v.name)))
+        .filter(|(k, _)| !d.variants.iter().any(|v| &v.key == k))
+        .chain(d.variants.iter().map(|v| (v.key.clone(), v.name.clone())))
+        .collect();
+    ui.separator();
+    ui.label(RichText::new(tr("Options")).strong()).on_hover_text(tr("What a device can be fitted with, any of them or none: a mark beside the plan symbol, an accessory part, the variants it fits"));
+    let mut remove = None;
+    egui::Grid::new("family_options").striped(true).num_columns(6).show(ui, |ui| {
+        for h in [tr("Key"), tr("Name"), tr("Mark"), tr("Accessory"), tr("Fits"), ""] {
+            ui.label(RichText::new(h).weak());
+        }
+        ui.end_row();
+        for (i, o) in d.options.iter_mut().enumerate() {
+            ui.add_sized([60.0, 20.0], egui::TextEdit::singleline(&mut o.key));
+            ui.add_sized([130.0, 20.0], egui::TextEdit::singleline(&mut o.name));
+            ui.add_sized([60.0, 20.0], egui::TextEdit::singleline(&mut o.mark)).on_hover_text(tr("Short text beside the plan symbol, e.g. IP44"));
+            ui.add_sized([150.0, 20.0], egui::TextEdit::singleline(&mut o.accessory).hint_text(tr("(none)")));
+            ui.horizontal_wrapped(|ui| {
+                let mut all = o.variants.is_empty();
+                if ui.checkbox(&mut all, tr("all")).changed() && all {
+                    o.variants.clear();
+                }
+                for (k, name) in &variant_keys {
+                    let mut on = o.variants.is_empty() || o.variants.contains(k);
+                    if ui.checkbox(&mut on, name).changed() {
+                        if o.variants.is_empty() {
+                            o.variants = variant_keys.iter().map(|(k, _)| k.clone()).collect();
+                        }
+                        if on { o.variants.push(k.clone()) } else { o.variants.retain(|x| x != k) }
+                        o.variants.dedup();
+                    }
+                }
+            });
+            if icons::button(ui, Icon::Delete, tr("Remove")).clicked() {
+                remove = Some(i);
+            }
+            ui.end_row();
+        }
+    });
+    if let Some(i) = remove {
+        let k = d.options.remove(i).key;
+        for c in &mut d.combinations {
+            c.options.retain(|x| *x != k);
+        }
+    }
+    if icons::text_button(ui, Icon::Plus, tr("Option")).clicked() {
+        let n = d.options.len() + 1;
+        d.options.push(FamilyOption { key: format!("option{n}"), name: format!("{} {n}", tr("Option")), ..Default::default() });
+    }
+    // Combinations: a variant with options that is a part of its own.
+    let option_keys: Vec<(String, String)> = families::options(prj, &d.parent)
+        .into_iter()
+        .map(|(of, o)| (o.key.clone(), families::name_of(of, &o.name)))
+        .filter(|(k, _)| !d.options.iter().any(|o| &o.key == k))
+        .chain(d.options.iter().map(|o| (o.key.clone(), o.name.clone())))
+        .collect();
+    ui.separator();
+    ui.label(RichText::new(tr("Combinations")).strong()).on_hover_text(tr("A variant with options that is a part of its own, e.g. a socket outlet with a USB charger built in"));
+    let mut remove = None;
+    egui::Grid::new("family_combinations").striped(true).num_columns(4).show(ui, |ui| {
+        for (i, c) in d.combinations.iter_mut().enumerate() {
+            let shown = variant_keys.iter().find(|(k, _)| *k == c.variant).map(|(_, n)| n.clone()).unwrap_or_else(|| c.variant.clone());
+            egui::ComboBox::from_id_salt(("combination_variant", i)).selected_text(shown).show_ui(ui, |ui| {
+                for (k, name) in &variant_keys {
+                    ui.selectable_value(&mut c.variant, k.clone(), name);
+                }
+            });
+            ui.horizontal_wrapped(|ui| {
+                for (k, name) in &option_keys {
+                    let mut on = c.options.contains(k);
+                    if ui.checkbox(&mut on, name).changed() {
+                        if on { c.options.push(k.clone()) } else { c.options.retain(|x| x != k) }
+                    }
+                }
+            });
+            let known = openecraft_core::installation::find_part(prj, &c.part).is_some();
+            let r = ui.add_sized([170.0, 20.0], egui::TextEdit::singleline(&mut c.part));
+            if !known {
+                r.on_hover_text(tr("Unknown part"));
+            }
+            if icons::button(ui, Icon::Delete, tr("Remove")).clicked() {
+                remove = Some(i);
+            }
+            ui.end_row();
+        }
+    });
+    if let Some(i) = remove {
+        d.combinations.remove(i);
+    }
+    if icons::text_button(ui, Icon::Plus, tr("Combination")).clicked() {
+        let variant = variant_keys.first().map(|(k, _)| k.clone()).unwrap_or_default();
+        d.combinations.push(openecraft_core::model::families::Combination { variant, options: Vec::new(), part: String::new() });
+    }
+    ui.separator();
     ui.label(RichText::new(tr("Suggested texts")).strong()).on_hover_text(tr("One per line; offered for the text at the symbol"));
     ui.add(egui::TextEdit::multiline(texts).desired_rows(3));
 }

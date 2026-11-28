@@ -4,6 +4,7 @@
 (no structure)	(yapı yok)
 (optional)	(isteğe bağlı)
 --json needs a JSON object	--json bir JSON nesnesi gerektirir
+3D	3D
 3D model	3D model
 3D routing	3D yönlendirme
 3D view	3B görünüm
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Seçenek {}: {} geçerli bir seçim değ
 Order number	Sipariş numarası
 Other	Diğer
 Outer diameter	Dış çap
-Outlets	Prizler
 Output	Çıkış
 Output voltage (V)	Çıkış gerilimi (V)
 Overview	Genel bakış

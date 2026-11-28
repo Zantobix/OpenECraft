@@ -1,33 +1,31 @@
 //! Device families: the variants of one kind of device of the installation (a socket
-//! outlet with one or two outlets, with a hinged lid or a USB charger …) chosen by the
-//! values of the family's options. A variant is a part, so it brings its 3D model, its
-//! functions (and with them its schematic symbol) and its symbol on installation plans;
-//! a variant may name other symbols. A family can take over the options, variants and
-//! suggested texts of a base family and add its own, like a class those of its base
-//! class. Built-in families cover the generic parts of the installation; projects add
-//! their own (also through property library files).
+//! outlet with one, two, three or four outlets) and the options they can be fitted with
+//! (a hinged lid, a USB charger). Exactly one variant is chosen; it is a part, so it
+//! brings its 3D model, its functions (and with them its schematic symbol) and its
+//! symbol on installation plans, or names other symbols. Options are added to it: each
+//! puts a mark beside the plan symbol and may add an accessory part; a variant with
+//! options can be a part of its own (a combination). A family can take over the
+//! variants, options and suggested texts of a base family and add its own, like a class
+//! those of its base class. Built-in families cover the generic parts of the
+//! installation; projects add their own or change the built-in ones (also through
+//! property library files).
 
-use crate::model::families::{Choice, DeviceFamily, FamilyChoice, FamilyOption, Variant};
+use crate::model::families::{Combination, DeviceFamily, FamilyChoice, FamilyOption, Variant};
 use crate::model::panel::PanelItem;
 use crate::model::Project;
 use openecraft_i18n::{tr, tr_const, tr_fmt};
-use std::collections::BTreeMap;
 use std::sync::OnceLock;
 
-/// A built-in option value: key, name, mark beside the symbol.
-type C = (&'static str, &'static str, &'static str);
-
-fn option(key: &str, name: &str, choices: &[C]) -> FamilyOption {
-    FamilyOption {
-        key: key.into(),
-        name: name.into(),
-        choices: choices.iter().map(|&(key, name, mark)| Choice { key: key.into(), name: name.into(), mark: mark.into() }).collect(),
-        default: String::new(),
-    }
+fn variant(key: &str, name: &str, part: &str, plan_symbol: &str) -> Variant {
+    Variant { key: key.into(), name: name.into(), part: part.into(), plan_symbol: plan_symbol.into(), schematic_symbol: String::new() }
 }
 
-fn variant(when: &[(&str, &str)], part: &str) -> Variant {
-    Variant { when: when.iter().map(|(k, v)| (k.to_string(), v.to_string())).collect(), part: part.into(), ..Default::default() }
+fn option(key: &str, name: &str, mark: &str, variants: &[&str]) -> FamilyOption {
+    FamilyOption { key: key.into(), name: name.into(), mark: mark.into(), accessory: String::new(), variants: variants.iter().map(|v| v.to_string()).collect() }
+}
+
+fn combination(variant: &str, options: &[&str], part: &str) -> Combination {
+    Combination { variant: variant.into(), options: options.iter().map(|o| o.to_string()).collect(), part: part.into() }
 }
 
 fn family(key: &str, name: &str, parent: &str) -> DeviceFamily {
@@ -39,15 +37,15 @@ pub fn builtin() -> &'static [DeviceFamily] {
     builtin_tables().0.as_slice()
 }
 
-/// The built-in families and the English texts they hold (names of families, options,
-/// values and the suggested texts), for translating them.
+/// The built-in families and the English texts they hold (names of families, variants,
+/// options and the suggested texts), for translating them.
 fn builtin_tables() -> &'static (Vec<DeviceFamily>, Vec<&'static str>) {
     static FAMILIES: OnceLock<(Vec<DeviceFamily>, Vec<&'static str>)> = OnceLock::new();
     FAMILIES.get_or_init(|| {
         let v = builtin_families();
         let mut texts: Vec<&'static str> = Vec::new();
         for f in &v {
-            let names = std::iter::once(&f.name).chain(&f.texts).chain(f.options.iter().flat_map(|o| std::iter::once(&o.name).chain(o.choices.iter().map(|c| &c.name))));
+            let names = std::iter::once(&f.name).chain(&f.texts).chain(f.variants.iter().map(|x| &x.name)).chain(f.options.iter().map(|o| &o.name));
             for n in names {
                 if !texts.iter().any(|t| t == n) {
                     texts.push(Box::leak(n.clone().into_boxed_str()));
@@ -67,104 +65,73 @@ fn translated(en: &str) -> String {
 }
 
 fn builtin_families() -> Vec<DeviceFamily> {
-    {
-        let mut v = Vec::new();
-        let mut socket = family("socket", tr_const!("Socket outlet"), "");
-        socket.texts = [
-            tr_const!("Fridge"),
-            tr_const!("Freezer"),
-            tr_const!("Washing machine"),
-            tr_const!("Tumble dryer"),
-            tr_const!("Dishwasher"),
-            tr_const!("Microwave oven"),
-            tr_const!("Television"),
-            tr_const!("Outdoors"),
-        ]
-        .map(String::from)
-        .to_vec();
-        v.push(socket);
+    let mut v = Vec::new();
+    let mut socket = family("socket", tr_const!("Socket outlet"), "");
+    socket.texts = [
+        tr_const!("Fridge"),
+        tr_const!("Freezer"),
+        tr_const!("Washing machine"),
+        tr_const!("Tumble dryer"),
+        tr_const!("Dishwasher"),
+        tr_const!("Microwave oven"),
+        tr_const!("Television"),
+        tr_const!("Outdoors"),
+    ]
+    .map(String::from)
+    .to_vec();
+    v.push(socket);
 
-        let mut schuko = family("socket.schuko", tr_const!("Socket outlet type F"), "socket");
-        schuko.options = vec![
-            option("outlets", tr_const!("Outlets"), &[("1", tr_const!("Single"), ""), ("2", tr_const!("Double"), "")]),
-            option(
-                "design",
-                tr_const!("Design"),
-                &[("standard", tr_const!("Standard"), ""), ("lid", tr_const!("Hinged lid, IP44"), "IP44"), ("usb", tr_const!("With USB charger"), "USB")],
-            ),
-        ];
-        schuko.variants = vec![
-            variant(&[("outlets", "1"), ("design", "standard")], "GEN.SOCKET-F-UP"),
-            variant(&[("outlets", "2"), ("design", "standard")], "GEN.SOCKET-F-2X-UP"),
-            variant(&[("outlets", "1"), ("design", "lid")], "GEN.SOCKET-F-LID-UP"),
-            variant(&[("outlets", "1"), ("design", "usb")], "GEN.SOCKET-F-USB-UP"),
-        ];
-        v.push(schuko);
+    let mut schuko = family("socket.schuko", tr_const!("Socket outlet type F"), "socket");
+    schuko.variants = vec![
+        variant("1", tr_const!("Single"), "GEN.SOCKET-F-UP", "inst_socket"),
+        variant("2", tr_const!("Double"), "GEN.SOCKET-F-2X-UP", "inst_socket2"),
+        variant("3", tr_const!("Triple"), "GEN.SOCKET-F-3X-UP", "inst_socket3"),
+        variant("4", tr_const!("Quadruple"), "GEN.SOCKET-F-4X-UP", "inst_socket4"),
+    ];
+    schuko.options = vec![option("lid", tr_const!("Hinged lid, IP44"), "IP44", &["1"]), option("usb", tr_const!("USB charger"), "USB", &["1"])];
+    schuko.combinations = vec![combination("1", &["lid"], "GEN.SOCKET-F-LID-UP"), combination("1", &["usb"], "GEN.SOCKET-F-USB-UP")];
+    v.push(schuko);
 
-        let mut cee = family("socket.cee", tr_const!("CEE socket outlet, three-phase"), "socket");
-        cee.options = vec![option("current", tr_const!("Rated current"), &[("16", "16 A", ""), ("32", "32 A", "")])];
-        cee.variants = vec![variant(&[("current", "16")], "GEN.SOCKET-CEE-16-5P"), variant(&[("current", "32")], "GEN.SOCKET-CEE-32-5P")];
-        v.push(cee);
+    let mut cee = family("socket.cee", tr_const!("CEE socket outlet, three-phase"), "socket");
+    cee.variants = vec![variant("16", "16 A", "GEN.SOCKET-CEE-16-5P", ""), variant("32", "32 A", "GEN.SOCKET-CEE-32-5P", "")];
+    v.push(cee);
 
-        let mut switch = family("switch", tr_const!("Installation switch"), "");
-        switch.options = vec![option(
-            "function",
-            tr_const!("Function"),
-            &[
-                ("on_off", tr_const!("On / off"), ""),
-                ("two_way", tr_const!("Two-way"), ""),
-                ("intermediate", tr_const!("Intermediate"), ""),
-                ("series", tr_const!("Series"), ""),
-                ("push", tr_const!("Push button"), ""),
-                ("blind", tr_const!("Blind"), ""),
-                ("dimmer", tr_const!("Dimmer"), ""),
-            ],
-        )];
-        switch.variants = [
-            ("on_off", "GEN.SW-ONOFF-UP"),
-            ("two_way", "GEN.SW-2WAY-UP"),
-            ("intermediate", "GEN.SW-INTER-UP"),
-            ("series", "GEN.SW-SERIES-UP"),
-            ("push", "GEN.PB-NO-UP"),
-            ("blind", "GEN.SW-BLIND-UP"),
-            ("dimmer", "GEN.DIM-LED-UP"),
-        ]
-        .iter()
-        .map(|(f, part)| variant(&[("function", f)], part))
-        .collect();
-        v.push(switch);
+    let mut switch = family("switch", tr_const!("Installation switch"), "");
+    switch.variants = vec![
+        variant("on_off", tr_const!("On / off"), "GEN.SW-ONOFF-UP", ""),
+        variant("two_way", tr_const!("Two-way"), "GEN.SW-2WAY-UP", ""),
+        variant("intermediate", tr_const!("Intermediate"), "GEN.SW-INTER-UP", ""),
+        variant("series", tr_const!("Series"), "GEN.SW-SERIES-UP", ""),
+        variant("push", tr_const!("Push button"), "GEN.PB-NO-UP", ""),
+        variant("blind", tr_const!("Blind"), "GEN.SW-BLIND-UP", ""),
+        variant("dimmer", tr_const!("Dimmer"), "GEN.DIM-LED-UP", ""),
+    ];
+    v.push(switch);
 
-        let mut light = family("light", tr_const!("Luminaire"), "");
-        light.options = vec![option(
-            "mounting",
-            tr_const!("Mounting"),
-            &[("ceiling", tr_const!("Ceiling"), ""), ("recessed", tr_const!("Recessed"), ""), ("wall", tr_const!("Wall"), "")],
-        )];
-        light.variants = vec![
-            variant(&[("mounting", "ceiling")], "GEN.LAMP-CEILING-LED"),
-            variant(&[("mounting", "recessed")], "GEN.LAMP-DOWNLIGHT-LED"),
-            variant(&[("mounting", "wall")], "GEN.LAMP-WALL-LED"),
-        ];
-        v.push(light);
+    let mut light = family("light", tr_const!("Luminaire"), "");
+    light.variants = vec![
+        variant("ceiling", tr_const!("Ceiling"), "GEN.LAMP-CEILING-LED", ""),
+        variant("recessed", tr_const!("Recessed"), "GEN.LAMP-DOWNLIGHT-LED", ""),
+        variant("wall", tr_const!("Wall"), "GEN.LAMP-WALL-LED", ""),
+    ];
+    v.push(light);
 
-        let mut conn = family("connection_box", tr_const!("Device connection box"), "");
-        conn.options = vec![option("supply", tr_const!("Supply"), &[("1", "230 V", ""), ("3", "400 V 3N", "")])];
-        conn.variants = vec![variant(&[("supply", "1")], "GEN.CONN-BOX-UP"), variant(&[("supply", "3")], "GEN.CONN-BOX-COOKER-UP")];
-        conn.texts = [
-            tr_const!("Cooker"),
-            tr_const!("Hob"),
-            tr_const!("Oven"),
-            tr_const!("Dishwasher"),
-            tr_const!("Washing machine"),
-            tr_const!("Tumble dryer"),
-            tr_const!("Water heater"),
-            tr_const!("Extractor hood"),
-        ]
-        .map(String::from)
-        .to_vec();
-        v.push(conn);
-        v
-    }
+    let mut conn = family("connection_box", tr_const!("Device connection box"), "");
+    conn.variants = vec![variant("1", "230 V", "GEN.CONN-BOX-UP", ""), variant("3", "400 V 3N", "GEN.CONN-BOX-COOKER-UP", "")];
+    conn.texts = [
+        tr_const!("Cooker"),
+        tr_const!("Hob"),
+        tr_const!("Oven"),
+        tr_const!("Dishwasher"),
+        tr_const!("Washing machine"),
+        tr_const!("Tumble dryer"),
+        tr_const!("Water heater"),
+        tr_const!("Extractor hood"),
+    ]
+    .map(String::from)
+    .to_vec();
+    v.push(conn);
+    v
 }
 
 pub fn builtin_family(key: &str) -> Option<&'static DeviceFamily> {
@@ -188,7 +155,7 @@ pub fn title(f: &DeviceFamily) -> String {
     if f.builtin { translated(&f.name) } else { f.name.clone() }
 }
 
-/// The name of an option or a value of family `f` in the language shown.
+/// The name of a variant or an option of family `f` in the language shown.
 pub fn name_of(f: &DeviceFamily, name: &str) -> String {
     if f.builtin { translated(name) } else { name.to_string() }
 }
@@ -208,20 +175,29 @@ pub fn lineage<'a>(prj: &'a Project, key: &str) -> Vec<&'a DeviceFamily> {
     out
 }
 
-/// The options of family `key` with those of its base families (an option of the
-/// family replaces one of the same key of a base), the base's first; with the family
-/// whose names they carry.
-pub fn options<'a>(prj: &'a Project, key: &str) -> Vec<(&'a DeviceFamily, &'a FamilyOption)> {
-    let mut out: Vec<(&DeviceFamily, &FamilyOption)> = Vec::new();
+/// Items of family `key` and its base families taken by `items` (one of a key of the
+/// family replaces one of a base), the base's first; with the family holding each.
+fn inherited<'a, T>(prj: &'a Project, key: &str, items: impl Fn(&'a DeviceFamily) -> &'a [T], key_of: impl Fn(&T) -> &str) -> Vec<(&'a DeviceFamily, &'a T)> {
+    let mut out: Vec<(&DeviceFamily, &T)> = Vec::new();
     for f in lineage(prj, key).into_iter().rev() {
-        for o in &f.options {
-            match out.iter_mut().find(|(_, x)| x.key == o.key) {
-                Some(x) => *x = (f, o),
-                None => out.push((f, o)),
+        for x in items(f) {
+            match out.iter_mut().find(|(_, y)| key_of(y) == key_of(x)) {
+                Some(y) => *y = (f, x),
+                None => out.push((f, x)),
             }
         }
     }
     out
+}
+
+/// The variants of family `key` (those of its base families too).
+pub fn variants<'a>(prj: &'a Project, key: &str) -> Vec<(&'a DeviceFamily, &'a Variant)> {
+    inherited(prj, key, |f| &f.variants, |v| &v.key)
+}
+
+/// The options of family `key` (those of its base families too).
+pub fn options<'a>(prj: &'a Project, key: &str) -> Vec<(&'a DeviceFamily, &'a FamilyOption)> {
+    inherited(prj, key, |f| &f.options, |o| &o.key)
 }
 
 /// The suggested texts of family `key` and its base families (translated for the
@@ -239,80 +215,72 @@ pub fn texts(prj: &Project, key: &str) -> Vec<String> {
     out
 }
 
-/// The value of every option of family `key`: the one given, else the default (or the
-/// first value). Unknown options and values are refused.
-pub fn values(prj: &Project, key: &str, given: &BTreeMap<String, String>) -> Result<BTreeMap<String, String>, String> {
-    if get(prj, key).is_none() {
-        return Err(tr_fmt!("Unknown device family {}", key));
-    }
-    let opts = options(prj, key);
-    for (k, v) in given {
-        let Some((_, o)) = opts.iter().find(|(_, o)| &o.key == k) else {
-            return Err(tr_fmt!("Device family {} has no option {}", key, k));
-        };
-        if !o.choices.iter().any(|c| &c.key == v) {
-            return Err(tr_fmt!("Option {} has no value {}", k, v));
-        }
-    }
-    Ok(opts
-        .iter()
-        .filter_map(|(_, o)| {
-            let v = given.get(&o.key).cloned().or_else(|| (!o.default.is_empty()).then(|| o.default.clone())).or_else(|| o.choices.first().map(|c| c.key.clone()))?;
-            Some((o.key.clone(), v))
-        })
-        .collect())
+/// Option `o` can be fitted to variant `variant`.
+pub fn fits(o: &FamilyOption, variant: &str) -> bool {
+    o.variants.is_empty() || o.variants.iter().any(|v| v == variant)
 }
 
-/// What the option values of a family come to.
-#[derive(Clone, Debug, PartialEq)]
+/// What a variant with options comes to.
+#[derive(Clone, Debug, Default, PartialEq)]
 pub struct Resolved {
+    pub variant: String,
+    /// The options chosen, in the order of the family.
+    pub options: Vec<String>,
     pub part: String,
+    /// Parts added for the options (accessories).
+    pub accessories: Vec<String>,
     /// Symbol on installation plans; empty: the one of the part.
     pub plan_symbol: String,
     /// Symbol in the schematic; empty: the one of the part's function.
     pub schematic_symbol: String,
-    /// Marks of the values beside the plan symbol, in the order of the options.
+    /// Marks of the options beside the plan symbol, in the order of the family.
     pub marks: Vec<String>,
-    /// All option values (given or default).
-    pub values: BTreeMap<String, String>,
 }
 
-/// The variant of family `key` the values `given` (the rest at their defaults) stand
-/// for: of the variants of the family and its base families whose values all match, the
-/// one naming the most (the family's own before a base's at a tie).
-pub fn resolve(prj: &Project, key: &str, given: &BTreeMap<String, String>) -> Result<Resolved, String> {
-    let values = values(prj, key, given)?;
-    let v = best(prj, key, &values).ok_or_else(|| tr_fmt!("No variant of device family {} for these values", key))?;
-    let marks = options(prj, key).iter().filter_map(|(_, o)| o.choices.iter().find(|c| values.get(&o.key) == Some(&c.key))).filter(|c| !c.mark.is_empty()).map(|c| c.mark.clone()).collect();
-    Ok(Resolved { part: v.part.clone(), plan_symbol: v.plan_symbol.clone(), schematic_symbol: v.schematic_symbol.clone(), marks, values })
-}
-
-fn best<'a>(prj: &'a Project, key: &str, values: &BTreeMap<String, String>) -> Option<&'a Variant> {
-    let mut found: Option<&Variant> = None;
-    for f in lineage(prj, key) {
-        for v in &f.variants {
-            if v.when.iter().all(|(k, x)| values.get(k) == Some(x)) && found.is_none_or(|b| v.when.len() > b.when.len()) {
-                found = Some(v);
-            }
+/// The part, symbols and marks of variant `variant` (empty: the first) of family `key`
+/// with options `chosen`: a combination of the variant and exactly these options, else
+/// the variant's part with the accessories of the options. Unknown variants and
+/// options, and options that do not fit the variant, are refused.
+pub fn resolve(prj: &Project, key: &str, variant: &str, chosen: &[String]) -> Result<Resolved, String> {
+    if get(prj, key).is_none() {
+        return Err(tr_fmt!("Unknown device family {}", key));
+    }
+    let vs = variants(prj, key);
+    let v = match variant {
+        "" => vs.first().map(|(_, v)| *v).ok_or_else(|| tr_fmt!("Device family {} has no variants", key))?,
+        k => vs.iter().find(|(_, v)| v.key == k).map(|(_, v)| *v).ok_or_else(|| tr_fmt!("Device family {} has no variant {}", key, k))?,
+    };
+    let opts = options(prj, key);
+    for c in chosen {
+        let Some((_, o)) = opts.iter().find(|(_, o)| &o.key == c) else {
+            return Err(tr_fmt!("Device family {} has no option {}", key, c));
+        };
+        if !fits(o, &v.key) {
+            return Err(tr_fmt!("Option {} does not fit variant {}", c, v.key));
         }
     }
-    found
+    let on: Vec<&FamilyOption> = opts.iter().map(|(_, o)| *o).filter(|o| chosen.contains(&o.key)).collect();
+    let keys: Vec<String> = on.iter().map(|o| o.key.clone()).collect();
+    let combo = lineage(prj, key).into_iter().flat_map(|f| f.combinations.iter()).find(|c| {
+        c.variant == v.key && c.options.len() == keys.len() && keys.iter().all(|k| c.options.contains(k))
+    });
+    let (part, accessories) = match combo {
+        Some(c) => (c.part.clone(), Vec::new()),
+        None => (v.part.clone(), on.iter().filter(|o| !o.accessory.is_empty()).map(|o| o.accessory.clone()).collect()),
+    };
+    Ok(Resolved {
+        variant: v.key.clone(),
+        options: keys,
+        part,
+        accessories,
+        plan_symbol: v.plan_symbol.clone(),
+        schematic_symbol: v.schematic_symbol.clone(),
+        marks: on.iter().filter(|o| !o.mark.is_empty()).map(|o| o.mark.clone()).collect(),
+    })
 }
 
-/// Whether value `choice` of option `opt` leads to a variant with the other values of
-/// `values` (for offering only the values that do).
-pub fn reachable(prj: &Project, key: &str, values: &BTreeMap<String, String>, opt: &str, choice: &str) -> bool {
-    let mut v = values.clone();
-    v.insert(opt.to_string(), choice.to_string());
-    if best(prj, key, &v).is_some() {
-        return true;
-    }
-    // With the other options free: the value leads somewhere at all.
-    lineage(prj, key).iter().any(|f| f.variants.iter().any(|x| x.when.get(opt).is_none_or(|c| c == choice)))
-}
-
-/// The family and the values a part is a variant of (the project's families first),
-/// the text empty.
+/// The family, variant and options a part is (the project's families first; a
+/// combination before a variant), the text empty.
 pub fn of_part(prj: &Project, part: &str) -> Option<FamilyChoice> {
     if part.is_empty() {
         return None;
@@ -320,17 +288,21 @@ pub fn of_part(prj: &Project, part: &str) -> Option<FamilyChoice> {
     let fams = all(prj);
     let mut order: Vec<&DeviceFamily> = fams.iter().copied().filter(|f| !f.builtin).collect();
     order.extend(fams.iter().copied().filter(|f| f.builtin));
-    for f in order {
+    for f in &order {
+        if let Some(c) = f.combinations.iter().find(|c| c.part == part) {
+            return Some(FamilyChoice { family: f.key.clone(), variant: c.variant.clone(), options: c.options.clone(), text: String::new() });
+        }
+    }
+    for f in &order {
         if let Some(v) = f.variants.iter().find(|v| v.part == part) {
-            let values = values(prj, &f.key, &v.when).ok()?;
-            return Some(FamilyChoice { family: f.key.clone(), values, text: String::new() });
+            return Some(FamilyChoice { family: f.key.clone(), variant: v.key.clone(), options: Vec::new(), text: String::new() });
         }
     }
     None
 }
 
-/// The family, values and text of an item of a room: those chosen for it, else those
-/// of its part.
+/// The family, variant, options and text of an item of a room: those chosen for it,
+/// else those of its part.
 pub fn of_item(prj: &Project, it: &PanelItem) -> FamilyChoice {
     if !it.family.family.is_empty() && get(prj, &it.family.family).is_some() {
         return it.family.clone();
@@ -341,8 +313,9 @@ pub fn of_item(prj: &Project, it: &PanelItem) -> FamilyChoice {
 }
 
 /// Problems of a family definition: missing key or name, unknown base or a base that
-/// leads back to it, options without values or with repeated ones, variants naming
-/// unknown options or values or without a part, unknown symbols.
+/// leads back to it, variants or options without a key or with a repeated one,
+/// variants without a part, unknown symbols, options for unknown variants, combinations
+/// of unknown or unfitting variants and options or without a part.
 pub fn validate(prj: &Project, f: &DeviceFamily) -> Result<(), String> {
     if f.key.trim().is_empty() || f.name.trim().is_empty() {
         return Err(tr("The device family needs a key and a name").into());
@@ -358,44 +331,48 @@ pub fn validate(prj: &Project, f: &DeviceFamily) -> Result<(), String> {
             return Err(tr_fmt!("Device family {} cannot be its own base", f.key));
         }
     }
-    let mut keys: Vec<&str> = Vec::new();
-    for o in &f.options {
-        if o.key.trim().is_empty() || o.choices.is_empty() {
-            return Err(tr_fmt!("Option {} needs a key and values", o.key));
+    for (i, v) in f.variants.iter().enumerate() {
+        if v.key.trim().is_empty() || f.variants[..i].iter().any(|x| x.key == v.key) {
+            return Err(tr("Every variant needs a key of its own").into());
         }
-        if keys.contains(&o.key.as_str()) {
-            return Err(tr_fmt!("Option {} is defined twice", o.key));
-        }
-        keys.push(&o.key);
-        for (i, c) in o.choices.iter().enumerate() {
-            if c.key.trim().is_empty() || o.choices[..i].iter().any(|x| x.key == c.key) {
-                return Err(tr_fmt!("Option {} has an empty or repeated value", o.key));
-            }
-        }
-        if !o.default.is_empty() && !o.choices.iter().any(|c| c.key == o.default) {
-            return Err(tr_fmt!("Option {} has no value {}", o.key, o.default));
-        }
-    }
-    // The options of the bases as they are with this definition.
-    let mut base: Vec<&FamilyOption> = if f.parent.is_empty() { Vec::new() } else { options(prj, &f.parent).into_iter().map(|(_, o)| o).collect() };
-    base.retain(|o| !f.options.iter().any(|x| x.key == o.key));
-    let all_opts: Vec<&FamilyOption> = base.into_iter().chain(f.options.iter()).collect();
-    for v in &f.variants {
         if v.part.trim().is_empty() {
             return Err(tr("Every variant needs a part").into());
-        }
-        for (k, x) in &v.when {
-            let Some(o) = all_opts.iter().find(|o| &o.key == k) else {
-                return Err(tr_fmt!("Device family {} has no option {}", f.key, k));
-            };
-            if !o.choices.iter().any(|c| &c.key == x) {
-                return Err(tr_fmt!("Option {} has no value {}", k, x));
-            }
         }
         for s in [&v.plan_symbol, &v.schematic_symbol] {
             if !s.is_empty() && prj.symbol(s).is_none() {
                 return Err(tr_fmt!("Unknown symbol {}", s));
             }
+        }
+    }
+    for (i, o) in f.options.iter().enumerate() {
+        if o.key.trim().is_empty() || f.options[..i].iter().any(|x| x.key == o.key) {
+            return Err(tr("Every option needs a key of its own").into());
+        }
+    }
+    // The variants and options of the bases as they are with this definition.
+    let base_variants: Vec<&Variant> = if f.parent.is_empty() { Vec::new() } else { variants(prj, &f.parent).into_iter().map(|(_, v)| v).collect() };
+    let base_options: Vec<&FamilyOption> = if f.parent.is_empty() { Vec::new() } else { options(prj, &f.parent).into_iter().map(|(_, o)| o).collect() };
+    let has_variant = |k: &str| f.variants.iter().any(|v| v.key == k) || base_variants.iter().any(|v| v.key == k);
+    let option = |k: &str| f.options.iter().find(|o| o.key == k).or_else(|| base_options.iter().copied().find(|o| o.key == k));
+    for o in &f.options {
+        if let Some(v) = o.variants.iter().find(|v| !has_variant(v)) {
+            return Err(tr_fmt!("Device family {} has no variant {}", f.key, v));
+        }
+    }
+    for c in &f.combinations {
+        if !has_variant(&c.variant) {
+            return Err(tr_fmt!("Device family {} has no variant {}", f.key, c.variant));
+        }
+        for k in &c.options {
+            let Some(o) = option(k) else {
+                return Err(tr_fmt!("Device family {} has no option {}", f.key, k));
+            };
+            if !fits(o, &c.variant) {
+                return Err(tr_fmt!("Option {} does not fit variant {}", k, c.variant));
+            }
+        }
+        if c.part.trim().is_empty() {
+            return Err(tr("Every variant needs a part").into());
         }
     }
     Ok(())
@@ -412,7 +389,8 @@ pub fn define(prj: &mut Project, f: DeviceFamily) -> Result<(), String> {
     Ok(())
 }
 
-/// Removes a project family; refused while another family names it as its base.
+/// Removes a project family (the built-in one of its key comes back); refused while
+/// another family names it as its base.
 pub fn remove(prj: &mut Project, key: &str) -> Result<bool, String> {
     if let Some(child) = prj.property_db.families.iter().find(|f| f.parent == key && f.key != key) {
         if builtin_family(key).is_none() {
@@ -431,11 +409,11 @@ pub fn editable(f: &DeviceFamily) -> DeviceFamily {
     let mut out = f.clone();
     if f.builtin {
         out.name = title(f);
+        for v in &mut out.variants {
+            v.name = translated(&v.name);
+        }
         for o in &mut out.options {
             o.name = translated(&o.name);
-            for c in &mut o.choices {
-                c.name = translated(&c.name);
-            }
         }
         out.texts = f.texts.iter().map(|t| translated(t)).collect();
     }

@@ -4,6 +4,7 @@
 (no structure)	(ingen struktur)
 (optional)	(valgfri)
 --json needs a JSON object	--json kræver et JSON-objekt
+3D	3D
 3D model	3D-model
 3D routing	3D-føring
 3D view	3D-visning
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Indstillingen {}: {} er ikke en af dens 
 Order number	Bestillingsnummer
 Other	Andet
 Outer diameter	Udvendig diameter
-Outlets	Stikkontakter
 Output	Udgang
 Output voltage (V)	Udgangsspænding (V)
 Overview	Oversigt

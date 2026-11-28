@@ -1,6 +1,5 @@
 # English<TAB>Deutsch<TAB>Français<TAB>Español – the website (website/): the page and its demos. Sorted by the English text: cargo run -p openecraft-i18n --example tidy
 20 languages, switched while working: menus, generated reports and check messages follow at once.	20 Sprachen, während der Arbeit umschaltbar: Menüs, erzeugte Auswertungen und Prüfmeldungen folgen sofort.	20 langues, changées en cours de travail : menus, rapports générés et messages de contrôle suivent aussitôt.	20 idiomas que se cambian mientras se trabaja: los menús, los informes generados y los mensajes de comprobación cambian al instante.
-3D	3D	3D	3D
 3D models	3D-Modelle	Modèles 3D	Modelos 3D
 A DWG or DXF drawing as a PDF anyone can open and print.	Eine DWG- oder DXF-Zeichnung als PDF, das jeder öffnen und drucken kann.	Un dessin DWG ou DXF en PDF que chacun peut ouvrir et imprimer.	Un plano DWG o DXF como PDF que cualquiera puede abrir e imprimir.
 A DXF or DWG drawing as an SVG picture for websites and documents.	Eine DXF- oder DWG-Zeichnung als SVG-Bild für Webseiten und Dokumente.	Un dessin DXF ou DWG en image SVG pour les sites web et les documents.	Un plano DXF o DWG como imagen SVG para sitios web y documentos.

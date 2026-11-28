@@ -4,6 +4,7 @@
 (no structure)	（无结构）
 (optional)	（可选）
 --json needs a JSON object	--json 需要一个 JSON 对象
+3D	3D
 3D model	3D 模型
 3D routing	3D 布线
 3D view	3D 视图
@@ -384,7 +385,6 @@ Option {}: {} is not one of its choices	选项 {}：{} 不是其选项值之一
 Order number	订货号
 Other	其他
 Outer diameter	外径
-Outlets	插座
 Output	输出
 Output voltage (V)	输出电压 (V)
 Overview	概览

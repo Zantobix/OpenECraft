@@ -12,7 +12,6 @@ use openecraft_core::analysis::Analysis;
 use openecraft_core::families;
 use openecraft_core::installation as inst;
 use openecraft_core::model::families::{DeviceFamily, FamilyChoice};
-use std::collections::BTreeMap;
 use openecraft_core::model::Project;
 use openecraft_core::netlist::Netlist;
 use openecraft_core::panel;
@@ -35,7 +34,8 @@ const BREAKER: &str = tr_const!("Device tag of its protective device (circuit br
 const ROOM: &str = tr_const!("Room (location, e.g. +ROOM1)");
 const X: &str = tr_const!("x in the plant in mm");
 const FAMILY: &str = tr_const!("Device family key, e.g. socket.schuko");
-const VALUES: &str = tr_const!("Option values, e.g. {\"outlets\": \"2\"} (the others at their defaults)");
+const VARIANT: &str = tr_const!("Variant key, e.g. 2 for a double socket outlet (default: the first)");
+const OPTIONS: &str = tr_const!("Option keys separated by commas, e.g. usb or lid,usb; empty: none");
 const TEXT: &str = tr_const!("Text shown at the symbol, e.g. what is connected");
 const Z: &str = tr_const!("z in the plant (towards the front) in mm");
 
@@ -57,20 +57,20 @@ pub static COMMANDS: &[Spec] = &[
     },
     Spec {
         name: "list_device_families",
-        help: tr_const!("Lists the device families: variants of socket outlets, switches, lights and boxes chosen by option values, each a part with its schematic symbol, plan symbol and 3D model; with their base family"),
+        help: tr_const!("Lists the device families of socket outlets, switches, lights and boxes: their variants, each a part with its schematic symbol, plan symbol and 3D model, and the options they can be fitted with; with their base family"),
         params: &[optional("query", Kind::Str, tr_const!("Text in the key or name"))],
         run: list_device_families,
     },
     Spec {
         name: "device_family",
-        help: tr_const!("Shows a device family: its options with their values (those of its base families too), its variants and suggested texts; with values the variant they stand for"),
-        params: &[param("family", Kind::Str, FAMILY), optional("values", Kind::Object, VALUES)],
+        help: tr_const!("Shows a device family: its variants and options (those of its base families too), combinations and suggested texts; with a variant and options the part, symbols and marks they come to"),
+        params: &[param("family", Kind::Str, FAMILY), optional("variant", Kind::Str, VARIANT), optional("options", Kind::Str, OPTIONS)],
         run: device_family,
     },
     Spec {
         name: "define_device_family",
-        help: tr_const!("Defines a device family of the project or changes it (a built-in key gives the project's own version): key, name, base family, options with values and marks, variants with their option values, part and symbols, suggested texts"),
-        params: &[param("family", Kind::Object, tr_const!("The family as JSON: key, name, parent, options [{key, name, choices [{key, name, mark}], default}], variants [{when {option: value}, part, plan_symbol, schematic_symbol}], texts"))],
+        help: tr_const!("Defines a device family of the project or changes it (a built-in key gives the project's own version): key, name, base family, variants with part and symbols, options with mark, accessory and the variants they fit, combinations, suggested texts"),
+        params: &[param("family", Kind::Object, tr_const!("The family as JSON: key, name, parent, variants [{key, name, part, plan_symbol, schematic_symbol}], options [{key, name, mark, accessory, variants}], combinations [{variant, options, part}], texts"))],
         run: define_device_family,
     },
     Spec {
@@ -81,12 +81,12 @@ pub static COMMANDS: &[Spec] = &[
     },
     Spec {
         name: "set_device_variant",
-        help: tr_const!("Sets the device family, option values and text at the symbol of a socket outlet, switch, light or box in a room: it becomes the part of the variant, the device in the schematic gets the part and its installation page is drawn again with the variant's symbol"),
+        help: tr_const!("Sets the variant, options and text at the symbol of a socket outlet, switch, light or box in a room: it becomes the part they come to, the device in the schematic gets it with the accessories of the options, and its installation page is drawn again with the variant's symbol"),
         params: &[
             optional("item", Kind::Int, tr_const!("Id of the item in the room")),
             optional("device", Kind::Str, tr_const!("Device tag instead of the item id")),
-            optional("family", Kind::Str, tr_const!("Device family (default: the one of its part); empty: only the text")),
-            optional("values", Kind::Object, VALUES),
+            optional("variant", Kind::Str, VARIANT),
+            optional("options", Kind::Str, OPTIONS),
             optional("text", Kind::Str, TEXT),
         ],
         run: set_device_variant,
@@ -98,8 +98,9 @@ pub static COMMANDS: &[Spec] = &[
             optional("breaker", Kind::Str, BREAKER),
             param("room", Kind::Str, ROOM),
             optional("part", Kind::Str, tr_const!("Part number, e.g. GEN.SOCKET-F-UP, GEN.SW-ONOFF-UP, GEN.LAMP-CEILING-LED, GEN.JBOX-UP, GEN.SOCKET-CEE-16-5P")),
-            optional("family", Kind::Str, tr_const!("Device family instead of the part: the part of the variant of the values")),
-            optional("values", Kind::Object, VALUES),
+            optional("family", Kind::Str, tr_const!("Device family instead of the part: the part of its variant and options")),
+            optional("variant", Kind::Str, VARIANT),
+            optional("options", Kind::Str, OPTIONS),
             optional("text", Kind::Str, TEXT),
             param("x", Kind::Num, X),
             param("z", Kind::Num, Z),
@@ -225,11 +226,11 @@ fn place_installation(prj: &mut Project, a: &Args) -> Result<Value, String> {
     };
     let choice = family_choice(prj, a)?;
     let resolved = match &choice {
-        Some(c) if !c.family.is_empty() => Some(families::resolve(prj, &c.family, &c.values)?.part),
+        Some(c) if !c.family.is_empty() => Some(families::resolve(prj, &c.family, &c.variant, &c.options)?.part),
         _ => None,
     };
     let part = match (a.str("part").map(str::trim).filter(|p| !p.is_empty()), resolved) {
-        (Some(p), Some(r)) if p != r => return Err(tr_fmt!("Part {} is not the variant {} of the values", p, r)),
+        (Some(p), Some(r)) if p != r => return Err(tr_fmt!("Part {} is not the part {} of the variant and options", p, r)),
         (_, Some(r)) => r,
         (Some(p), None) => p.to_string(),
         (None, None) => return Err(tr("Give a part or a device family").to_string()),
@@ -329,36 +330,28 @@ fn set_plan_symbol(prj: &mut Project, a: &Args) -> Result<Value, String> {
     Ok(json!({ "part": part.number, "plan_symbol": part.plan_symbol, "shown": shown }))
 }
 
-/// The option values of argument `values` (an object of strings or numbers).
-fn values_arg(a: &Args) -> Result<BTreeMap<String, String>, String> {
-    let Some(v) = a.value("values") else { return Ok(BTreeMap::new()) };
-    let obj = v.as_object().ok_or_else(|| tr("The option values must be an object").to_string())?;
-    obj.iter()
-        .map(|(k, v)| match v {
-            Value::String(s) => Ok((k.clone(), s.clone())),
-            Value::Number(n) => Ok((k.clone(), n.to_string())),
-            Value::Bool(b) => Ok((k.clone(), b.to_string())),
-            _ => Err(tr_fmt!("Option {} needs a text value", k)),
-        })
-        .collect()
+/// The option keys of argument `options` (`None`: not given; empty: none).
+fn options_arg(a: &Args) -> Option<Vec<String>> {
+    a.str("options").map(|o| o.split([',', ' ']).map(str::trim).filter(|k| !k.is_empty()).map(String::from).collect())
 }
 
-/// The family, values and text given (`None`: none of them).
+/// The family, variant, options and text given (`None`: none of them).
 fn family_choice(prj: &Project, a: &Args) -> Result<Option<FamilyChoice>, String> {
     let family = a.str("family").map(|f| f.trim().to_string());
-    let values = values_arg(a)?;
+    let variant = a.str("variant").map(|v| v.trim().to_string());
+    let options = options_arg(a);
     let text = a.str("text").map(|t| t.trim().to_string());
-    if family.is_none() && values.is_empty() && text.is_none() {
+    if family.is_none() && variant.is_none() && options.is_none() && text.is_none() {
         return Ok(None);
     }
     let family = family.unwrap_or_default();
-    if family.is_empty() && !values.is_empty() {
-        return Err(tr("Option values need a device family").to_string());
+    if family.is_empty() && (variant.as_ref().is_some_and(|v| !v.is_empty()) || options.as_ref().is_some_and(|o| !o.is_empty())) {
+        return Err(tr("A variant or options need a device family").to_string());
     }
     if !family.is_empty() && families::get(prj, &family).is_none() {
         return Err(tr_fmt!("Unknown device family {}", family));
     }
-    Ok(Some(FamilyChoice { family, values, text: text.unwrap_or_default() }))
+    Ok(Some(FamilyChoice { family, variant: variant.unwrap_or_default(), options: options.unwrap_or_default(), text: text.unwrap_or_default() }))
 }
 
 fn family_json(prj: &Project, f: &DeviceFamily) -> Value {
@@ -369,7 +362,8 @@ fn family_json(prj: &Project, f: &DeviceFamily) -> Value {
         "parent": if f.parent.is_empty() { Value::Null } else { json!(f.parent) },
         "parent_name": base.map(families::title),
         "builtin": f.builtin,
-        "variants": f.variants.len(),
+        "variants": families::variants(prj, &f.key).len(),
+        "options": families::options(prj, &f.key).len(),
     })
 }
 
@@ -382,27 +376,23 @@ fn list_device_families(prj: &mut Project, a: &Args) -> Result<Value, String> {
 fn device_family(prj: &mut Project, a: &Args) -> Result<Value, String> {
     let key = a.req("family").trim();
     let f = families::get(prj, key).ok_or_else(|| tr_fmt!("Unknown device family {}", key))?;
-    let values = values_arg(a)?;
-    let chosen = families::values(prj, key, &values)?;
+    let variants: Vec<Value> = families::variants(prj, key)
+        .into_iter()
+        .map(|(of, v)| json!({ "key": v.key, "name": families::name_of(of, &v.name), "from": of.key, "part": v.part, "plan_symbol": v.plan_symbol, "schematic_symbol": v.schematic_symbol }))
+        .collect();
     let options: Vec<Value> = families::options(prj, key)
         .into_iter()
-        .map(|(of, o)| {
-            let choices: Vec<Value> = o
-                .choices
-                .iter()
-                .map(|c| json!({ "key": c.key, "name": families::name_of(of, &c.name), "mark": c.mark, "reachable": families::reachable(prj, key, &chosen, &o.key, &c.key) }))
-                .collect();
-            json!({ "key": o.key, "name": families::name_of(of, &o.name), "from": of.key, "default": o.default, "value": chosen.get(&o.key), "choices": choices })
-        })
+        .map(|(of, o)| json!({ "key": o.key, "name": families::name_of(of, &o.name), "from": of.key, "mark": o.mark, "accessory": o.accessory, "variants": o.variants }))
         .collect();
-    let lineage = families::lineage(prj, key);
-    let variants: Vec<Value> = lineage.iter().flat_map(|x| x.variants.iter().map(move |v| json!({ "family": x.key, "when": v.when, "part": v.part, "plan_symbol": v.plan_symbol, "schematic_symbol": v.schematic_symbol }))).collect();
+    let combinations: Vec<Value> = families::lineage(prj, key).iter().flat_map(|x| x.combinations.iter()).map(|c| json!({ "variant": c.variant, "options": c.options, "part": c.part })).collect();
     let mut out = family_json(prj, f);
-    out["options"] = json!(options);
     out["variants"] = json!(variants);
+    out["options"] = json!(options);
+    out["combinations"] = json!(combinations);
     out["texts"] = json!(families::texts(prj, key));
-    out["resolved"] = match families::resolve(prj, key, &values) {
-        Ok(r) => json!({ "part": r.part, "plan_symbol": r.plan_symbol, "schematic_symbol": r.schematic_symbol, "marks": r.marks, "values": r.values }),
+    let variant = a.str("variant").unwrap_or_default().trim().to_string();
+    out["resolved"] = match families::resolve(prj, key, &variant, &options_arg(a).unwrap_or_default()) {
+        Ok(r) => json!({ "variant": r.variant, "options": r.options, "part": r.part, "accessories": r.accessories, "plan_symbol": r.plan_symbol, "schematic_symbol": r.schematic_symbol, "marks": r.marks }),
         Err(e) => json!({ "error": e }),
     };
     Ok(out)
@@ -437,22 +427,25 @@ fn set_device_variant(prj: &mut Project, a: &Args) -> Result<Value, String> {
     };
     let item = panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].item(id).cloned()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
     let current = families::of_item(prj, &item);
-    let mut choice = match a.str("family") {
-        Some(_) => family_choice(prj, a)?.unwrap_or_default(),
-        // Values given change those it has.
-        None => {
-            let mut values = current.values.clone();
-            values.extend(values_arg(a)?);
-            FamilyChoice { family: current.family.clone(), values, text: String::new() }
-        }
-    };
-    choice.text = a.str("text").map_or_else(|| current.text.clone(), |t| t.trim().to_string());
-    if choice.family.is_empty() && !choice.values.is_empty() {
-        return Err(tr("Option values need a device family").to_string());
+    // What is not given stays: another variant keeps the options that fit it.
+    let mut choice = current.clone();
+    if let Some(v) = a.str("variant").map(str::trim) {
+        choice.variant = v.to_string();
+        let fitting = |k: &String| families::options(prj, &current.family).iter().any(|(_, o)| &o.key == k && families::fits(o, v));
+        choice.options.retain(fitting);
+    }
+    if let Some(o) = options_arg(a) {
+        choice.options = o;
+    }
+    if let Some(t) = a.str("text") {
+        choice.text = t.trim().to_string();
+    }
+    if choice.family.is_empty() && (!choice.variant.is_empty() || !choice.options.is_empty()) {
+        return Err(tr("A variant or options need a device family").to_string());
     }
     let c = inst::set_family(prj, id, choice)?;
     let item = panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].item(c.item).cloned()).unwrap_or_default();
-    Ok(json!({ "item": c.item, "device": item.tag, "old_part": c.old_part, "part": c.part, "family": item.family.family, "values": item.family.values, "text": item.family.text, "schematic_pages": c.symbols }))
+    Ok(json!({ "item": c.item, "device": item.tag, "old_part": c.old_part, "part": c.part, "family": item.family.family, "variant": item.family.variant, "options": item.family.options, "text": item.family.text, "schematic_pages": c.symbols }))
 }
 
 #[cfg(test)]

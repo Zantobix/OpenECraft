@@ -4,6 +4,7 @@
 (no structure)	(keine Struktur)	(sans structure)	(sin estructura)
 (optional)	(optional)	(facultatif)	(opcional)
 --json needs a JSON object	--json erwartet ein JSON-Objekt	--json attend un objet JSON	--json necesita un objeto JSON
+3D	3D	3D	3D
 3D model	3D-Modell	Modèle 3D	Modelo 3D
 3D routing	3D-Verlegung	Routage 3D	Enrutado 3D
 3D view	3D-Ansicht	Vue 3D	Vista 3D
@@ -411,7 +412,6 @@ Option {}: {} is not one of its choices	Option {}: {} ist keiner ihrer Auswahlwe
 Order number	Bestellnummer	Référence de commande	Número de pedido
 Other	Sonstiges	Autre	Otro
 Outer diameter	Außendurchmesser	Diamètre extérieur	Diámetro exterior
-Outlets	Dosen	Prises	Tomas
 Output	Ausgang	Sortie	Salida
 Output voltage (V)	Ausgangsspannung (V)	Tension de sortie (V)	Tensión de salida (V)
 Overview	Übersicht	Vue d'ensemble	Vista general

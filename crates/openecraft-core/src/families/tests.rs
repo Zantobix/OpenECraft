@@ -1,8 +1,8 @@
 use super::*;
 use crate::installation;
 
-fn vals(v: &[(&str, &str)]) -> BTreeMap<String, String> {
-    v.iter().map(|(k, x)| (k.to_string(), x.to_string())).collect()
+fn opts(o: &[&str]) -> Vec<String> {
+    o.iter().map(|s| s.to_string()).collect()
 }
 
 #[test]
@@ -10,59 +10,79 @@ fn built_in_variants_are_installation_parts_with_symbols() {
     let prj = Project::default();
     for f in builtin() {
         validate(&prj, f).unwrap_or_else(|e| panic!("{}: {e}", f.key));
-        for v in &f.variants {
-            let part = installation::find_part(&prj, &v.part).unwrap_or_else(|| panic!("{} of {} missing", v.part, f.key));
-            assert!(installation::kind_of(part).is_some(), "{} is no installation part", v.part);
+        let parts = f.variants.iter().map(|v| (&v.part, &v.plan_symbol)).chain(f.combinations.iter().map(|c| (&c.part, &c.part)));
+        for (part, sym) in parts {
+            let p = installation::find_part(&prj, part).unwrap_or_else(|| panic!("{part} of {} missing", f.key));
+            assert!(installation::kind_of(p).is_some(), "{part} is no installation part");
+            if sym != part && !sym.is_empty() {
+                assert!(prj.symbol(sym).is_some(), "{sym} of {}", f.key);
+            }
         }
-        // Every variant is reached by its own values.
+        // Every variant is reached by itself, every combination by its options.
         for v in &f.variants {
-            assert_eq!(resolve(&prj, &f.key, &v.when).map(|r| r.part), Ok(v.part.clone()), "{}", f.key);
+            assert_eq!(resolve(&prj, &f.key, &v.key, &[]).map(|r| r.part), Ok(v.part.clone()), "{}", f.key);
+        }
+        for c in &f.combinations {
+            assert_eq!(resolve(&prj, &f.key, &c.variant, &c.options).map(|r| r.part), Ok(c.part.clone()), "{}", f.key);
         }
     }
 }
 
 #[test]
-fn a_family_takes_over_the_texts_and_options_of_its_base() {
+fn a_family_takes_over_the_texts_variants_and_options_of_its_base() {
     let prj = Project::default();
     assert_eq!(lineage(&prj, "socket.schuko").iter().map(|f| f.key.as_str()).collect::<Vec<_>>(), ["socket.schuko", "socket"]);
     assert!(texts(&prj, "socket.cee").contains(&"Fridge".to_string()));
     let mut prj = Project::default();
-    let mut base = derive(&prj, builtin_family("socket").unwrap());
-    base.key = "user.base".into();
-    base.options = vec![option("colour", "Colour", &[("white", "White", ""), ("black", "Black", "")])];
+    let base = DeviceFamily {
+        key: "user.base".into(),
+        name: "Base".into(),
+        variants: vec![variant("a", "A", "GEN.SOCKET-F-UP", "")],
+        options: vec![option("spd", "Surge protection", "SPD", &[])],
+        ..Default::default()
+    };
     define(&mut prj, base).unwrap();
-    let child = DeviceFamily { key: "user.child".into(), name: "Child".into(), parent: "user.base".into(), variants: vec![variant(&[("colour", "black")], "GEN.SOCKET-F-UP")], ..Default::default() };
+    // The child adds a variant and replaces the base's one of the same key.
+    let child = DeviceFamily { key: "user.child".into(), name: "Child".into(), parent: "user.base".into(), variants: vec![variant("a", "A2", "GEN.SOCKET-F-2X-UP", ""), variant("b", "B", "GEN.SOCKET-F-USB-UP", "")], ..Default::default() };
     define(&mut prj, child).unwrap();
-    assert_eq!(options(&prj, "user.child").len(), 1);
-    // The default (white) has no variant; black has.
-    assert!(resolve(&prj, "user.child", &BTreeMap::new()).is_err());
-    assert_eq!(resolve(&prj, "user.child", &vals(&[("colour", "black")])).unwrap().part, "GEN.SOCKET-F-UP");
+    assert_eq!(variants(&prj, "user.child").len(), 2);
+    assert_eq!(resolve(&prj, "user.child", "a", &[]).unwrap().part, "GEN.SOCKET-F-2X-UP");
+    let r = resolve(&prj, "user.child", "b", &opts(&["spd"])).unwrap();
+    assert_eq!((r.part.as_str(), r.marks.clone()), ("GEN.SOCKET-F-USB-UP", vec!["SPD".to_string()]));
     // A base cannot go while a family builds on it.
     assert!(remove(&mut prj, "user.base").is_err());
 }
 
 #[test]
-fn values_choose_the_variant_and_add_their_marks() {
+fn a_variant_with_options_is_its_combination_or_its_part_with_accessories() {
     let prj = Project::default();
-    let r = resolve(&prj, "socket.schuko", &BTreeMap::new()).unwrap();
-    assert_eq!((r.part.as_str(), r.marks.len()), ("GEN.SOCKET-F-UP", 0));
-    assert_eq!(resolve(&prj, "socket.schuko", &vals(&[("outlets", "2")])).unwrap().part, "GEN.SOCKET-F-2X-UP");
-    let lid = resolve(&prj, "socket.schuko", &vals(&[("design", "lid")])).unwrap();
+    let r = resolve(&prj, "socket.schuko", "", &[]).unwrap();
+    assert_eq!((r.variant.as_str(), r.part.as_str(), r.marks.len()), ("1", "GEN.SOCKET-F-UP", 0));
+    assert_eq!(resolve(&prj, "socket.schuko", "4", &[]).unwrap().part, "GEN.SOCKET-F-4X-UP");
+    let lid = resolve(&prj, "socket.schuko", "1", &opts(&["lid"])).unwrap();
     assert_eq!((lid.part.as_str(), lid.marks.clone()), ("GEN.SOCKET-F-LID-UP", vec!["IP44".to_string()]));
-    // Two outlets with a lid: no such part.
-    assert!(resolve(&prj, "socket.schuko", &vals(&[("outlets", "2"), ("design", "lid")])).is_err());
-    assert!(!reachable(&prj, "socket.schuko", &vals(&[("outlets", "2"), ("design", "standard")]), "design", "nope"));
-    assert!(reachable(&prj, "socket.schuko", &vals(&[("outlets", "2"), ("design", "standard")]), "design", "lid"));
-    assert!(resolve(&prj, "socket.schuko", &vals(&[("colour", "red")])).is_err());
-    assert!(resolve(&prj, "socket.schuko", &vals(&[("outlets", "9")])).is_err());
-    assert!(resolve(&prj, "nope", &BTreeMap::new()).is_err());
+    // The lid does not fit a double socket outlet.
+    assert!(resolve(&prj, "socket.schuko", "2", &opts(&["lid"])).is_err());
+    assert!(resolve(&prj, "socket.schuko", "1", &opts(&["nope"])).is_err());
+    assert!(resolve(&prj, "socket.schuko", "9", &[]).is_err());
+    assert!(resolve(&prj, "nope", "", &[]).is_err());
+    // An option without a combination: the variant's part and the option's accessory.
+    let mut prj = Project::default();
+    let mut f = derive(&prj, builtin_family("socket.schuko").unwrap());
+    f.options.push(FamilyOption { key: "spd".into(), name: "SPD".into(), mark: "SPD".into(), accessory: "GEN.JBOX-UP".into(), variants: Vec::new() });
+    let key = f.key.clone();
+    define(&mut prj, f).unwrap();
+    let r = resolve(&prj, &key, "2", &opts(&["spd"])).unwrap();
+    assert_eq!((r.part.as_str(), r.accessories.clone()), ("GEN.SOCKET-F-2X-UP", vec!["GEN.JBOX-UP".to_string()]));
 }
 
 #[test]
 fn a_part_knows_its_family() {
     let prj = Project::default();
     let c = of_part(&prj, "GEN.SW-2WAY-UP").unwrap();
-    assert_eq!((c.family.as_str(), c.values.get("function").map(String::as_str)), ("switch", Some("two_way")));
+    assert_eq!((c.family.as_str(), c.variant.as_str()), ("switch", "two_way"));
+    let c = of_part(&prj, "GEN.SOCKET-F-USB-UP").unwrap();
+    assert_eq!((c.variant.as_str(), c.options.clone()), ("1", vec!["usb".to_string()]));
     assert!(of_part(&prj, "GEN.JBOX-UP").is_none());
     assert!(of_part(&prj, "").is_none());
 }
@@ -70,18 +90,20 @@ fn a_part_knows_its_family() {
 #[test]
 fn wrong_definitions_are_refused() {
     let mut prj = Project::default();
-    let ok = DeviceFamily { key: "user.a".into(), name: "A".into(), options: vec![option("n", "N", &[("1", "1", "")])], variants: vec![variant(&[("n", "1")], "GEN.SOCKET-F-UP")], ..Default::default() };
+    let ok = DeviceFamily { key: "user.a".into(), name: "A".into(), variants: vec![variant("1", "1", "GEN.SOCKET-F-UP", "")], options: vec![option("x", "X", "", &["1"])], ..Default::default() };
     define(&mut prj, ok.clone()).unwrap();
     for bad in [
         DeviceFamily { key: String::new(), ..ok.clone() },
         DeviceFamily { parent: "user.a".into(), ..ok.clone() },
         DeviceFamily { parent: "nope".into(), ..ok.clone() },
-        DeviceFamily { options: vec![option("n", "N", &[])], ..ok.clone() },
-        DeviceFamily { options: vec![option("n", "N", &[("1", "1", ""), ("1", "2", "")])], ..ok.clone() },
-        DeviceFamily { variants: vec![variant(&[("m", "1")], "GEN.SOCKET-F-UP")], ..ok.clone() },
-        DeviceFamily { variants: vec![variant(&[("n", "2")], "GEN.SOCKET-F-UP")], ..ok.clone() },
-        DeviceFamily { variants: vec![variant(&[], "")], ..ok.clone() },
-        DeviceFamily { variants: vec![Variant { plan_symbol: "nope".into(), ..variant(&[], "GEN.SOCKET-F-UP") }], ..ok.clone() },
+        DeviceFamily { variants: vec![variant("1", "1", "GEN.SOCKET-F-UP", ""), variant("1", "2", "GEN.SOCKET-F-UP", "")], ..ok.clone() },
+        DeviceFamily { variants: vec![variant("1", "1", "", "")], ..ok.clone() },
+        DeviceFamily { variants: vec![variant("1", "1", "GEN.SOCKET-F-UP", "nope")], ..ok.clone() },
+        DeviceFamily { options: vec![option("x", "X", "", &["9"])], ..ok.clone() },
+        DeviceFamily { options: vec![option("x", "X", "", &[]), option("x", "Y", "", &[])], ..ok.clone() },
+        DeviceFamily { combinations: vec![combination("9", &[], "GEN.SOCKET-F-UP")], ..ok.clone() },
+        DeviceFamily { combinations: vec![combination("1", &["y"], "GEN.SOCKET-F-UP")], ..ok.clone() },
+        DeviceFamily { combinations: vec![combination("1", &["x"], "")], ..ok.clone() },
     ] {
         assert!(define(&mut prj, bad.clone()).is_err(), "{bad:?}");
     }
@@ -107,12 +129,19 @@ fn project_families_go_into_property_libraries() {
 }
 
 #[test]
-fn a_derived_family_takes_the_names_in_the_language_shown() {
-    let prj = Project::default();
+fn a_derived_or_changed_built_in_family_takes_the_names_in_the_language_shown() {
+    let mut prj = Project::default();
     let f = openecraft_i18n::with_lang(openecraft_i18n::Lang::De, || derive(&prj, builtin_family("socket.schuko").unwrap()));
-    assert_eq!(f.options[0].name, "Dosen");
-    assert_eq!(f.options[0].choices[1].name, "Zweifach");
+    assert_eq!(f.variants[1].name, "Zweifach");
     assert!(!f.builtin);
     // Its names are its own now: shown as they are in any language.
-    assert_eq!(openecraft_i18n::with_lang(openecraft_i18n::Lang::Fr, || name_of(&f, &f.options[0].name)), "Dosen");
+    assert_eq!(openecraft_i18n::with_lang(openecraft_i18n::Lang::Fr, || name_of(&f, &f.variants[1].name)), "Zweifach");
+    // A built-in family changed in the project keeps its key and can be reset.
+    let mut own = editable(builtin_family("light").unwrap());
+    own.variants.pop();
+    define(&mut prj, own).unwrap();
+    assert!(overrides_builtin(&prj, "light"));
+    assert_eq!(variants(&prj, "light").len(), 2);
+    assert_eq!(remove(&mut prj, "light"), Ok(true));
+    assert_eq!(variants(&prj, "light").len(), 3);
 }

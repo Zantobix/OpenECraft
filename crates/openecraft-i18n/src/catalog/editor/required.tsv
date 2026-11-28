@@ -114,6 +114,7 @@ A split project is a folder of files: the browser cannot open it. Convert it to 
 A template file to pass on; New › From a template file… starts projects from it	Eine Vorlagendatei zum Weitergeben; Neu › Aus einer Vorlagendatei… beginnt Projekte damit	Un fichier de modèle à transmettre ; Nouveau › À partir d'un fichier modèle… démarre des projets à partir de lui	Un archivo de plantilla para pasar; Nuevo › Desde un archivo de plantilla… inicia proyectos a partir de él
 A template of this name is replaced.	Eine Vorlage mit diesem Namen wird ersetzt.	Un modèle portant ce nom est remplacé.	Se reemplaza una plantilla con este nombre.
 A template sets the page type, plot frame, title block, structure and description of a new page and places its content.	Eine Vorlage legt Seitentyp, Plotrahmen, Schriftfeld, Struktur und Beschreibung einer neuen Seite fest und platziert ihren Inhalt.	Un modèle définit le type, le cadre, le cartouche, la structure et la description d'une nouvelle page et place son contenu.	Una plantilla fija el tipo, el marco, el cajetín, la estructura y la descripción de una página nueva y coloca su contenido.
+A variant with options that is a part of its own, e.g. a socket outlet with a USB charger built in	Eine Variante mit Optionen, die ein eigener Artikel ist, z. B. eine Steckdose mit eingebautem USB-Ladegerät	Une variante avec options qui est un article à part, p. ex. une prise avec chargeur USB intégré	Una variante con opciones que es un artículo propio, p. ej. una toma con cargador USB integrado
 A way through free air costs this many times the way in a duct or routing path	Ein Weg durch freien Raum kostet so viel mal mehr als im Kanal oder Verlegeweg	Un chemin à l'air libre coûte autant de fois plus que dans une goulotte ou un chemin de routage	Un recorrido por aire libre cuesta tantas veces más que en una canaleta o ruta de tendido
 A work area limits the pages and devices in the navigator to a part of the project. Filters: empty = any, * = any characters; A1 also covers A1.2.	Ein Arbeitsbereich beschränkt die Seiten und Betriebsmittel im Navigator auf einen Teil des Projekts. Filter: leer = beliebig, * = beliebige Zeichen; A1 umfasst auch A1.2.	Une zone de travail limite les pages et appareils du navigateur à une partie du projet. Filtres : vide = tout, * = caractères quelconques ; A1 couvre aussi A1.2.	Un área de trabajo limita las páginas y dispositivos del navegador a una parte del proyecto. Filtros: vacío = cualquiera, * = cualquier carácter; A1 incluye también A1.2.
 APPROVED	FREIGEGEBEN	APPROUVÉ	APROBADO
@@ -522,6 +523,8 @@ Columns / rows	Spalten / Zeilen	Colonnes / lignes	Columnas / filas
 Columns × rows	Spalten × Zeilen	Colonnes × lignes	Columnas × filas
 Columns, filter, sort order and rows of the report pages	Spalten, Filter, Sortierung und Zeilen der Auswertungsseiten	Colonnes, filtre, tri et lignes des pages de rapport	Columnas, filtro, orden y filas de las páginas de informe
 Columns: {}	Spalten: {}	Colonnes : {}	Columnas: {}
+Combination	Kombination	Combinaison	Combinación
+Combinations	Kombinationen	Combinaisons	Combinaciones
 Comma	Komma	Virgule	Coma
 Comment #{} – {} {}	Kommentar #{} – {} {}	Commentaire n° {} – {} {}	Comentario n.º {} – {} {}
 Comment on the current page	Kommentar auf der aktuellen Seite	Commentaire sur la page actuelle	Comentario en la página actual
@@ -1766,6 +1769,7 @@ Otherwise along its way from entry to entry	Sonst entlang ihres Wegs von Einfüh
 Otherwise from the plant layout, or next to the other line-ups	Sonst aus dem Anlagenlayout oder neben den anderen Anreihungen	Sinon d'après le plan d'installation, ou à côté des autres juxtapositions	Si no, según el plano de la instalación o junto a las demás alineaciones
 Out since {} (pages locked)	Ausgelagert seit {} (Seiten gesperrt)	Extrait depuis le {} (pages verrouillées)	Extraído desde {} (páginas bloqueadas)
 Outer diameter (e.g. 8 mm) or DN	Außendurchmesser (z. B. 8 mm) oder DN	Diamètre extérieur (p. ex. 8 mm) ou DN	Diámetro exterior (p. ej. 8 mm) o DN
+Outlets	Dosen	Prises	Tomas
 Outlets, switches, heating	Dosen, Schalter, Heizung	Prises, interrupteurs, chauffage	Tomas, interruptores, calefacción
 Outline	Kontur	Contour	Contorno
 Outlines	Konturen	Contours	Contornos
@@ -2607,6 +2611,7 @@ The enclosure or room shown (its name) and its view: a face, the floor plan or 3
 The enclosure stands with its left side against the right side of the chosen one; wires run between them through cable passages	Der Schrank steht mit seiner linken Seite an der rechten Seite des gewählten; Drähte laufen durch Kabeldurchführungen hinüber	L'armoire est placée avec son côté gauche contre le côté droit de celle choisie ; les fils passent par des passages de câbles	El armario se coloca con su lado izquierdo contra el lado derecho del elegido; los cables pasan por pasos de cables
 The file could not be opened as an OpenECraft project.	Die Datei konnte nicht als OpenECraft-Projekt geöffnet werden.	Le fichier n'a pas pu être ouvert comme projet OpenECraft.	El archivo no se ha podido abrir como proyecto de OpenECraft.
 The first hour	Die erste Stunde	La première heure	La primera hora
+The forms of the device; exactly one is chosen. Each is a part with its 3D model and functions; its plan and schematic symbol come from the part unless chosen here	Die Bauformen des Geräts; genau eine ist gewählt. Jede ist ein Artikel mit 3D-Modell und Funktionen; Plan- und Schaltplansymbol kommen vom Artikel, wenn hier keine gewählt sind	Les formes de l'appareil ; une seule est choisie. Chacune est un article avec modèle 3D et fonctions ; ses symboles de plan et de schéma viennent de l'article sauf s'ils sont choisis ici	Las formas del dispositivo; se elige exactamente una. Cada una es un artículo con modelo 3D y funciones; sus símbolos de plano y esquema vienen del artículo salvo que se elijan aquí
 The horizontal wire	Die waagerechte Leitung	Le fil horizontal	El cable horizontal
 The items are selected and moved together	Die Elemente werden gemeinsam ausgewählt und verschoben	Les éléments sont sélectionnés et déplacés ensemble	Los elementos se seleccionan y se mueven juntos
 The last save failed: the changes are not saved on the project server	Das letzte Speichern ist fehlgeschlagen: Die Änderungen sind nicht auf dem Projektserver gespeichert	Le dernier enregistrement a échoué : les modifications ne sont pas enregistrées sur le serveur de projets	El último guardado falló: los cambios no están guardados en el servidor de proyectos
@@ -2686,7 +2691,7 @@ The terminal parts name no end brackets or end plates (tech data End bracket, En
 The tutorial goes on with terminals, PLC, the panel layout, revisions and automation.	Das Tutorial geht weiter mit Klemmen, SPS, Aufbau, Revisionen und Automatisierung.	Le tutoriel continue avec les bornes, l'API, l'implantation, les révisions et l'automatisation.	El tutorial continúa con bornes, PLC, el montaje, las revisiones y la automatización.
 The tutorial in 13 chapters, from the first project to the automation	Das Tutorial in 13 Kapiteln, vom ersten Projekt bis zur Automatisierung	Le tutoriel en 13 chapitres, du premier projet à l'automatisation	El tutorial en 13 capítulos, desde el primer proyecto hasta la automatización
 The update failed	Das Update ist fehlgeschlagen	La mise à jour a échoué	La actualización ha fallado
-The variants of a device chosen by the values of its options: each a part with its schematic symbol, plan symbol and 3D model	Die Varianten eines Geräts, gewählt über die Werte seiner Optionen: jede ein Artikel mit Schaltplansymbol, Plansymbol und 3D-Modell	Les variantes d'un appareil choisies par les valeurs de ses options : chacune un article avec son symbole de schéma, son symbole de plan et son modèle 3D	Las variantes de un dispositivo elegidas por los valores de sus opciones: cada una un artículo con su símbolo de esquema, símbolo de plano y modelo 3D
+The variants of a device, each a part with its schematic symbol, plan symbol and 3D model, and the options it can be fitted with	Die Varianten eines Geräts, jede ein Artikel mit Schaltplansymbol, Plansymbol und 3D-Modell, und die Optionen, mit denen es ausgestattet werden kann	Les variantes d'un appareil, chacune un article avec symbole de schéma, symbole de plan et modèle 3D, et les options dont il peut être équipé	Las variantes de un dispositivo, cada una un artículo con símbolo de esquema, símbolo de plano y modelo 3D, y las opciones con las que puede equiparse
 The vertical wire	Die senkrechte Leitung	Le fil vertical	El cable vertical
 The web version is updated on its server.	Die Webversion wird auf ihrem Server aktualisiert.	La version web est mise à jour sur son serveur.	La versión web se actualiza en su servidor.
 The wire tool routes around symbols and other wires	Das Verbindungswerkzeug führt um Symbole und andere Verbindungen herum	L'outil fil contourne les symboles et les autres fils	La herramienta de cable rodea los símbolos y otros cables
@@ -2786,6 +2791,7 @@ Valve terminals, service units and manifolds: their fluid devices in slot order,
 Variant	Variante	Variante	Variante
 Variant {} of macro {} replaced	Variante {} von Makro {} ersetzt	Variante {} de la macro {} remplacée	Variante {} de la macro {} reemplazada
 Variant {} of macro {} saved	Variante {} von Makro {} gespeichert	Variante {} de la macro {} enregistrée	Variante {} de la macro {} guardada
+Variant: {}	Variante: {}	Variante : {}	Variante: {}
 Variants	Varianten	Variantes	Variantes
 Vault	Vault	Coffre	Almacén
 Vault Professional 2025.2 or newer (Vault Data API)	Vault Professional 2025.2 oder neuer (Vault Data API)	Vault Professional 2025.2 ou plus récent (Vault Data API)	Vault Professional 2025.2 o posterior (Vault Data API)
@@ -2826,6 +2832,7 @@ Walls, ceilings and doors seen from the outside in the 3D view of the panel layo
 Web at cutouts	Steg an Ausschnitten	Âme aux découpes	Alma en los recortes
 Web between holes	Steg zwischen Bohrungen	Âme entre perçages	Alma entre taladros
 Welcome to OpenECraft	Willkommen bei OpenECraft	Bienvenue dans OpenECraft	Bienvenido a OpenECraft
+What a device can be fitted with, any of them or none: a mark beside the plan symbol, an accessory part, the variants it fits	Womit ein Gerät ausgestattet werden kann, beliebig viele oder keine: ein Zeichen neben dem Plansymbol, ein Zubehörartikel, die passenden Varianten	Ce dont un appareil peut être équipé, autant que voulu ou rien : une marque à côté du symbole de plan, un article accessoire, les variantes compatibles	Con qué puede equiparse un dispositivo, cualquiera o ninguno: una marca junto al símbolo de plano, un artículo accesorio, las variantes compatibles
 What is new	Neuigkeiten	Nouveautés	Novedades
 What should be checked or changed?	Was soll geprüft oder geändert werden?	Que faut-il vérifier ou modifier ?	¿Qué hay que comprobar o cambiar?
 What's new in OpenECraft {}	Neu in OpenECraft {}	Nouveautés d'OpenECraft {}	Novedades de OpenECraft {}

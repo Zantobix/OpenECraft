@@ -561,7 +561,8 @@ fn devices_show_the_marks_of_their_options_and_their_text() {
     let socket = installation::items(&prj, &poses).into_iter().find(|i| i.level == level && i.part == "GIRA.418803").expect("socket outlet");
     let choice = crate::model::families::FamilyChoice {
         family: "socket.schuko".into(),
-        values: [("design".to_string(), "lid".to_string())].into(),
+        variant: "1".into(),
+        options: vec!["lid".into()],
         text: "Washing machine".into(),
     };
     let change = installation::set_family(&mut prj, socket.item, choice).unwrap();

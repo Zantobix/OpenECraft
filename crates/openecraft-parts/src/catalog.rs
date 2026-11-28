@@ -86,6 +86,8 @@ fn room_installation(c: &mut C) {
     for (number, desc, w, d, extra) in [
         ("GEN.SOCKET-F-UP", "Socket outlet type F (Schuko) 16 A 250 V, flush-mounted, with child protection, with frame 80 x 80 mm", 80.0, 12.0, ""),
         ("GEN.SOCKET-F-2X-UP", "Double socket outlet type F (Schuko) 16 A 250 V, flush-mounted, with child protection, with frame 151 x 80 mm", 151.0, 12.0, ""),
+        ("GEN.SOCKET-F-3X-UP", "Triple socket outlet type F (Schuko) 16 A 250 V, flush-mounted, with child protection, with frame 222 x 80 mm", 222.0, 12.0, ""),
+        ("GEN.SOCKET-F-4X-UP", "Quadruple socket outlet type F (Schuko) 16 A 250 V, flush-mounted, with child protection, with frame 293 x 80 mm", 293.0, 12.0, ""),
         ("GEN.SOCKET-F-LID-UP", "Socket outlet type F (Schuko) 16 A 250 V with hinged lid, IP44, flush-mounted, with frame 80 x 80 mm", 80.0, 30.0, "Protection: IP44"),
         ("GEN.SOCKET-F-USB-UP", "Socket outlet type F (Schuko) 16 A 250 V with USB charger A + C 3 A, flush-mounted, with frame 80 x 80 mm", 80.0, 12.0, "USB: A + C, 5 V, 3 A"),
     ] {

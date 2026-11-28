@@ -4,6 +4,7 @@
 (no structure)	(nincs struktúra)
 (optional)	(nem kötelező)
 --json needs a JSON object	A --json JSON-objektumot vár
+3D	3D
 3D model	3D-modell
 3D routing	3D nyomvonalvezetés
 3D view	3D nézet
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	{} opció: a(z) {} nem tartozik a válas
 Order number	Rendelési szám
 Other	Egyéb
 Outer diameter	Külső átmérő
-Outlets	Aljzatok
 Output	Kimenet
 Output voltage (V)	Kimeneti feszültség (V)
 Overview	Áttekintés

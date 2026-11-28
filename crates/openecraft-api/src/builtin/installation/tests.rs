@@ -325,30 +325,35 @@ fn devices_are_placed_and_changed_by_their_family() {
     let breakers = run(&mut s, "list_breakers", json!({})).unwrap();
     let f2 = breakers.as_array().unwrap().iter().find(|b| b["breaker"].as_str().unwrap().ends_with("-F2")).unwrap()["breaker"].clone();
     let fams = run(&mut s, "list_device_families", json!({ "query": "socket" })).unwrap();
-    assert!(fams.as_array().unwrap().iter().any(|f| f["key"] == "socket.schuko" && f["parent"] == "socket"), "{fams}");
-    let fam = run(&mut s, "device_family", json!({ "family": "socket.schuko", "values": { "outlets": 2 } })).unwrap();
+    assert!(fams.as_array().unwrap().iter().any(|f| f["key"] == "socket.schuko" && f["parent"] == "socket" && f["variants"] == 4), "{fams}");
+    let fam = run(&mut s, "device_family", json!({ "family": "socket.schuko", "variant": "2" })).unwrap();
     assert_eq!(fam["resolved"]["part"], "GEN.SOCKET-F-2X-UP");
     assert!(fam["texts"].as_array().unwrap().iter().any(|t| t == "Fridge"), "{fam}");
-    // Placed by family and values, with a text.
+    let usb = run(&mut s, "device_family", json!({ "family": "socket.schuko", "variant": "1", "options": "usb" })).unwrap();
+    assert_eq!((usb["resolved"]["part"].as_str(), usb["resolved"]["marks"].clone()), (Some("GEN.SOCKET-F-USB-UP"), json!(["USB"])));
+    // Placed by family, variant and text.
     let q = at(s.project().unwrap(), 0.02, 0.5);
-    let placed = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "family": "socket.schuko", "values": { "outlets": "2" }, "text": "Fridge", "x": q[0], "z": q[1] })).unwrap();
+    let placed = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "family": "socket.schuko", "variant": "2", "text": "Fridge", "x": q[0], "z": q[1] })).unwrap();
     assert_eq!(placed["part"], "GEN.SOCKET-F-2X-UP", "{placed}");
     let tag = placed["device"].as_str().unwrap().to_string();
-    // Part and values that disagree are refused.
-    assert!(run(&mut s, "place_installation", json!({ "room": room, "part": "GEN.SOCKET-F-UP", "family": "socket.schuko", "values": { "outlets": "2" }, "x": q[0], "z": q[1] })).is_err());
-    // Another value: another part, in the room and for the device of the schematic.
-    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "outlets": "1", "design": "lid" } })).unwrap();
+    // Part and family that disagree are refused.
+    assert!(run(&mut s, "place_installation", json!({ "room": room, "part": "GEN.SOCKET-F-UP", "family": "socket.schuko", "variant": "2", "x": q[0], "z": q[1] })).is_err());
+    // Another variant with an option: another part, in the room and for the device of the schematic.
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "variant": "1", "options": "lid" })).unwrap();
     assert_eq!((c["old_part"].as_str(), c["part"].as_str(), c["text"].as_str()), (Some("GEN.SOCKET-F-2X-UP"), Some("GEN.SOCKET-F-LID-UP"), Some("Fridge")), "{c}");
     let prj = s.project().unwrap();
     assert!(prj.devices[&tag].parts.iter().any(|p| p.number == "GEN.SOCKET-F-LID-UP"));
-    // Values without a variant change nothing.
+    // An option that does not fit the variant, an unknown option: nothing changes.
     let before = s.project().unwrap().clone();
-    assert!(run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "outlets": "2" } })).is_err());
-    assert!(run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "colour": "red" } })).is_err());
+    assert!(run(&mut s, "set_device_variant", json!({ "device": tag, "variant": "2", "options": "lid" })).is_err());
+    assert!(run(&mut s, "set_device_variant", json!({ "device": tag, "options": "colour" })).is_err());
     assert!(*s.project().unwrap() == before);
+    // Another variant alone drops the options that do not fit it.
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "variant": "3" })).unwrap();
+    assert_eq!((c["part"].as_str(), c["options"].clone()), (Some("GEN.SOCKET-F-3X-UP"), json!([])), "{c}");
     // Only the text.
     let c = run(&mut s, "set_device_variant", json!({ "device": tag, "text": "Freezer" })).unwrap();
-    assert_eq!((c["part"].as_str(), c["text"].as_str()), (Some("GEN.SOCKET-F-LID-UP"), Some("Freezer")));
+    assert_eq!((c["part"].as_str(), c["text"].as_str()), (Some("GEN.SOCKET-F-3X-UP"), Some("Freezer")));
 }
 
 #[test]
@@ -359,14 +364,13 @@ fn a_switch_is_drawn_again_with_the_symbol_of_its_variant() {
     let q = at(s.project().unwrap(), 0.02, 0.3);
     let sw = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "part": "GEN.SW-ONOFF-UP", "x": q[0], "z": q[1] })).unwrap();
     let tag = sw["device"].as_str().unwrap().to_string();
-    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "function": "intermediate" } })).unwrap();
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "variant": "intermediate" })).unwrap();
     assert_eq!((c["family"].as_str(), c["part"].as_str()), (Some("switch"), Some("GEN.SW-INTER-UP")), "{c}");
     // Its installation page is drawn again with the intermediate switch's symbol.
     assert_eq!(c["schematic_pages"], 1, "{c}");
     let prj = s.project().unwrap();
     assert!(prj.pages.iter().flat_map(|p| &p.symbols).any(|x| x.tag == tag && x.sym == "co_inter"), "intermediate switch drawn");
     // The part of the variant goes into the project parts, as that of a device placed.
-    let prj = s.project().unwrap();
     assert!(prj.parts.iter().any(|p| p.number == "GEN.SW-INTER-UP"));
     let an = openecraft_core::analysis::Analysis::with_builtin(prj);
     assert!(!an.issues.iter().any(|i| i.message().contains("is not in the project parts")), "{:?}", an.issues.iter().map(|i| i.message()).collect::<Vec<_>>());
@@ -375,17 +379,28 @@ fn a_switch_is_drawn_again_with_the_symbol_of_its_variant() {
 #[test]
 fn project_device_families_are_defined_and_removed() {
     let (mut s, room, at) = room_session();
-    let fam = json!({ "key": "user.outdoor", "name": "Outdoor socket", "parent": "socket", "options": [{ "key": "lid", "name": "Lid", "choices": [{ "key": "yes", "name": "Yes", "mark": "IP44" }] }], "variants": [{ "when": { "lid": "yes" }, "part": "GEN.SOCKET-F-LID-UP" }], "texts": ["Terrace"] });
+    let fam = json!({ "key": "user.outdoor", "name": "Outdoor socket", "parent": "socket",
+        "variants": [{ "key": "lid", "name": "With lid", "part": "GEN.SOCKET-F-LID-UP" }],
+        "options": [{ "key": "spd", "name": "Surge protection", "mark": "SPD", "accessory": "GEN.JBOX-UP" }],
+        "texts": ["Terrace"] });
     let d = run(&mut s, "define_device_family", json!({ "family": fam })).unwrap();
     assert_eq!((d["key"].as_str(), d["builtin"].as_bool()), (Some("user.outdoor"), Some(false)));
     assert!(run(&mut s, "define_device_family", json!({ "family": { "key": "user.bad", "name": "Bad", "parent": "nope" } })).is_err());
-    let f = run(&mut s, "device_family", json!({ "family": "user.outdoor" })).unwrap();
-    assert_eq!(f["resolved"]["marks"], json!(["IP44"]));
+    let f = run(&mut s, "device_family", json!({ "family": "user.outdoor", "options": "spd" })).unwrap();
+    assert_eq!((f["resolved"]["marks"].clone(), f["resolved"]["accessories"].clone()), (json!(["SPD"]), json!(["GEN.JBOX-UP"])), "{f}");
     assert!(f["texts"].as_array().unwrap().iter().any(|t| t == "Terrace") && f["texts"].as_array().unwrap().iter().any(|t| t == "Fridge"));
-    // Placed without a circuit, then removed: the item keeps its part.
+    // Placed in a circuit with the option: the device gets the accessory as a part.
+    let breakers = run(&mut s, "list_breakers", json!({})).unwrap();
+    let f2 = breakers.as_array().unwrap().iter().find(|b| b["breaker"].as_str().unwrap().ends_with("-F2")).unwrap()["breaker"].clone();
     let q = at(s.project().unwrap(), 0.02, 0.6);
-    let p = run(&mut s, "place_installation", json!({ "room": room, "family": "user.outdoor", "x": q[0], "z": q[1] })).unwrap();
+    let p = run(&mut s, "place_installation", json!({ "breaker": f2, "room": room, "family": "user.outdoor", "options": "spd", "x": q[0], "z": q[1] })).unwrap();
     assert_eq!(p["part"], "GEN.SOCKET-F-LID-UP");
+    let tag = p["device"].as_str().unwrap().to_string();
+    let numbers = |s: &Session| s.project().unwrap().devices[&tag].parts.iter().map(|p| p.number.clone()).collect::<Vec<_>>();
+    assert_eq!(numbers(&s), ["GEN.SOCKET-F-LID-UP", "GEN.JBOX-UP"]);
+    // Without the option the accessory goes again.
+    run(&mut s, "set_device_variant", json!({ "device": tag, "options": "" })).unwrap();
+    assert_eq!(numbers(&s), ["GEN.SOCKET-F-LID-UP"]);
     assert_eq!(run(&mut s, "remove_device_family", json!({ "family": "user.outdoor" })).unwrap()["removed"], true);
     assert!(run(&mut s, "remove_device_family", json!({ "family": "user.outdoor" })).is_err());
 }
@@ -394,19 +409,19 @@ fn project_device_families_are_defined_and_removed() {
 fn a_device_connection_box_turned_three_phase_is_drawn_with_five_conductors() {
     let mut s = house();
     // 230 V on the three-phase circuit, then 400 V 3N: the symbol and the wiring follow.
-    let one = run(&mut s, "place_installation", json!({ "breaker": "-F2", "room": "+ROOM1", "family": "connection_box", "values": { "supply": "1" }, "x": 4990, "z": 2000 })).unwrap();
+    let one = run(&mut s, "place_installation", json!({ "breaker": "-F2", "room": "+ROOM1", "family": "connection_box", "variant": "1", "x": 4990, "z": 2000 })).unwrap();
     let tag = one["device"].as_str().unwrap().to_string();
     let sym_of = |s: &Session| s.project().unwrap().pages.iter().flat_map(|p| &p.symbols).find(|x| x.tag == tag).map(|x| (x.sym.clone(), x.pins.len())).unwrap();
     let (before, pins) = sym_of(&s);
     assert_eq!(pins, 3, "{before}");
-    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "supply": "3" } })).unwrap();
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "variant": "3" })).unwrap();
     assert_eq!((c["part"].as_str(), c["schematic_pages"].as_u64()), (Some("GEN.CONN-BOX-COOKER-UP"), Some(1)), "{c}");
     let (after, pins) = sym_of(&s);
     assert!(after != before && pins == 5, "{after} {pins}");
     // On a single-phase circuit a three-phase variant is refused and nothing changes.
     let q = run(&mut s, "place_installation", json!({ "breaker": "-F1", "room": "+ROOM1", "family": "connection_box", "x": 10, "z": 1000 })).unwrap();
     let before = s.project().unwrap().clone();
-    let e = run(&mut s, "set_device_variant", json!({ "device": q["device"], "values": { "supply": "3" } })).unwrap_err();
+    let e = run(&mut s, "set_device_variant", json!({ "device": q["device"], "variant": "3" })).unwrap_err();
     assert!(e.contains("three-phase"), "{e}");
     assert!(*s.project().unwrap() == before);
 }

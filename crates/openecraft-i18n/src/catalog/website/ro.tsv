@@ -1,6 +1,5 @@
 # English<TAB>Română – the website (website/): the page and its demos (texts without a line are shown in English). Sorted by the English text: cargo run -p openecraft-i18n --example tidy
 20 languages, switched while working: menus, generated reports and check messages follow at once.	20 de limbi, schimbate în timpul lucrului: meniurile, rapoartele generate și mesajele verificărilor se schimbă imediat.
-3D	3D
 3D models	Modele 3D
 A click in a room puts them on the nearest wall at their mounting height or on the ceiling, drawn with the symbols of installation plans after IEC 60617-11.	Un clic într-o încăpere le plasează pe cel mai apropiat perete, la înălțimea lor de montaj, sau pe tavan, desenate cu simbolurile planurilor de instalații conform IEC 60617-11.
 A command line, an MCP server for AI agents and plugins in any language add checks, reports, exports and commands.	O linie de comandă, un server MCP pentru agenți IA și pluginuri în orice limbaj adaugă verificări, rapoarte, exporturi și comenzi.

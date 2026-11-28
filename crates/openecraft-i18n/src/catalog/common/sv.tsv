@@ -4,6 +4,7 @@
 (no structure)	(ingen struktur)
 (optional)	(valfritt)
 --json needs a JSON object	--json kräver ett JSON-objekt
+3D	3D
 3D model	3D-modell
 3D routing	3D-dragning
 3D view	3D-vy
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Alternativ {}: {} är inte ett av dess v
 Order number	Beställningsnummer
 Other	Övrigt
 Outer diameter	Ytterdiameter
-Outlets	Uttag
 Output	Utgång
 Output voltage (V)	Utspänning (V)
 Overview	Översikt

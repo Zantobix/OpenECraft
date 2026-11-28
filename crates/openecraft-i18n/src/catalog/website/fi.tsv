@@ -1,6 +1,5 @@
 # English<TAB>Suomi – the website (website/): the page and its demos (texts without a line are shown in English). Sorted by the English text: cargo run -p openecraft-i18n --example tidy
 20 languages, switched while working: menus, generated reports and check messages follow at once.	20 kieltä, vaihdettavissa kesken työn: valikot, luodut raportit ja tarkistusten ilmoitukset vaihtuvat heti.
-3D	3D
 3D models	3D-mallit
 A click in a room puts them on the nearest wall at their mounting height or on the ceiling, drawn with the symbols of installation plans after IEC 60617-11.	Napsautus tilassa sijoittaa ne lähimmälle seinälle asennuskorkeuteensa tai kattoon, piirrettyinä IEC 60617-11:n mukaisilla asennuskaavioiden symboleilla.
 A command line, an MCP server for AI agents and plugins in any language add checks, reports, exports and commands.	Komentorivi, MCP-palvelin tekoälyagenteille ja millä tahansa kielellä tehdyt laajennukset lisäävät tarkistuksia, raportteja, vientejä ja komentoja.

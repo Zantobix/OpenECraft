@@ -4,6 +4,7 @@
 (no structure)	(geen structuur)
 (optional)	(optioneel)
 --json needs a JSON object	--json verwacht een JSON-object
+3D	3D
 3D model	3D-model
 3D routing	3D-routering
 3D view	3D-weergave
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Optie {}: {} is geen van de keuzes
 Order number	Bestelnummer
 Other	Overig
 Outer diameter	Buitendiameter
-Outlets	Contactdozen
 Output	Uitgang
 Output voltage (V)	Uitgangsspanning (V)
 Overview	Overzicht

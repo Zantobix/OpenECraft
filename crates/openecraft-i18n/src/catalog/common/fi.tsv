@@ -4,6 +4,7 @@
 (no structure)	(ei rakennetta)
 (optional)	(valinnainen)
 --json needs a JSON object	--json vaatii JSON-objektin
+3D	3D
 3D model	3D-malli
 3D routing	3D-reititys
 3D view	3D-näkymä
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Vaihtoehto {}: {} ei ole sen valinnoissa
 Order number	Tilausnumero
 Other	Muu
 Outer diameter	Ulkohalkaisija
-Outlets	Pistorasiat
 Output	Lähtö
 Output voltage (V)	Lähtöjännite (V)
 Overview	Yleiskatsaus

@@ -1553,6 +1553,11 @@ fn build_library() -> Vec<SymbolDef> {
     v.push(def("inst_socket3", "Triple socket outlet with PE", C::Installation, "X", MAIN).build(&mut b));
 
     feed(&mut b, -0.9);
+    cups(&mut b, &[-7.8, -2.6, 2.6, 7.8]);
+    b.pin(0.0, -4.0, "1");
+    v.push(def("inst_socket4", "Quadruple socket outlet with PE", C::Installation, "X", MAIN).build(&mut b));
+
+    feed(&mut b, -0.9);
     cups(&mut b, &[0.0]);
     b.l(1.7, 1.7, 3.8, 3.8).l(3.8, 3.8, 4.6, 3.0);
     b.pin(0.0, -4.0, "1");

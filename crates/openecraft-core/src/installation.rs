@@ -199,6 +199,7 @@ pub fn default_plan_symbol(kind: Kind, part: Option<&Part>) -> &'static str {
         })
     };
     match kind {
+        Kind::Socket if has(&["quadruple", "4-fold", "4x"]) => "inst_socket4",
         Kind::Socket if has(&["triple", "3-fold", "3x"]) => "inst_socket3",
         Kind::Socket if has(&["double", "2-fold", "2x"]) => "inst_socket2",
         Kind::Socket if has(&["cee", "5p"]) => "inst_socket_cee",
@@ -290,7 +291,7 @@ pub fn placed(prj: &Project, poses: &[SitePose], ri: usize, it: &PanelItem) -> O
     let choice = crate::families::of_item(prj, it);
     let mut marks = Vec::new();
     if !choice.family.is_empty() {
-        if let Ok(r) = crate::families::resolve(prj, &choice.family, &choice.values) {
+        if let Ok(r) = crate::families::resolve(prj, &choice.family, &choice.variant, &choice.options) {
             if !r.plan_symbol.is_empty() && prj.symbol(&r.plan_symbol).is_some() {
                 symbol = r.plan_symbol;
             }
@@ -1254,13 +1255,19 @@ pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::Fa
         }
         return Ok(FamilyChange { old_part: it.part.clone(), part: it.part, item: id, ..Default::default() });
     }
-    let r = crate::families::resolve(prj, &choice.family, &choice.values)?;
+    let r = crate::families::resolve(prj, &choice.family, &choice.variant, &choice.options)?;
+    for a in &r.accessories {
+        find_part(prj, a).ok_or_else(|| tr_fmt!("Unknown part: {}", a))?;
+    }
+    // The accessories of the options the device has now (they go when the options do).
+    let before = crate::families::of_item(prj, &it);
+    let old_accessories = crate::families::resolve(prj, &before.family, &before.variant, &before.options).map(|x| x.accessories).unwrap_or_default();
     let new = find_part(prj, &r.part).cloned().ok_or_else(|| tr_fmt!("Unknown part: {}", r.part))?;
     let kind = kind_of(&new).ok_or_else(|| tr_fmt!("{} is no socket outlet, switch or light", r.part))?;
     if !r.schematic_symbol.is_empty() && prj.symbol(&r.schematic_symbol).is_none() {
         return Err(tr_fmt!("Unknown symbol {}", r.schematic_symbol));
     }
-    let family = crate::model::families::FamilyChoice { family: choice.family.clone(), values: r.values.clone(), text };
+    let family = crate::model::families::FamilyChoice { family: choice.family.clone(), variant: r.variant.clone(), options: r.options.clone(), text };
     // The schematic symbol of the variant and the installation pages it is drawn on
     // again (with their protective device); checked before anything changes.
     let sym = match r.schematic_symbol.as_str() {
@@ -1324,6 +1331,26 @@ pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::Fa
     }
     if let Some(x) = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == id) {
         x.family = family;
+    }
+    // The accessories of the options on the device of the schematic.
+    if !it.tag.is_empty() && old_accessories != r.accessories {
+        for a in &r.accessories {
+            if !prj.parts.iter().any(|x| &x.number == a) {
+                if let Some(p) = find_part(prj, a).cloned() {
+                    prj.parts.push(p);
+                }
+            }
+        }
+        if let Some(d) = prj.devices.get_mut(&it.tag) {
+            for a in &old_accessories {
+                if let Some(k) = d.parts.iter().position(|p| &p.number == a) {
+                    d.parts.remove(k);
+                }
+            }
+            for a in &r.accessories {
+                d.parts.push(crate::parts::PartRef { number: a.clone(), ..Default::default() });
+            }
+        }
     }
     // The installation pages of the device drawn again with the variant's symbol
     // (the wiring follows: another number of conductors, travellers of a two-way switch).
@@ -1464,6 +1491,13 @@ struct Drawn {
 /// The device has three phase conductors: connection points L2 or L3.
 fn three_phase(pins: &[String]) -> bool {
     pins.iter().any(|l| l.eq_ignore_ascii_case("L2") || l.eq_ignore_ascii_case("L3"))
+}
+
+/// The schematic symbol a device with part `part` is drawn with on installation pages
+/// (`None` for parts that are no part of the installation).
+pub fn schematic_symbol(prj: &Project, part: &Part) -> Option<String> {
+    let kind = kind_of(part)?;
+    symbol_for(prj, kind, Some(part)).map(|(d, _)| d.key.to_string())
 }
 
 /// The symbol of a new device of kind `kind` with part `part`: one of the symbols of the

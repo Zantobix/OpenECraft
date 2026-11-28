@@ -4,6 +4,7 @@
 (no structure)	(bez struktury)
 (optional)	(volitelné)
 --json needs a JSON object	--json vyžaduje objekt JSON
+3D	3D
 3D model	3D model
 3D routing	3D vedení
 3D view	3D pohled
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Volba {}: {} není jednou z jejích mož
 Order number	Objednací číslo
 Other	Ostatní
 Outer diameter	Vnější průměr
-Outlets	Zásuvky
 Output	Výstup
 Output voltage (V)	Výstupní napětí (V)
 Overview	Přehled

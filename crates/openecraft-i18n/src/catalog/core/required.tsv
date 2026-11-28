@@ -431,7 +431,6 @@ Description and part	Beschreibung und Artikel	Description et article	Descripció
 Description of the last revision	Beschreibung der letzten Revision	Description de la dernière révision	Descripción de la última revisión
 Description of the page's function (structure management)	Beschreibung der Funktion der Seite (Strukturkennzeichenverwaltung)	Description de la fonction de la page (gestion de structure)	Descripción de la función de la página (gestión de estructura)
 Description of the page's location (structure management)	Beschreibung des Orts der Seite (Strukturkennzeichenverwaltung)	Description de l'emplacement de la page (gestion de structure)	Descripción de la ubicación de la página (gestión de estructura)
-Design	Ausführung	Exécution	Ejecución
 Designer	Konstrukteur	Concepteur	Proyectista
 Device connection box	Geräteanschlussdose	Boîte de raccordement d'appareil	Caja de conexión de aparato
 Device connection diagram	Geräteanschlussplan	Plan de raccordement des appareils	Esquema de conexión de equipos
@@ -440,6 +439,8 @@ Device data of {} without symbol or panel item	Gerätedaten von {} ohne Symbol o
 Device description file	Gerätebeschreibungsdatei	Fichier de description d'appareil	Archivo de descripción del equipo
 Device family {} cannot be its own base	Gerätefamilie {} kann nicht ihre eigene Basis sein	La famille d'appareils {} ne peut pas être sa propre base	La familia de dispositivos {} no puede ser su propia base
 Device family {} has no option {}	Gerätefamilie {} hat keine Option {}	La famille d'appareils {} n'a pas d'option {}	La familia de dispositivos {} no tiene la opción {}
+Device family {} has no variant {}	Gerätefamilie {} hat keine Variante {}	La famille d'appareils {} n'a pas de variante {}	La familia de dispositivos {} no tiene la variante {}
+Device family {} has no variants	Gerätefamilie {} hat keine Varianten	La famille d'appareils {} n'a pas de variantes	La familia de dispositivos {} no tiene variantes
 Device family {} is the base of {}	Gerätefamilie {} ist die Basis von {}	La famille d'appareils {} est la base de {}	La familia de dispositivos {} es la base de {}
 Device group {} defined twice	Gerätegruppe {} doppelt definiert	Groupe d'appareils {} défini deux fois	Grupo de dispositivos {} definido dos veces
 Device group {}: {} devices on {} places	Gerätegruppe {}: {} Geräte auf {} Plätzen	Groupe d'appareils {} : {} appareils sur {} emplacements	Grupo de dispositivos {}: {} dispositivos en {} posiciones
@@ -586,6 +587,8 @@ Environment	Umgebung	Environnement	Entorno
 Equipment accessible for operation, inspection and maintenance	Betriebsmittel für Bedienung, Prüfung und Wartung zugänglich	Matériel accessible pour l'exploitation, la vérification et la maintenance	Equipos accesibles para el manejo, la inspección y el mantenimiento
 Equipment and protective measures suit the external influences	Betriebsmittel und Schutzmaßnahmen passend zu den äußeren Einflüssen	Matériel et mesures de protection adaptés aux influences externes	Equipos y medidas de protección adecuados a las influencias externas
 Equipment grounding conductors must be green (NFPA 79, 13.2.2)	Schutzleiter müssen grün sein (NFPA 79, 13.2.2)	Les conducteurs de mise à la terre doivent être verts (NFPA 79, 13.2.2)	Los conductores de puesta a tierra deben ser verdes (NFPA 79, 13.2.2)
+Every option needs a key of its own	Jede Option braucht einen eigenen Schlüssel	Chaque option a besoin de sa propre clé	Cada opción necesita su propia clave
+Every variant needs a key of its own	Jede Variante braucht einen eigenen Schlüssel	Chaque variante a besoin de sa propre clé	Cada variante necesita su propia clave
 Every variant needs a part	Jede Variante braucht einen Artikel	Chaque variante a besoin d'un article	Cada variante necesita un artículo
 Excel workbook	Excel-Arbeitsmappe	Classeur Excel	Libro de Excel
 Exhaust {} open to the atmosphere (no silencer)	Entlüftung {} offen zur Atmosphäre (kein Schalldämpfer)	Échappement {} ouvert à l'atmosphère (sans silencieux)	Escape {} abierto a la atmósfera (sin silenciador)
@@ -1157,7 +1160,6 @@ No template of the user is named {}	Keine Vorlage des Benutzers heißt {}	Aucun 
 No terminal {}	Keine Klemme {}	Aucune borne {}	No hay borne {}
 No twin ferrule for {} at {} (wire to {})	Keine Zwillingsaderendhülse für {} an {} (Leitung nach {})	Aucun embout double pour {} en {} (fil vers {})	Ninguna puntera doble para {} en {} (cable hacia {})
 No user defined property {}	Keine benutzerdefinierte Eigenschaft {}	Aucune propriété utilisateur {}	No hay propiedad de usuario {}
-No variant of device family {} for these values	Keine Variante der Gerätefamilie {} für diese Werte	Aucune variante de la famille d'appareils {} pour ces valeurs	Ninguna variante de la familia de dispositivos {} para estos valores
 No wall near the point	Keine Wand in der Nähe des Punkts	Aucun mur près du point	No hay ninguna pared cerca del punto
 No wall {}	Keine Wand {}	Pas de mur {}	No hay pared {}
 No wires at the pins of {}	Keine Verbindungen an den Pins von {}	Aucun fil aux broches de {}	No hay cables en los pines de {}
@@ -1224,11 +1226,8 @@ Operating hours	Betriebsstunden	Heures de fonctionnement	Horas de funcionamiento
 Operating range of the coil	Arbeitsbereich der Spule	Plage de fonctionnement de la bobine	Rango de funcionamiento de la bobina
 Operation	Bearbeitung	Opération	Operación
 Operator desk	Bedienpult	Pupitre de commande	Pupitre de mando
-Option {} has an empty or repeated value	Option {} hat einen leeren oder doppelten Wert	L'option {} a une valeur vide ou répétée	La opción {} tiene un valor vacío o repetido
-Option {} has no value {}	Option {} hat keinen Wert {}	L'option {} n'a pas de valeur {}	La opción {} no tiene el valor {}
-Option {} is defined twice	Option {} ist doppelt definiert	L'option {} est définie deux fois	La opción {} está definida dos veces
+Option {} does not fit variant {}	Option {} passt nicht zur Variante {}	L'option {} ne convient pas à la variante {}	La opción {} no encaja con la variante {}
 Option {} is inactive: its content is hidden	Option {} ist inaktiv: Ihr Inhalt ist ausgeblendet	L'option {} est inactive : son contenu est masqué	La opción {} está inactiva: su contenido está oculto
-Option {} needs a key and values	Option {} braucht einen Schlüssel und Werte	L'option {} a besoin d'une clé et de valeurs	La opción {} necesita una clave y valores
 Option {}: {}	Option {}: {}	Option {} : {}	Opción {}: {}
 Option {}: {} assigned objects no longer exist	Option {}: {} zugeordnete Objekte existieren nicht mehr	Option {} : {} objets affectés n'existent plus	Opción {}: {} objetos asignados ya no existen
 Optocoupler	Optokoppler	Optocoupleur	Optoacoplador
@@ -1526,6 +1525,8 @@ Pushbutton NO	Taster Schließer	Bouton-poussoir NO	Pulsador NA
 Pyramid roof	Zeltdach	Toit en pavillon	Cubierta piramidal
 QR code	QR-Code	Code QR	Código QR
 Qty	Menge	Qté	Cant.
+Quadruple	Vierfach	Quadruple	Cuádruple
+Quadruple socket outlet with PE	Vierfachsteckdose mit Schutzkontakt	Prise quadruple avec terre	Toma cuádruple con tierra
 Quick coupling (outlet)	Schnellkupplung (Entnahmestelle)	Raccord rapide (prise)	Acoplamiento rápido (toma)
 RCD {} mA	RCD {} mA	DDR {} mA	DDR {} mA
 Radiation	Strahlung	Rayonnement	Radiación
@@ -2028,6 +2029,7 @@ Transistor PNP	Transistor PNP	Transistor PNP	Transistor PNP
 Translation dictionary (CSV)	Übersetzungswörterbuch (CSV)	Dictionnaire de traduction (CSV)	Diccionario de traducción (CSV)
 Triac	Triac	Triac	Triac
 Trip class	Auslöseklasse	Classe de déclenchement	Clase de disparo
+Triple	Dreifach	Triple	Triple
 Triple socket outlet with PE	Dreifachsteckdose mit Schutzkontakt	Prise triple avec terre	Toma triple con tierra
 Tripping characteristic	Auslösecharakteristik	Courbe de déclenchement	Característica de disparo
 Trunking	Kabelkanal	Goulotte	Canaleta
@@ -2054,6 +2056,7 @@ U max (V)	U max (V)	U max (V)	U máx. (V)
 U mean (V)	U mittel (V)	U moy. (V)	U media (V)
 U min (V)	U min (V)	U min (V)	U mín. (V)
 UL listed	UL-gelistet	Homologué UL	Certificado UL
+USB charger	USB-Ladegerät	Chargeur USB	Cargador USB
 UV resistant	UV-beständig	Résistant aux UV	Resistente a los rayos UV
 Unbalance {} %	Unsymmetrie {} %	Déséquilibre {} %	Desequilibrio {} %
 Undervoltage relay	Unterspannungsrelais	Relais à minimum de tension	Relé de subtensión
@@ -2160,7 +2163,6 @@ Wiring machine job list (CSV)	Auftragsliste für Drahtkonfektionierautomaten (CS
 Wiring marks	Verdrahtungsmarkierungen	Marques de câblage	Marcas de cableado
 Wiring problem {} – {}: {}	Verdrahtungsproblem {} – {}: {}	Problème de câblage {} – {} : {}	Problema de cableado {} – {}: {}
 Wiring the panels	Schaltschränke werden verdrahtet	Câblage des armoires	Cableando los cuadros
-With USB charger	Mit USB-Ladegerät	Avec chargeur USB	Con cargador USB
 Within a suite, free-standing	Innerhalb einer Reihe, freistehend	Au milieu d'une rangée, autoportante	Dentro de una fila, autoportante
 Within a suite, wall mounted	Innerhalb einer Reihe, Wandmontage	Au milieu d'une rangée, montage mural	Dentro de una fila, montaje mural
 Within a suite, wall mounted, roof covered	Innerhalb einer Reihe, Wandmontage, Dach abgedeckt	Au milieu d'une rangée, montage mural, toit couvert	Dentro de una fila, montaje mural, techo cubierto

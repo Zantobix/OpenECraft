@@ -4,6 +4,7 @@
 (no structure)	(без структури)
 (optional)	(необов’язково)
 --json needs a JSON object	--json потребує об’єкта JSON
+3D	3D
 3D model	3D-модель
 3D routing	3D-прокладання
 3D view	3D-вигляд
@@ -387,7 +388,6 @@ Option {}: {} is not one of its choices	Параметр {}: {} не є одни
 Order number	Номер для замовлення
 Other	Інше
 Outer diameter	Зовнішній діаметр
-Outlets	Розетки
 Output	Вихід
 Output voltage (V)	Вихідна напруга (В)
 Overview	Огляд

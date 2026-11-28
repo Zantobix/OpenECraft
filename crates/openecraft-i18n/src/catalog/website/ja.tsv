@@ -1,5 +1,4 @@
 # English<TAB>日本語 – the website (website/): the page and its demos (texts without a line are shown in English). Sorted by the English text: cargo run -p openecraft-i18n --example tidy
-3D	3D
 3D models	3D モデル
 A command line, an MCP server for AI agents and plugins in any language add checks, reports, exports and commands.	コマンドライン、AI エージェント向けの MCP サーバー、任意の言語で書けるプラグインにより、チェック、レポート、エクスポート、コマンドを追加できます。
 A free, open source alternative to AutoCAD Electrical	AutoCAD Electrical に代わる無料のオープンソースソフトウェア

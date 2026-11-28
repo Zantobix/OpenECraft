@@ -4,6 +4,7 @@
 (no structure)	(구조 없음)
 (optional)	(선택 사항)
 --json needs a JSON object	--json에는 JSON 개체가 필요합니다
+3D	3D
 3D model	3D 모델
 3D routing	3D 배선 경로
 3D view	3D 보기
@@ -384,7 +385,6 @@ Option {}: {} is not one of its choices	옵션 {0}: {1}은(는) 선택 항목에
 Order number	주문 번호
 Other	기타
 Outer diameter	외경
-Outlets	콘센트
 Output	출력
 Output voltage (V)	출력 전압 (V)
 Overview	개요

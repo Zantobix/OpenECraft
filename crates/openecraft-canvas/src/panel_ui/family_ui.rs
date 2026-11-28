@@ -1,5 +1,5 @@
-//! Device families in the building window: the option values of the part picked in
-//! the installation menu, and the family, option values and text at the symbol of a
+//! Device families in the building window: the variant and options of the part picked
+//! in the installation menu, and the variant, options and text at the symbol of a
 //! socket outlet, switch, light or box selected in a room
 //! ([`openecraft_core::families`]).
 
@@ -11,27 +11,38 @@ use openecraft_core::installation as inst;
 use openecraft_core::model::families::FamilyChoice;
 use openecraft_core::model::Project;
 use openecraft_i18n::{tr, tr_fmt};
-use std::collections::BTreeMap;
 
-/// The values of the options of family choice `c` as buttons (values that lead to no
-/// variant disabled); the variant clicked: its part and values.
-pub(super) fn option_buttons(ui: &mut egui::Ui, prj: &Project, c: &FamilyChoice) -> Option<(String, BTreeMap<String, String>)> {
+/// The variants of family choice `c` as buttons and its options as check boxes
+/// (options that do not fit the variant disabled); the choice clicked, its options
+/// kept where they fit the new variant.
+pub(super) fn choice_buttons(ui: &mut egui::Ui, prj: &Project, c: &FamilyChoice) -> Option<FamilyChoice> {
     let mut out = None;
-    for (of, o) in families::options(prj, &c.family) {
+    let variants = families::variants(prj, &c.family);
+    let current = if c.variant.is_empty() { variants.first().map(|(_, v)| v.key.clone()).unwrap_or_default() } else { c.variant.clone() };
+    if variants.len() > 1 {
         ui.horizontal_wrapped(|ui| {
-            ui.label(RichText::new(families::name_of(of, &o.name)).weak());
-            for ch in &o.choices {
-                let on = c.values.get(&o.key) == Some(&ch.key);
-                let ok = families::reachable(prj, &c.family, &c.values, &o.key, &ch.key);
-                let r = ui.add_enabled(ok, egui::Button::selectable(on, families::name_of(of, &ch.name)));
-                if r.clicked() && !on {
-                    let mut v = c.values.clone();
-                    v.insert(o.key.clone(), ch.key.clone());
-                    // The other values as they are, else at their defaults.
-                    let only = BTreeMap::from([(o.key.clone(), ch.key.clone())]);
-                    if let Ok(r) = families::resolve(prj, &c.family, &v).or_else(|_| families::resolve(prj, &c.family, &only)) {
-                        out = Some((r.part, r.values));
+            ui.label(RichText::new(tr("Variant")).weak());
+            for (of, v) in &variants {
+                if ui.add(egui::Button::selectable(v.key == current, families::name_of(of, &v.name))).clicked() && v.key != current {
+                    let options = c.options.iter().filter(|k| families::options(prj, &c.family).iter().any(|(_, o)| &o.key == *k && families::fits(o, &v.key))).cloned().collect();
+                    out = Some(FamilyChoice { variant: v.key.clone(), options, ..c.clone() });
+                }
+            }
+        });
+    }
+    let options = families::options(prj, &c.family);
+    if !options.is_empty() {
+        ui.horizontal_wrapped(|ui| {
+            ui.label(RichText::new(tr("Options")).weak());
+            for (of, o) in &options {
+                let mut on = c.options.contains(&o.key);
+                let r = ui.add_enabled(families::fits(o, &current), egui::Checkbox::new(&mut on, families::name_of(of, &o.name)));
+                if r.changed() {
+                    let mut chosen: Vec<String> = c.options.iter().filter(|k| **k != o.key).cloned().collect();
+                    if on {
+                        chosen.push(o.key.clone());
                     }
+                    out = Some(FamilyChoice { variant: current.clone(), options: chosen, ..c.clone() });
                 }
             }
         });
@@ -75,9 +86,9 @@ pub fn item_of_device(prj: &Project, tag: &str) -> Option<u64> {
     panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].items.iter().find(|i| i.tag == tag).map(|i| i.id))
 }
 
-/// Submenu *Device family* of a context menu for room item `id`: a submenu per option
-/// with its values (values without a variant disabled) and one with the suggested texts.
-/// The values or text picked are set (`installation::set_family`); the answer for the
+/// Submenu *Device family* of a context menu for room item `id`: submenus with the
+/// variants, the options (those that do not fit the variant disabled) and the suggested
+/// texts. The variant, options or text picked are set (`installation::set_family`); the answer for the
 /// status line, `None` when nothing was picked or the item is no device of a family.
 pub fn family_menu(ui: &mut egui::Ui, prj: &mut Project, id: u64) -> Option<String> {
     let it = prj.layout.enclosures.iter().find_map(|e| e.item(id).cloned())?;
@@ -88,18 +99,31 @@ pub fn family_menu(ui: &mut egui::Ui, prj: &mut Project, id: u64) -> Option<Stri
         if current.family.is_empty() {
             ui.weak(tr("None"));
         }
-        for (of, o) in families::options(prj, &current.family) {
-            let value = current.values.get(&o.key).and_then(|v| o.choices.iter().find(|c| &c.key == v)).map(|c| families::name_of(of, &c.name)).unwrap_or_default();
-            ui.menu_button(format!("{}: {}", families::name_of(of, &o.name), value), |ui| {
-                for ch in &o.choices {
-                    let on = current.values.get(&o.key) == Some(&ch.key);
-                    let ok = families::reachable(prj, &current.family, &current.values, &o.key, &ch.key);
-                    if ui.add_enabled(ok, egui::Button::selectable(on, families::name_of(of, &ch.name))).clicked() && !on {
-                        let mut v = current.values.clone();
-                        v.insert(o.key.clone(), ch.key.clone());
-                        let only = BTreeMap::from([(o.key.clone(), ch.key.clone())]);
-                        let values = if families::resolve(prj, &current.family, &v).is_ok() { v } else { only };
-                        next = Some(FamilyChoice { values, ..current.clone() });
+        let variants = families::variants(prj, &current.family);
+        let cur = if current.variant.is_empty() { variants.first().map(|(_, v)| v.key.clone()).unwrap_or_default() } else { current.variant.clone() };
+        if variants.len() > 1 {
+            let shown = variants.iter().find(|(_, v)| v.key == cur).map(|(of, v)| families::name_of(of, &v.name)).unwrap_or_default();
+            ui.menu_button(tr_fmt!("Variant: {}", shown), |ui| {
+                for (of, v) in &variants {
+                    if ui.add(egui::Button::selectable(v.key == cur, families::name_of(of, &v.name))).clicked() && v.key != cur {
+                        let options = current.options.iter().filter(|k| families::options(prj, &current.family).iter().any(|(_, o)| &o.key == *k && families::fits(o, &v.key))).cloned().collect();
+                        next = Some(FamilyChoice { variant: v.key.clone(), options, ..current.clone() });
+                        ui.close();
+                    }
+                }
+            });
+        }
+        let options = families::options(prj, &current.family);
+        if !options.is_empty() {
+            ui.menu_button(tr("Options"), |ui| {
+                for (of, o) in &options {
+                    let mut on = current.options.contains(&o.key);
+                    if ui.add_enabled(families::fits(o, &cur), egui::Checkbox::new(&mut on, families::name_of(of, &o.name))).changed() {
+                        let mut chosen: Vec<String> = current.options.iter().filter(|k| **k != o.key).cloned().collect();
+                        if on {
+                            chosen.push(o.key.clone());
+                        }
+                        next = Some(FamilyChoice { variant: cur.clone(), options: chosen, ..current.clone() });
                         ui.close();
                     }
                 }
@@ -121,7 +145,7 @@ pub fn family_menu(ui: &mut egui::Ui, prj: &mut Project, id: u64) -> Option<Stri
     });
     let c = next?;
     Some(match inst::set_family(prj, id, c) {
-                Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
+        Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
         Ok(_) => tr("Text at the symbol changed").to_string(),
         Err(e) => e,
     })
@@ -141,13 +165,13 @@ impl PanelUi {
         }
         let current = families::of_item(prj, &it);
         ui.separator();
-        ui.label(RichText::new(tr("Device family")).strong()).on_hover_text(tr("The variants of a device chosen by the values of its options: each a part with its schematic symbol, plan symbol and 3D model"));
+        ui.label(RichText::new(tr("Device family")).strong()).on_hover_text(tr("The variants of a device, each a part with its schematic symbol, plan symbol and 3D model, and the options it can be fitted with"));
         let mut next: Option<FamilyChoice> = None;
         // Changed only within its family: the family is shown, not chosen.
         ui.label(families::get(prj, &current.family).map_or_else(|| tr("None").to_string(), families::title));
         if !current.family.is_empty() {
-            if let Some((_, values)) = option_buttons(ui, prj, &current) {
-                next = Some(FamilyChoice { values, ..current.clone() });
+            if let Some(c) = choice_buttons(ui, prj, &current) {
+                next = Some(c);
             }
         }
         let key = egui::Id::unique(("family_text", id));
@@ -159,7 +183,7 @@ impl PanelUi {
         if let Some(c) = next {
             ui.data_mut(|d| d.remove::<String>(key));
             self.status = match inst::set_family(prj, id, c) {
-                                Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
+                Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
                 Ok(_) => String::new(),
                 Err(e) => e,
             };

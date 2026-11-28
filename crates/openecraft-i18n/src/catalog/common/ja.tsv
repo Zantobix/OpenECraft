@@ -4,6 +4,7 @@
 (no structure)	(構造なし)
 (optional)	(省略可能)
 --json needs a JSON object	--json には JSON オブジェクトが必要です
+3D	3D
 3D model	3D モデル
 3D routing	3D 配線ルート
 3D view	3D ビュー
@@ -384,7 +385,6 @@ Option {}: {} is not one of its choices	オプション {}: {} は選択肢に�
 Order number	注文番号
 Other	その他
 Outer diameter	外径
-Outlets	コンセント
 Output	出力
 Output voltage (V)	出力電圧 (V)
 Overview	概要

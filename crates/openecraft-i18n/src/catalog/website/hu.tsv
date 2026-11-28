@@ -1,6 +1,5 @@
 # English<TAB>Magyar – the website (website/): the page and its demos (texts without a line are shown in English). Sorted by the English text: cargo run -p openecraft-i18n --example tidy
 20 languages, switched while working: menus, generated reports and check messages follow at once.	20 nyelv, munka közben váltható: a menük, a létrehozott kimutatások és az ellenőrzési üzenetek azonnal követik.
-3D	3D
 3D models	3D-modellek
 A click in a room puts them on the nearest wall at their mounting height or on the ceiling, drawn with the symbols of installation plans after IEC 60617-11.	Egy kattintás a helyiségben a legközelebbi falra helyezi őket a szerelési magasságukban vagy a mennyezetre, az IEC 60617-11 szerinti installációs tervek szimbólumaival rajzolva.
 A command line, an MCP server for AI agents and plugins in any language add checks, reports, exports and commands.	Parancssor, MCP-szerver MI-ügynököknek és bármilyen nyelven írt bővítmények adnak hozzá ellenőrzéseket, kimutatásokat, exportokat és parancsokat.
