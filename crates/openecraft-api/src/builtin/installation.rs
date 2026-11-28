@@ -81,7 +81,7 @@ pub static COMMANDS: &[Spec] = &[
     },
     Spec {
         name: "set_device_variant",
-        help: tr_const!("Sets the device family, option values and text at the symbol of a socket outlet, switch, light or box in a room: it becomes the part of the variant, the device in the schematic gets the part and, with as many connection points, the variant's symbol"),
+        help: tr_const!("Sets the device family, option values and text at the symbol of a socket outlet, switch, light or box in a room: it becomes the part of the variant, the device in the schematic gets the part and its installation page is drawn again with the variant's symbol"),
         params: &[
             optional("item", Kind::Int, tr_const!("Id of the item in the room")),
             optional("device", Kind::Str, tr_const!("Device tag instead of the item id")),
@@ -452,7 +452,7 @@ fn set_device_variant(prj: &mut Project, a: &Args) -> Result<Value, String> {
     }
     let c = inst::set_family(prj, id, choice)?;
     let item = panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].item(c.item).cloned()).unwrap_or_default();
-    Ok(json!({ "item": c.item, "device": item.tag, "old_part": c.old_part, "part": c.part, "family": item.family.family, "values": item.family.values, "text": item.family.text, "schematic_symbols": c.symbols, "kept_symbols": c.kept }))
+    Ok(json!({ "item": c.item, "device": item.tag, "old_part": c.old_part, "part": c.part, "family": item.family.family, "values": item.family.values, "text": item.family.text, "schematic_pages": c.symbols }))
 }
 
 #[cfg(test)]

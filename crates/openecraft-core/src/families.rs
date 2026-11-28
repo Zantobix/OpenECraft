@@ -424,6 +424,30 @@ pub fn remove(prj: &mut Project, key: &str) -> Result<bool, String> {
     Ok(n != prj.property_db.families.len())
 }
 
+/// Family `f` as the project's own: the names of a built-in one in the language shown
+/// (they are the project's texts from then on), under the same key, so that defining it
+/// replaces the built-in family in the project.
+pub fn editable(f: &DeviceFamily) -> DeviceFamily {
+    let mut out = f.clone();
+    if f.builtin {
+        out.name = title(f);
+        for o in &mut out.options {
+            o.name = translated(&o.name);
+            for c in &mut o.choices {
+                c.name = translated(&c.name);
+            }
+        }
+        out.texts = f.texts.iter().map(|t| translated(t)).collect();
+    }
+    out.builtin = false;
+    out
+}
+
+/// Whether the project has its own version of built-in family `key`.
+pub fn overrides_builtin(prj: &Project, key: &str) -> bool {
+    builtin_family(key).is_some() && prj.property_db.families.iter().any(|f| f.key == key)
+}
+
 /// A copy of family `from` to change in the project, under a free key.
 pub fn derive(prj: &Project, from: &DeviceFamily) -> DeviceFamily {
     let base = format!("user.{}", from.key.trim_start_matches("user."));
@@ -433,18 +457,7 @@ pub fn derive(prj: &Project, from: &DeviceFamily) -> DeviceFamily {
         n += 1;
         key = format!("{base}{n}");
     }
-    // The names of a built-in family become the project's own texts in the language shown.
-    let mut f = from.clone();
-    if from.builtin {
-        for o in &mut f.options {
-            o.name = translated(&o.name);
-            for c in &mut o.choices {
-                c.name = translated(&c.name);
-            }
-        }
-        f.texts = f.texts.iter().map(|t| translated(t)).collect();
-    }
-    DeviceFamily { key, name: title(from), builtin: false, ..f }
+    DeviceFamily { key, ..editable(from) }
 }
 
 #[cfg(test)]

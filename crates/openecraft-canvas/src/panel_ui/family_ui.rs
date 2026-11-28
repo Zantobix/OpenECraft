@@ -44,22 +44,25 @@ pub(super) fn option_buttons(ui: &mut egui::Ui, prj: &Project, c: &FamilyChoice)
 /// suggestion clicked).
 pub(super) fn text_field(ui: &mut egui::Ui, prj: &Project, family: &str, text: &mut String) -> bool {
     let mut take = false;
+    let texts = if family.is_empty() { Vec::new() } else { families::texts(prj, family) };
     ui.horizontal(|ui| {
         ui.label(RichText::new(tr("Text at the symbol")).weak()).on_hover_text(tr("Shown beside the symbol on installation plans, e.g. what is connected"));
-        let r = ui.add(egui::TextEdit::singleline(text).desired_width(160.0));
+        let r = ui.add(egui::TextEdit::singleline(text).hint_text(tr("own text or a suggestion")).desired_width(150.0));
         take |= r.lost_focus();
-    });
-    let texts = if family.is_empty() { Vec::new() } else { families::texts(prj, family) };
-    if !texts.is_empty() {
-        ui.horizontal_wrapped(|ui| {
+        // The suggestions of the family in a list beside the field.
+        egui::ComboBox::from_id_salt(("family_texts", family)).width(18.0).selected_text("").show_ui(ui, |ui| {
+            if ui.selectable_label(text.is_empty(), tr("No text")).clicked() {
+                text.clear();
+                take = true;
+            }
             for t in texts {
-                if ui.small_button(&t).clicked() {
+                if ui.selectable_label(*text == t, &t).clicked() {
                     *text = t;
                     take = true;
                 }
             }
         });
-    }
+    });
     take
 }
 
@@ -118,8 +121,7 @@ pub fn family_menu(ui: &mut egui::Ui, prj: &mut Project, id: u64) -> Option<Stri
     });
     let c = next?;
     Some(match inst::set_family(prj, id, c) {
-        Ok(ch) if !ch.kept.is_empty() => tr_fmt!("Now {}; its schematic symbol stays: the variant has another number of connection points", ch.part),
-        Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
+                Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
         Ok(_) => tr("Text at the symbol changed").to_string(),
         Err(e) => e,
     })
@@ -141,18 +143,8 @@ impl PanelUi {
         ui.separator();
         ui.label(RichText::new(tr("Device family")).strong()).on_hover_text(tr("The variants of a device chosen by the values of its options: each a part with its schematic symbol, plan symbol and 3D model"));
         let mut next: Option<FamilyChoice> = None;
-        let shown = families::get(prj, &current.family).map_or_else(|| tr("None").to_string(), families::title);
-        egui::ComboBox::from_id_salt(("device_family", id)).selected_text(shown).show_ui(ui, |ui| {
-            for f in families::all(prj).into_iter().filter(|f| !f.variants.is_empty()) {
-                let label = match families::get(prj, &f.parent) {
-                    Some(b) => format!("{} › {}", families::title(b), families::title(f)),
-                    None => families::title(f),
-                };
-                if ui.selectable_label(f.key == current.family, label).clicked() && f.key != current.family {
-                    next = Some(FamilyChoice { family: f.key.clone(), values: BTreeMap::new(), text: current.text.clone() });
-                }
-            }
-        });
+        // Changed only within its family: the family is shown, not chosen.
+        ui.label(families::get(prj, &current.family).map_or_else(|| tr("None").to_string(), families::title));
         if !current.family.is_empty() {
             if let Some((_, values)) = option_buttons(ui, prj, &current) {
                 next = Some(FamilyChoice { values, ..current.clone() });
@@ -167,8 +159,7 @@ impl PanelUi {
         if let Some(c) = next {
             ui.data_mut(|d| d.remove::<String>(key));
             self.status = match inst::set_family(prj, id, c) {
-                Ok(ch) if !ch.kept.is_empty() => tr_fmt!("Now {}; its schematic symbol stays: the variant has another number of connection points", ch.part),
-                Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
+                                Ok(ch) if ch.part != ch.old_part => tr_fmt!("Now {}", ch.part),
                 Ok(_) => String::new(),
                 Err(e) => e,
             };

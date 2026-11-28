@@ -352,7 +352,7 @@ fn devices_are_placed_and_changed_by_their_family() {
 }
 
 #[test]
-fn a_switch_keeps_its_schematic_symbol_for_another_circuit() {
+fn a_switch_is_drawn_again_with_the_symbol_of_its_variant() {
     let (mut s, room, at) = room_session();
     let breakers = run(&mut s, "list_breakers", json!({})).unwrap();
     let f2 = breakers.as_array().unwrap().iter().find(|b| b["breaker"].as_str().unwrap().ends_with("-F2")).unwrap()["breaker"].clone();
@@ -361,7 +361,10 @@ fn a_switch_keeps_its_schematic_symbol_for_another_circuit() {
     let tag = sw["device"].as_str().unwrap().to_string();
     let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "function": "intermediate" } })).unwrap();
     assert_eq!((c["family"].as_str(), c["part"].as_str()), (Some("switch"), Some("GEN.SW-INTER-UP")), "{c}");
-    assert_eq!(c["kept_symbols"].as_array().map(Vec::len), Some(1), "{c}");
+    // Its installation page is drawn again with the intermediate switch's symbol.
+    assert_eq!(c["schematic_pages"], 1, "{c}");
+    let prj = s.project().unwrap();
+    assert!(prj.pages.iter().flat_map(|p| &p.symbols).any(|x| x.tag == tag && x.sym == "co_inter"), "intermediate switch drawn");
     // The part of the variant goes into the project parts, as that of a device placed.
     let prj = s.project().unwrap();
     assert!(prj.parts.iter().any(|p| p.number == "GEN.SW-INTER-UP"));
@@ -385,4 +388,25 @@ fn project_device_families_are_defined_and_removed() {
     assert_eq!(p["part"], "GEN.SOCKET-F-LID-UP");
     assert_eq!(run(&mut s, "remove_device_family", json!({ "family": "user.outdoor" })).unwrap()["removed"], true);
     assert!(run(&mut s, "remove_device_family", json!({ "family": "user.outdoor" })).is_err());
+}
+
+#[test]
+fn a_device_connection_box_turned_three_phase_is_drawn_with_five_conductors() {
+    let mut s = house();
+    // 230 V on the three-phase circuit, then 400 V 3N: the symbol and the wiring follow.
+    let one = run(&mut s, "place_installation", json!({ "breaker": "-F2", "room": "+ROOM1", "family": "connection_box", "values": { "supply": "1" }, "x": 4990, "z": 2000 })).unwrap();
+    let tag = one["device"].as_str().unwrap().to_string();
+    let sym_of = |s: &Session| s.project().unwrap().pages.iter().flat_map(|p| &p.symbols).find(|x| x.tag == tag).map(|x| (x.sym.clone(), x.pins.len())).unwrap();
+    let (before, pins) = sym_of(&s);
+    assert_eq!(pins, 3, "{before}");
+    let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "supply": "3" } })).unwrap();
+    assert_eq!((c["part"].as_str(), c["schematic_pages"].as_u64()), (Some("GEN.CONN-BOX-COOKER-UP"), Some(1)), "{c}");
+    let (after, pins) = sym_of(&s);
+    assert!(after != before && pins == 5, "{after} {pins}");
+    // On a single-phase circuit a three-phase variant is refused and nothing changes.
+    let q = run(&mut s, "place_installation", json!({ "breaker": "-F1", "room": "+ROOM1", "family": "connection_box", "x": 10, "z": 1000 })).unwrap();
+    let before = s.project().unwrap().clone();
+    let e = run(&mut s, "set_device_variant", json!({ "device": q["device"], "values": { "supply": "3" } })).unwrap_err();
+    assert!(e.contains("three-phase"), "{e}");
+    assert!(*s.project().unwrap() == before);
 }

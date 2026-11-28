@@ -1229,19 +1229,17 @@ pub struct FamilyChange {
     /// The item, taken off the wall or the ceiling and put up again (a light that goes
     /// from the ceiling to the wall): its new id.
     pub item: u64,
-    /// Symbols of the device in the schematic that took the variant's symbol.
+    /// Installation pages drawn again with the variant's symbol.
     pub symbols: usize,
-    /// Symbols of the device in the schematic that kept theirs: the variant's has
-    /// another number of connection points (another circuit, e.g. a two-way switch).
-    pub kept: Vec<String>,
 }
 
 /// Sets the device family, the option values and the text at the symbol of item `id`
 /// of a room: the item becomes the part of the variant the values stand for (its size
 /// follows; a light going from the ceiling to a wall or back is put up again at its
-/// place), the device of its tag gets the part, and its symbols in the schematic take
-/// the variant's symbol where it has as many connection points. An empty family only
-/// sets the text. Nothing changes when anything is wrong.
+/// place), the device of its tag gets the part, and its installation pages are drawn
+/// again with the variant's symbol and wiring (a three-phase variant needs a
+/// three-phase protective device). An empty family only sets the text. Nothing changes
+/// when anything is wrong.
 pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::FamilyChoice) -> Result<FamilyChange, String> {
     let ri = panel::rooms(&prj.layout).into_iter().find(|&ri| prj.layout.enclosures[ri].item(id).is_some()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
     let it = prj.layout.enclosures[ri].item(id).cloned().ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
@@ -1263,6 +1261,28 @@ pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::Fa
         return Err(tr_fmt!("Unknown symbol {}", r.schematic_symbol));
     }
     let family = crate::model::families::FamilyChoice { family: choice.family.clone(), values: r.values.clone(), text };
+    // The schematic symbol of the variant and the installation pages it is drawn on
+    // again (with their protective device); checked before anything changes.
+    let sym = match r.schematic_symbol.as_str() {
+        "" => symbol_for(prj, kind, Some(&new)),
+        s => prj.symbol(s).map(|d| {
+            let labels = d.pins.iter().map(|x| x.label.to_string()).collect();
+            (d, labels)
+        }),
+    };
+    let mut redraw: Vec<(usize, String)> = Vec::new();
+    if let (false, Some((_, pins))) = (it.tag.is_empty(), &sym) {
+        let nl = Netlist::build(prj, true);
+        let finals = finals(prj, &nl);
+        let breakers: Vec<String> = electrical::circuits(prj, &nl).into_iter().filter(|c| c.is_final()).map(|c| c.device).collect();
+        for k in (0..prj.pages.len()).filter(|&k| prj.layout.installation_pages.contains(&prj.pages[k].id) && prj.pages[k].symbols.iter().any(|s| s.tag == it.tag)) {
+            let Some(b) = breakers.iter().find(|b| pages_of(prj, &finals, b).contains(&k)) else { continue };
+            if three_phase(pins) && page_labels(prj, k).len() < 5 {
+                return Err(tr_fmt!("{} has three phases: it needs a three-phase protective device", r.part));
+            }
+            redraw.push((k, b.clone()));
+        }
+    }
     let mut change = FamilyChange { old_part: it.part.clone(), part: r.part.clone(), item: id, ..Default::default() };
     take_part(prj, &r.part);
     // Into the project parts like the part of a device placed (also one of the generic catalog).
@@ -1305,29 +1325,23 @@ pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::Fa
     if let Some(x) = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == id) {
         x.family = family;
     }
-    if !it.tag.is_empty() {
-        let sym = match r.schematic_symbol.as_str() {
-            "" => symbol_for(prj, kind, Some(&new)),
-            s => prj.symbol(s).map(|d| {
-                let labels = d.pins.iter().map(|x| x.label.to_string()).collect();
-                (d, labels)
-            }),
-        };
-        if let Some((def, labels)) = sym {
-            let pages = prj.layout.installation_pages.clone();
-            for pg in prj.pages.iter_mut().filter(|pg| pages.contains(&pg.id)) {
-                for s in pg.symbols.iter_mut().filter(|s| s.tag == it.tag) {
-                    if s.sym == def.key {
-                        continue;
-                    }
-                    if s.pins.len() == def.pins.len() {
-                        s.sym = def.key.to_string();
-                        s.pins.clone_from(&labels);
-                        change.symbols += 1;
-                    } else {
-                        change.kept.push(s.sym.clone());
-                    }
-                }
+    // The installation pages of the device drawn again with the variant's symbol
+    // (the wiring follows: another number of conductors, travellers of a two-way switch).
+    if let Some((def, labels)) = sym {
+        for (k, breaker) in redraw {
+            let mut drawn = drawn_on(prj, k);
+            let mut changed = false;
+            for d in drawn.iter_mut().filter(|d| d.tag == it.tag && d.sym != def.key) {
+                d.sym = def.key.to_string();
+                d.pins.clone_from(&labels);
+                d.kind = drawn_kind(def.key);
+                d.travel = travel_of(def.key, Some(&new));
+                changed = true;
+            }
+            if changed {
+                let ls = page_labels(prj, k);
+                draw(prj, k, &drawn, &breaker, &ls);
+                change.symbols += 1;
             }
         }
     }

@@ -60,7 +60,7 @@ fn tree(ui: &mut egui::Ui, prj: &Project, fu: &mut FamiliesUi, parent: &str, dep
 fn select(prj: &Project, fu: &mut FamiliesUi, key: &str) {
     fu.selected = key.to_string();
     fu.error = None;
-    fu.draft = families::get(prj, key).filter(|f| !f.builtin).cloned();
+    fu.draft = families::get(prj, key).map(families::editable);
     fu.texts = fu.draft.as_ref().map(|f| f.texts.join("\n")).unwrap_or_default();
 }
 
@@ -71,20 +71,10 @@ fn details(ui: &mut egui::Ui, prj: &mut Project, fu: &mut FamiliesUi) {
     };
     ui.label(RichText::new(families::title(&f)).strong());
     ui.label(RichText::new(&f.key).monospace().small());
-    if f.builtin {
-        read_only(ui, prj, &f);
-        if icons::text_button(ui, Icon::Plus, tr("Derive project family")).on_hover_text(tr("A project family based on this one, to change its options, variants and texts")).clicked() {
-            let new = families::derive(prj, &f);
-            let key = new.key.clone();
-            match families::define(prj, new) {
-                Ok(()) => select(prj, fu, &key),
-                Err(e) => fu.error = Some(e),
-            }
-        }
-        if let Some(e) = &fu.error {
-            ui.colored_label(ui.visuals().error_fg_color, e);
-        }
-        return;
+    let builtin = families::builtin_family(&f.key).is_some();
+    if builtin {
+        let note = if families::overrides_builtin(prj, &f.key) { tr("Built-in family, changed in this project") } else { tr("Built-in family: changes are kept in the project") };
+        ui.weak(note);
     }
     let Some(d) = fu.draft.as_mut() else {
         select(prj, fu, &f.key);
@@ -102,7 +92,7 @@ fn details(ui: &mut egui::Ui, prj: &mut Project, fu: &mut FamiliesUi) {
         ui.colored_label(ui.visuals().error_fg_color, e);
     }
     ui.horizontal(|ui| {
-        let changed = families::get(prj, &candidate.key) != Some(&candidate);
+        let changed = families::get(prj, &candidate.key).map(families::editable).as_ref() != Some(&candidate);
         if ui.add_enabled(problem.is_none() && changed, egui::Button::new(tr("Apply"))).clicked() {
             if let Err(e) = families::define(prj, candidate.clone()) {
                 fu.error = Some(e);
@@ -120,7 +110,16 @@ fn details(ui: &mut egui::Ui, prj: &mut Project, fu: &mut FamiliesUi) {
                 Err(e) => fu.error = Some(e),
             }
         }
-        if icons::text_button(ui, Icon::Delete, tr("Delete")).on_hover_text(tr("Devices placed with it keep their part")).clicked() {
+        if builtin {
+            let own = families::overrides_builtin(prj, &fu.selected);
+            if ui.add_enabled(own, egui::Button::new(tr("Reset to built-in"))).on_hover_text(tr("The project's changes of this built-in family go")).clicked() {
+                let key = fu.selected.clone();
+                match families::remove(prj, &key) {
+                    Ok(_) => select(prj, fu, &key),
+                    Err(e) => fu.error = Some(e),
+                }
+            }
+        } else if icons::text_button(ui, Icon::Delete, tr("Delete")).on_hover_text(tr("Devices placed with it keep their part")).clicked() {
             match families::remove(prj, &fu.selected) {
                 Ok(_) => {
                     let key = fu.selected.clone();
@@ -133,48 +132,6 @@ fn details(ui: &mut egui::Ui, prj: &mut Project, fu: &mut FamiliesUi) {
     if let Some(e) = &fu.error {
         ui.colored_label(ui.visuals().error_fg_color, e);
     }
-}
-
-/// A built-in family: its base, options, variants and texts.
-fn read_only(ui: &mut egui::Ui, prj: &Project, f: &DeviceFamily) {
-    if let Some(b) = families::get(prj, &f.parent) {
-        ui.label(format!("{}: {}", tr("Base family"), families::title(b)));
-    }
-    ui.label(RichText::new(tr("Options")).strong());
-    for (of, o) in families::options(prj, &f.key) {
-        let values: Vec<String> = o.choices.iter().map(|c| if c.mark.is_empty() { families::name_of(of, &c.name) } else { format!("{} [{}]", families::name_of(of, &c.name), c.mark) }).collect();
-        ui.label(format!("{}: {}", families::name_of(of, &o.name), values.join(", ")));
-    }
-    ui.label(RichText::new(tr("Variants")).strong());
-    egui::Grid::new("family_variants_ro").striped(true).num_columns(3).show(ui, |ui| {
-        for v in &f.variants {
-            let when: Vec<String> = families::options(prj, &f.key)
-                .into_iter()
-                .filter_map(|(of, o)| {
-                    let c = o.choices.iter().find(|c| v.when.get(&o.key) == Some(&c.key))?;
-                    Some(format!("{}: {}", families::name_of(of, &o.name), families::name_of(of, &c.name)))
-                })
-                .collect();
-            ui.label(when.join(", "));
-            ui.label(&v.part);
-            ui.label(plan_symbol_name(prj, v));
-            ui.end_row();
-        }
-    });
-    let texts = families::texts(prj, &f.key);
-    if !texts.is_empty() {
-        ui.label(RichText::new(tr("Suggested texts")).strong());
-        ui.label(texts.join(", "));
-    }
-}
-
-fn plan_symbol_name(prj: &Project, v: &Variant) -> String {
-    let key = if v.plan_symbol.is_empty() {
-        openecraft_core::installation::find_part(prj, &v.part).and_then(|p| openecraft_core::installation::kind_of(p).map(|k| openecraft_core::installation::plan_symbol(prj, p, k)))
-    } else {
-        Some(v.plan_symbol.clone())
-    };
-    key.and_then(|k| prj.symbol(&k).map(|s| tr(s.name).to_string())).unwrap_or_default()
 }
 
 /// The fields of a project family.
