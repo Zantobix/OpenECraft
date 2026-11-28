@@ -246,7 +246,7 @@ fn a_page_shows_some_groups_and_columns() {
     assert!(!t.rows.is_empty());
     assert!(t.rows.iter().all(|r| r[0] == names[0] || r[0] == names[2]), "{:?}", t.rows);
     assert_eq!(t.headers.len() + 1, all.headers.len());
-    assert!(!t.headers.iter().any(|h| *h == hide));
+    assert!(!t.headers.contains(&hide));
 }
 
 #[test]

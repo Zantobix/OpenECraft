@@ -367,6 +367,61 @@ fn fed_text(prj: &Project, nl: &Netlist, circuit: Option<&crate::installation::C
     tags.join(", ")
 }
 
+/// The devices of the board overview in tree order with their depth: the roots of each
+/// board in schematic order, every device followed by those it feeds. A device is fed
+/// by the nearest one of its board (fewest nets fed) whose load side holds a net of its
+/// line side.
+fn tree_order(items: &[Item]) -> Vec<(usize, u8)> {
+    let parent: Vec<Option<usize>> = (0..items.len())
+        .map(|i| {
+            (0..items.len())
+                .filter(|&j| j != i && items[j].board == items[i].board && items[j].role != Role::Spd && !items[j].load.is_disjoint(&items[i].line))
+                .min_by_key(|&j| (items[j].load.len(), j))
+        })
+        .collect();
+    let mut order: Vec<(usize, u8)> = Vec::new();
+    let mut seen = vec![false; items.len()];
+    fn visit(i: usize, depth: u8, parent: &[Option<usize>], seen: &mut [bool], order: &mut Vec<(usize, u8)>) {
+        if std::mem::replace(&mut seen[i], true) {
+            return;
+        }
+        order.push((i, depth));
+        for c in (0..parent.len()).filter(|&c| parent[c] == Some(i)) {
+            visit(c, depth.saturating_add(1), parent, seen, order);
+        }
+    }
+    let mut boards: Vec<&str> = Vec::new();
+    for i in items {
+        if !boards.contains(&i.board.as_str()) {
+            boards.push(&i.board);
+        }
+    }
+    for board in boards {
+        let mine: Vec<usize> = (0..items.len()).filter(|&i| items[i].board == board).collect();
+        for &i in &mine {
+            // Roots, and devices in a loop of feeds.
+            let root = parent[i].is_none_or(|p| {
+                let (mut at, mut steps) = (p, 0);
+                while let Some(q) = parent[at] {
+                    if q == i || steps > items.len() {
+                        return true;
+                    }
+                    at = q;
+                    steps += 1;
+                }
+                false
+            });
+            if root {
+                visit(i, 0, &parent, &mut seen, &mut order);
+            }
+        }
+        for &i in &mine {
+            visit(i, 0, &parent, &mut seen, &mut order);
+        }
+    }
+    order
+}
+
 /// Overview of the distribution boards: every protective device fed from the mains,
 /// every residual current and surge protective device, the switches on the mains in the
 /// boards and every device shown by its property *Board overview* (and none it hides),
@@ -435,57 +490,7 @@ pub(super) fn board_overview(prj: &Project, an: &crate::analysis::Analysis) -> T
     let known: Vec<String> = items.iter().map(|i| i.board.clone()).collect();
     items.extend(switches.into_iter().filter(|i| crate::installation::board_of(prj, &i.tag).is_some() || known.contains(&i.board)));
     items.sort_by(|a, b| (a.page, a.pos.x, a.pos.y).partial_cmp(&(b.page, b.pos.x, b.pos.y)).unwrap_or(std::cmp::Ordering::Equal));
-    // The device each one is fed from in its board: the nearest (fewest nets fed) whose
-    // load side holds a net of its line side.
-    let parent: Vec<Option<usize>> = (0..items.len())
-        .map(|i| {
-            (0..items.len())
-                .filter(|&j| j != i && items[j].board == items[i].board && items[j].role != Role::Spd && !items[j].load.is_disjoint(&items[i].line))
-                .min_by_key(|&j| (items[j].load.len(), j))
-        })
-        .collect();
-    // Tree order: the roots of each board in schematic order, every device followed by
-    // those it feeds.
-    let mut order: Vec<(usize, u8)> = Vec::new();
-    let mut seen = vec![false; items.len()];
-    fn visit(i: usize, depth: u8, parent: &[Option<usize>], seen: &mut [bool], order: &mut Vec<(usize, u8)>) {
-        if std::mem::replace(&mut seen[i], true) {
-            return;
-        }
-        order.push((i, depth));
-        for c in (0..parent.len()).filter(|&c| parent[c] == Some(i)) {
-            visit(c, depth.saturating_add(1), parent, seen, order);
-        }
-    }
-    let mut boards: Vec<String> = Vec::new();
-    for i in &items {
-        if !boards.contains(&i.board) {
-            boards.push(i.board.clone());
-        }
-    }
-    for board in &boards {
-        for i in (0..items.len()).filter(|&i| &items[i].board == board) {
-            // Roots, and devices in a loop of feeds.
-            let root = parent[i].is_none_or(|p| {
-                let mut at = p;
-                let mut steps = 0;
-                while let Some(q) = parent[at] {
-                    if q == i || steps > items.len() {
-                        return true;
-                    }
-                    at = q;
-                    steps += 1;
-                }
-                false
-            });
-            if root {
-                visit(i, 0, &parent, &mut seen, &mut order);
-            }
-        }
-        for i in (0..items.len()).filter(|&i| &items[i].board == board) {
-            visit(i, 0, &parent, &mut seen, &mut order);
-        }
-    }
+    let order = tree_order(&items);
     let phases_of = |tag: &str| -> String {
         let mut v: Vec<&String> = Vec::new();
         for s in prj.pages.iter().filter(|p| p.kind == PageKind::Schematic).flat_map(|p| p.symbols.iter()).filter(|s| s.tag == tag) {

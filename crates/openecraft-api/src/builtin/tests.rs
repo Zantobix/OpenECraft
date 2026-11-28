@@ -363,7 +363,7 @@ fn commands_that_only_read_leave_the_project_as_it_is() {
 fn report_pages_show_groups_columns_tags_and_continue() {
     let p = Plugins::new(Vec::<String>::new());
     let mut prj = demo_project();
-    let mut run = |prj: &mut openecraft_core::model::Project, name: &str, args: serde_json::Value| p.run(p.command(name).unwrap(), prj, args.as_object().unwrap());
+    let run = |prj: &mut openecraft_core::model::Project, name: &str, args: serde_json::Value| p.run(p.command(name).unwrap(), prj, args.as_object().unwrap());
     let at = prj.pages.len();
     openecraft_core::ops::add_page(&mut prj, openecraft_core::model::PageKind::Report(openecraft_core::model::ReportKind::TerminalWiring.into()), at);
     prj.pages[at].name = "K9".into();
