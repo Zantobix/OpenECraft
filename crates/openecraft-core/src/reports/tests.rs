@@ -340,6 +340,10 @@ fn boards() -> crate::testkit::Kit {
     k.core((f1, "2"), (x1, &socket), "+UV1-W1", "1");
     k.cable("+UV1-W1", "1 2 3", "1.5 mm\u{b2}", 12.0);
     k.prj.cables.last_mut().unwrap().cable_type = "NYM-J 3x1.5".into();
+    // A second socket outlet behind the first: its cable does not leave the board.
+    let x2 = k.sym("socket", 60.0, 180.0, "+R1-XD2", "");
+    k.core((x1, &socket), (x2, &socket), "+R1-W2", "1");
+    k.cable("+R1-W2", "1 2 3", "1.5 mm\u{b2}", 4.0);
     k.part("+UV1-Q1", FnKind::ResidualCurrent, "1 3 5 N 2 4 6 N'", |p| {
         p.current = "40 A".into();
         p.tech_data = "Rated residual current: 30 mA".into();
@@ -389,7 +393,7 @@ fn fuse_overview_lists_the_devices_of_each_board() {
     let f1 = row("+UV1-F1");
     assert!(f1[3].ends_with("16 A"), "{f1:?}");
     assert_eq!((f1[4].as_str(), f1[5].as_str(), f1[6].as_str()), ("L1", "+UV1-Q1", "Kitchen sockets"));
-    assert_eq!(f1[8], "+UV1-W1 NYM-J 3x1.5");
+    assert_eq!(f1[8], "+UV1-W1 NYM-J 3x1.5", "only the cable leaving the board");
     assert!(!f1[9].is_empty(), "where it is drawn");
     // The spare breaker and the one without residual current device.
     assert_eq!(row("+UV1-F2")[6], "Spare");
@@ -422,4 +426,25 @@ fn fuse_overview_takes_the_board_from_the_layout() {
         }
     }
     assert!(t.rows.iter().any(|r| crate::installation::board_of(&prj, &r[1]).is_some()), "{:?}", t.rows);
+}
+
+/// Only the cables leaving the board: not those between the devices of the rooms.
+#[test]
+fn fuse_overview_names_the_cables_leaving_the_board() {
+    use crate::installation::{Circuit, Kind, Leg, SchematicDevice};
+    let leg = |from: &str, to: &str, cable: &str| Leg { from: from.into(), to: to.into(), cable: cable.into(), cable_type: "NYM-J 3x1.5".into(), mm2: 1.5, length: None, routed: false };
+    let device = |tag: &str| SchematicDevice { tag: tag.into(), kind: Kind::Socket, text: String::new(), part: None, placed: None };
+    let c = Circuit {
+        breaker: "-F1".into(),
+        text: String::new(),
+        rated: 16.0,
+        characteristic: "B".into(),
+        three_phase: false,
+        board: None,
+        devices: vec![device("-XD1"), device("-XD2")],
+        legs: vec![leg("-X1", "-XD1", "-W1"), leg("-XD1", "-XD2", "-W2")],
+        page: None,
+    };
+    let prj = Project::default();
+    assert_eq!(electrical_reports::outgoing_cables(&prj, &[], "-F1", Some(&c)), ["-W1 NYM-J 3x1.5"]);
 }

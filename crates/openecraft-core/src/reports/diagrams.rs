@@ -100,13 +100,13 @@ pub(super) fn terminal_connections(prj: &Project, conns: &[Connection]) -> Table
 pub(super) fn terminal_wiring(prj: &Project, nl: &Netlist, open: &Netlist, conns: &[Connection]) -> Table {
     let mut t = Table::with_widths(&[
         (tr_const!("Strip"), 0.7),
-        (tr_const!("Function text"), 1.1),
+        (tr_const!("Function text"), 1.0),
         (tr_const!("External target"), 0.8),
         (tr_const!("External point"), 0.6),
         (tr_const!("External location"), 0.7),
         (tr_const!("External cable"), 0.8),
         (tr_const!("Terminal"), 0.5),
-        (tr_const!("Terminal level"), 0.5),
+        (tr_const!("Terminal level"), 0.65),
         (tr_const!("Jumper"), 1.0),
         (tr_const!("Potential"), 0.6),
         (tr_const!("Internal target"), 0.8),

@@ -186,11 +186,12 @@ fn board_name(prj: &Project, tag: &str) -> String {
 }
 
 /// The cables leaving the load side (even designations) of the symbols of device `tag`,
-/// with type or cross-section, in schematic order; those of its circuit (beyond its
-/// terminals) when it has any, the cross-section of its wires otherwise.
-fn outgoing_cables(prj: &Project, conns: &[Connection], tag: &str, circuit: Option<&crate::installation::Circuit>) -> Vec<String> {
+/// with type or cross-section, in schematic order; those of its circuit that leave the
+/// board (start at no device of the circuit's rooms, e.g. at its terminals) when it
+/// has any, the cross-section of its wires otherwise.
+pub(super) fn outgoing_cables(prj: &Project, conns: &[Connection], tag: &str, circuit: Option<&crate::installation::Circuit>) -> Vec<String> {
     let of_circuit: Vec<String> = circuit
-        .map(|c| c.legs.iter().filter(|l| !l.cable.is_empty()).map(|l| format!("{} {}", l.cable, l.cable_type).trim().to_string()).collect())
+        .map(|c| c.legs.iter().filter(|l| !l.cable.is_empty() && c.device(&l.from).is_none()).map(|l| format!("{} {}", l.cable, l.cable_type).trim().to_string()).collect())
         .unwrap_or_default();
     let mut out: Vec<String> = Vec::new();
     for c in of_circuit {
