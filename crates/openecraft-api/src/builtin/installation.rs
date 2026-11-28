@@ -437,19 +437,16 @@ fn set_device_variant(prj: &mut Project, a: &Args) -> Result<Value, String> {
     };
     let item = panel::rooms(&prj.layout).into_iter().find_map(|ri| prj.layout.enclosures[ri].item(id).cloned()).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
     let current = families::of_item(prj, &item);
-    let mut choice = family_choice(prj, a)?.unwrap_or_else(|| current.clone());
-    if a.str("family").is_none() {
-        choice.family.clone_from(&current.family);
-        if !current.family.is_empty() {
-            // Values given change those it has.
+    let mut choice = match a.str("family") {
+        Some(_) => family_choice(prj, a)?.unwrap_or_default(),
+        // Values given change those it has.
+        None => {
             let mut values = current.values.clone();
-            values.extend(choice.values);
-            choice.values = values;
+            values.extend(values_arg(a)?);
+            FamilyChoice { family: current.family.clone(), values, text: String::new() }
         }
-    }
-    if a.str("text").is_none() {
-        choice.text.clone_from(&current.text);
-    }
+    };
+    choice.text = a.str("text").map_or_else(|| current.text.clone(), |t| t.trim().to_string());
     if choice.family.is_empty() && !choice.values.is_empty() {
         return Err(tr("Option values need a device family").to_string());
     }
