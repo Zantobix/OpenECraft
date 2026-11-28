@@ -187,7 +187,7 @@ sich daran ausprobieren.
 
 ## 10. Schaltschrankaufbau
 
-- Der Arbeitsbereich *Schaltschrankaufbau* (*Ansicht › Arbeitsbereiche* oder die Auswahl
+- Der Arbeitsbereich *Aufbau und Gebäude* (*Ansicht › Arbeitsbereiche* oder die Auswahl
   in der Schnellzugriffsleiste) zeigt die Registerkarte *Layoutbereich* des Menübands:
   Gehäuse, Montageplatten, Tragschienen, Kabelkanäle, Sammelschienen, Ausschnitte und
   die Betriebsmittel des Schaltplans; die 3D-Ansicht zeigt das Gehäuse mit der Tür, den

@@ -186,7 +186,7 @@ ci-dessous peuvent y être essayées.
 
 ## 10. Implantation d'armoire
 
-- L'espace de travail *Implantation d'armoire* (*Affichage › Espaces de travail* ou le
+- L'espace de travail *Implantation et bâtiments* (*Affichage › Espaces de travail* ou le
   sélecteur de la barre d'accès rapide) montre l'onglet *Espace de montage* du ruban :
   armoires, plaques de montage, rails, goulottes, jeux de barres, découpes et les
   appareils du schéma ; la vue 3D montre l'armoire avec la porte, les fils routés et le

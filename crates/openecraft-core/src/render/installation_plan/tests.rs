@@ -239,6 +239,19 @@ fn tag_presets_shorten_the_tags() {
     assert_eq!(names, ["=SD1+F1-X1.6", "+F1-X1.6", "=SD1-X1.6", "-X1.6"]);
 }
 
+#[test]
+fn tag_parts_keep_aspects_in_any_order() {
+    let only = |function, location| TagParts { function, installation: false, location, product: true };
+    assert_eq!(only(false, false).apply("-X1.6+F1"), "-X1.6");
+    assert_eq!(only(false, true).apply("-X1.6+F1"), "-X1.6+F1");
+    assert_eq!(only(false, true).apply("+KU=SD1-X1"), "+KU-X1");
+    assert_eq!(only(true, false).apply("+KU=SD1-X1"), "=SD1-X1");
+    assert_eq!(only(false, false).apply("+KU=SD1-U1-X1"), "-U1-X1");
+    // The device name stays even when it is not written last.
+    let none = TagParts { function: false, installation: false, location: false, product: false };
+    assert_eq!(none.apply("-U1-X1+KU"), "-X1");
+}
+
 /// Every point the plan itself (without frame and title block) draws.
 #[derive(Default)]
 struct Pts(Vec<P>);
@@ -552,4 +565,199 @@ fn only_circuits_of_the_legend_are_coloured() {
             assert!(c.listed.contains(col), "{col:?} on the plan of {} but not in its legend", prj.layout.enclosures[ri].name);
         }
     }
+}
+
+#[test]
+fn a_tag_moves_off_what_it_would_cover() {
+    let size = (10.0, 2.0);
+    let c = p(50.0, 50.0);
+    let (at, h, moved) = tag_place(c, p(0.0, 1.0), 4.0, size, &[], 0);
+    assert_eq!((at, moved), (p(50.0, 54.0), false));
+    assert_eq!(h, Anchor::Center);
+    // Its place is taken: it goes to the other side of the symbol.
+    let taken = [tag_box(at, h, size)];
+    let (at2, h2, moved) = tag_place(c, p(0.0, 1.0), 4.0, size, &taken, 9);
+    assert!(moved);
+    assert!(!overlaps(taken[0], tag_box(at2, h2, size)));
+    // Nothing free nearby: it stays where it belongs.
+    let all = [(p(0.0, 0.0), p(100.0, 100.0))];
+    assert_eq!(tag_place(c, p(0.0, 1.0), 4.0, size, &all, 9), (p(50.0, 54.0), Anchor::Center, false));
+    // Its own symbol does not push it away, even with a tall text.
+    let own = [(p(47.6, 47.6), p(52.4, 52.4))];
+    assert!(!tag_place(c, p(0.0, 1.0), 4.0, (10.0, 5.0), &own, 0).2);
+}
+
+#[test]
+fn tags_of_neighbouring_devices_do_not_overlap() {
+    let mut prj = office_with_circuit();
+    let ri = prj.layout.enclosures.iter().position(|e| e.is_room()).expect("room");
+    let level = prj.layout.enclosures[ri].level;
+    // Two more socket outlets right beside each other on the same wall.
+    let w = panel::side(&prj.layout.enclosures[ri], crate::model::panel::Face::Wall(0)).expect("wall");
+    let pose = panel::site_poses(&prj)[ri];
+    for (k, off) in [0.0, 120.0].into_iter().enumerate() {
+        let at = [(w.a[0] + w.b[0]) / 2.0 + off + 600.0 + w.normal[0] * 200.0, (w.a[1] + w.b[1]) / 2.0 + w.normal[1] * 200.0];
+        let q = pose.apply([at[0], 0.0, at[1]]);
+        let id = installation::place_at(&mut prj, ri, "GEN.SOCKET-F-UP", [q[0], q[2]], None).expect("placed");
+        let it = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == id).expect("item");
+        it.tag = format!("=SD1+ROOM-XD{}", k + 10);
+    }
+    let last = prj.pages.len() - 1;
+    prj.pages[last].kind = PageKind::InstallationPlan(level);
+    prj.pages[last].plan.tag_size = 14.0;
+    let t = texts(&prj);
+    let a = t.0.iter().find(|x| x.1.ends_with("-XD10")).expect("first tag");
+    let b = t.0.iter().find(|x| x.1.ends_with("-XD11")).expect("second tag");
+    let w = printed_width(&a.1, a.2);
+    assert!((a.0.y - b.0.y).abs() >= a.2 || (a.0.x - b.0.x).abs() >= w, "{a:?} and {b:?} overlap");
+}
+
+#[test]
+fn the_page_maps_onto_the_plant_and_finds_its_devices() {
+    let prj = office_with_circuit();
+    let an = Analysis::with_builtin(&prj);
+    let last = prj.pages.len() - 1;
+    let m = page_map(&prj, &an, last).expect("an installation plan page");
+    let poses = panel::site_poses(&prj);
+    let item = installation::items(&prj, &poses).into_iter().find(|i| i.level == m.level).expect("a device on the level");
+    let at = m.page(item.at);
+    assert!(m.inside(at));
+    let back = m.plant(at);
+    assert!((back[0] - item.at[0]).abs() < 0.1 && (back[1] - item.at[1]).abs() < 0.1);
+    assert_eq!(device_at(&prj, &an, last, at), Some((item.room, item.item)));
+    assert_eq!(device_at(&prj, &an, last, p(at.x + 30.0, at.y + 30.0)), None);
+    // Outside the drawing area nothing is picked (a device cut off there is not drawn).
+    let mut cut = prj.clone();
+    cut.pages[last].scale = 5.0;
+    let m5 = page_map(&cut, &an, last).unwrap();
+    let hidden = installation::items(&cut, &poses).into_iter().filter(|i| i.level == m5.level).map(|i| m5.page(i.at)).find(|q| !m5.inside(*q)).expect("a device cut off at 1:5");
+    assert_eq!(device_at(&cut, &an, last, hidden), None);
+    assert!(page_map(&prj, &an, 0).is_none() || !matches!(prj.pages[0].kind, PageKind::InstallationPlan(_)));
+}
+
+#[test]
+fn a_door_in_a_shared_wall_opens_it_on_both_sides_and_is_drawn_once() {
+    let mut prj = office_with_circuit();
+    let ri = prj.layout.enclosures.iter().position(|e| e.is_room()).expect("room");
+    let level = prj.layout.enclosures[ri].level;
+    // A neighbouring room to the right of the room, 200 mm away.
+    prj.layout.enclosures[ri].site = Some(panel::SitePlace { x: 0.0, z: 0.0, angle: 0.0 });
+    let (lo, hi) = panel::bounds(&panel::outline(&prj.layout.enclosures[ri]));
+    let mut other = panel::new_room(&mut prj, "+NEXT", 3000.0, 3000.0, 2800.0);
+    other.level = level;
+    other.site = Some(panel::SitePlace { x: hi[0] + 200.0, z: lo[1], angle: 0.0 });
+    prj.layout.enclosures.push(other);
+    let next = prj.layout.enclosures.len() - 1;
+    let poses = panel::site_poses(&prj);
+    assert!(!panel::shared_walls(&prj, &poses, ri).is_empty(), "the walls face each other");
+    let count = |prj: &Project| {
+        let mut rec = Pts::default();
+        let an = Analysis::with_builtin(prj);
+        let idx = crate::index::Index::build(prj);
+        super::super::draw_page(&mut rec, prj, &idx, &an, prj.pages.len() - 1, &Opts::default());
+        rec.0.len()
+    };
+    let before = count(&prj);
+    let sw = panel::shared_walls(&prj, &poses, ri)[0];
+    let door = panel::add_opening(&mut prj, ri, Opening::Door, crate::model::panel::Face::Wall(sw.wall), Some((sw.from + sw.to) / 2.0 - 450.0), Some((900.0, 2100.0)), None).unwrap();
+    let one = count(&prj);
+    assert!(one > before, "the door is drawn");
+    // Entered in the neighbour too: still one door on the page, and a warning.
+    let (u0, _) = sw.mirror((sw.from + sw.to) / 2.0 - 450.0, (sw.from + sw.to) / 2.0 + 450.0);
+    panel::add_opening(&mut prj, next, Opening::Door, crate::model::panel::Face::Wall(sw.other_wall), Some(u0), Some((900.0, 2100.0)), None).unwrap();
+    assert_eq!(panel::twin_openings(&prj).len(), 1);
+    assert_eq!(count(&prj), one, "the twin is not drawn a second time");
+    let _ = door;
+}
+
+#[test]
+fn plan_projections_have_keys() {
+    use crate::model::{FacadeSide, PlanProjection};
+    for pr in [PlanProjection::Floor, PlanProjection::Ceiling, PlanProjection::Wall { room: "+KIT".into(), face: "wall2".into() }, PlanProjection::Facade(FacadeSide::Rear)] {
+        assert_eq!(PlanProjection::from_key(&pr.key()), Some(pr.clone()));
+    }
+    assert_eq!(PlanProjection::from_key("facade:top"), None);
+    assert_eq!(PlanProjection::from_key("wall:+KIT"), None);
+    let v = PlanView { projection: PlanProjection::Facade(FacadeSide::Left), ..Default::default() };
+    let back: PlanView = serde_json::from_str(&serde_json::to_string(&v).unwrap()).unwrap();
+    assert_eq!(back.projection, v.projection);
+    assert!(!serde_json::to_string(&PlanView::default()).unwrap().contains("projection"));
+}
+
+/// The electrical room on a level with a tagged socket outlet on wall 1, a tagged ceiling
+/// light and a tagged light on the outside of a wall.
+fn office_with_views() -> (Project, usize) {
+    let mut prj = office_with_circuit();
+    let ri = prj.layout.enclosures.iter().position(|e| e.is_room()).expect("room");
+    let pose = panel::site_poses(&prj)[ri];
+    let (lo, hi) = panel::bounds(&panel::outline(&prj.layout.enclosures[ri]));
+    let mid = [(lo[0] + hi[0]) / 2.0, (lo[1] + hi[1]) / 2.0];
+    let plant = |q: [f32; 2]| { let v = pose.apply([q[0], 0.0, q[1]]); [v[0], v[2]] };
+    let light = installation::place(&mut prj, ri, "GEN.LAMP-CEILING-LED", plant(mid)).expect("ceiling light");
+    let outdoor = installation::place(&mut prj, ri, "GEN.SOCKET-F-UP", plant([mid[0], lo[1] - 300.0])).expect("outside");
+    for (id, tag) in [(light, "-EA90"), (outdoor, "-XD90")] {
+        prj.layout.enclosures[ri].items.iter_mut().find(|i| i.id == id).unwrap().tag = tag.into();
+    }
+    assert!(panel::is_outside(prj.layout.enclosures[ri].item(outdoor).unwrap().face), "on the outside of a wall");
+    let socket = prj.layout.enclosures[ri].items.iter_mut().find(|i| i.part == "GEN.SOCKET-F-UP" && !panel::is_outside(i.face)).expect("socket");
+    socket.tag = "-XD91".into();
+    (prj, ri)
+}
+
+#[test]
+fn the_ceiling_view_shows_only_what_is_on_the_ceilings() {
+    let (mut prj, _) = office_with_views();
+    let has = |prj: &Project, t: &str| texts(prj).0.iter().any(|x| x.1.ends_with(t));
+    assert!(has(&prj, "-EA90") && has(&prj, "-XD91"));
+    let last = prj.pages.len() - 1;
+    prj.pages[last].plan.projection = crate::model::PlanProjection::Ceiling;
+    assert!(has(&prj, "-EA90"));
+    assert!(!has(&prj, "-XD91"), "a socket on a wall is no part of the ceilings");
+}
+
+#[test]
+fn a_wall_view_shows_its_devices_at_their_heights() {
+    let (mut prj, ri) = office_with_views();
+    let e = &prj.layout.enclosures[ri];
+    let it = e.items.iter().find(|i| i.tag == "-XD91").unwrap();
+    let face = panel::room_face_key(e, it.face);
+    let room = e.name.clone();
+    let last = prj.pages.len() - 1;
+    prj.pages[last].plan.projection = crate::model::PlanProjection::Wall { room: room.clone(), face: face.clone() };
+    let t = texts(&prj);
+    let line = t.0.iter().find(|x| x.1.contains("-XD91")).expect("the socket on its wall");
+    let height: f32 = line.1.split_whitespace().last().unwrap().parse().expect("its height in mm");
+    assert!(height > 50.0 && height < 2000.0, "{line:?}");
+    assert!(!t.0.iter().any(|x| x.1.contains("-EA90")), "the ceiling light is not on the wall");
+    assert!(t.0.iter().any(|x| x.1.contains(&room) && x.1.contains("Scale")), "the caption names the room");
+    // An unknown wall says so on the page.
+    prj.pages[last].plan.projection = crate::model::PlanProjection::Wall { room, face: "wall99".into() };
+    assert!(texts(&prj).0.iter().any(|x| x.1.starts_with("Nothing to show")));
+}
+
+#[test]
+fn a_facade_shows_what_is_mounted_outside() {
+    let (mut prj, _) = office_with_views();
+    let last = prj.pages.len() - 1;
+    let mut seen = 0;
+    for side in crate::model::FacadeSide::ALL {
+        prj.pages[last].plan.projection = crate::model::PlanProjection::Facade(side);
+        let t = texts(&prj);
+        assert!(!t.0.iter().any(|x| x.1.starts_with("Nothing to show")), "{side:?}: an outer wall faces every side of a lone room");
+        assert!(!t.0.iter().any(|x| x.1.contains("-XD91") || x.1.contains("-EA90")), "nothing from inside");
+        seen += usize::from(t.0.iter().any(|x| x.1.contains("-XD90")));
+    }
+    assert_eq!(seen, 1, "the outdoor socket is on one side");
+}
+
+#[test]
+fn the_walls_of_a_facade_meet_across_inner_walls_and_slabs() {
+    // Two rooms 240 mm apart, a level above 300 mm higher; a room far away stays apart.
+    let mut w = vec![([0.0, 0.0], [4000.0, 2500.0]), ([4240.0, 0.0], [7000.0, 2500.0]), ([0.0, 2800.0], [7000.0, 5300.0]), ([9000.0, 0.0], [10000.0, 2500.0])];
+    elevation::close_gaps(&mut w);
+    assert_eq!(w[0].1[0], 4120.0);
+    assert_eq!(w[1].0[0], 4120.0);
+    assert_eq!((w[0].1[1], w[2].0[1]), (2650.0, 2650.0));
+    assert_eq!(w[1].1[0], 7000.0, "2 m to the next room: no wall between");
+    assert_eq!(w[3], ([9000.0, 0.0], [10000.0, 2500.0]));
 }

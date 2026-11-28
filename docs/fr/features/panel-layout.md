@@ -364,6 +364,14 @@ glisser ou reçoivent une longueur dans les propriétés de la salle
   l'observateur) ou une flèche. Le contrôle garde libres d'armoires le débattement
   d'une porte s'ouvrant vers l'intérieur et la course d'une porte coulissante devant
   le mur.
+- **Épaisseur des murs et murs communs :** *Épaisseur des murs* dans les propriétés de
+  la pièce (`set_room wall_thickness=…`, 0 pour des murs minces) est l'épaisseur de ses
+  murs à l'extérieur du contour. Deux pièces d'un niveau dont les murs se font face à
+  500 mm au plus partagent ce tronçon de mur, aussi épais que l'espace entre elles
+  (`list_rooms` l'indique sous `shared_with`) : une porte, une fenêtre ou une traversée
+  de mur d'un côté le traverse entièrement, les pages de plan d'installation dessinent
+  le mur plein entre les deux pièces et la porte une seule fois, et le contrôle signale
+  une porte ou une fenêtre saisie des deux côtés au même endroit.
 - **Les armoires** (leurs ensembles juxtaposés) y sont posées à un emplacement du
   plan, où on les fait glisser dans le plan (R tourne l'armoire sélectionnée autour de
   son centre), et se déplacent avec la salle. Une armoire hors de la salle, à cheval
@@ -967,7 +975,9 @@ partir de là, et les longueurs de leurs câbles sont celles du routage 3D.
   `circuit_colors`, `connections`, `room_names`), et les repères se réduisent à certains
   de leurs aspects (*Repères affichés* : repère complet, emplacement et appareil,
   fonction et appareil, appareil seul ou personnalisé ; `tag_parts` : le seul aspect
-  produit affiche `-X1.6` de `=SD1+F1-X1.6`).
+  produit affiche `-X1.6` de `=SD1+F1-X1.6`). Les aspects restent dans l'ordre où ils sont écrits (`-X1.6+F1` garde son
+  emplacement à la fin), et un repère qui couvrirait un symbole ou un autre repère se
+  déplace vers une place libre autour de son symbole, relié par un trait fin.
   La légende peut être masquée ou placée à droite, à gauche, en haut ou en bas
   (`legend`, `legend_at`) ; une pièce affiche son repère d'emplacement et la
   description de ce repère tirée de la gestion des structures, p. ex. *Cuisine*
@@ -976,6 +986,20 @@ partir de là, et les longueurs de leurs câbles sont celles du routage 3D.
   repères, des pièces et de la légende (en pt, `tag_size`, `room_size`,
   `legend_size`) ainsi que les tailles des symboles d'appareils et d'armoires (en %,
   `symbol_scale`, `cabinet_scale`) se règlent par page.
+  Les appareils se modifient sur la page elle-même (outil *Sélectionner*) : un clic en
+  sélectionne un, le faire glisser le déplace sur un autre mur ou dans une autre pièce
+  du niveau, Suppr le retire de sa pièce (un appareil du schéma y reste, non placé), et
+  un article déposé des articles sur une pièce y est placé – avec les fonctions du
+  volet *Bâtiments* et des commandes `move_installation` et `remove_installation`, de
+  sorte que le schéma, le plan de situation, la vue 3D et les autres pages suivent.
+  *Vue* (`set_page projection=…`) choisit ce que montre la page : le *Plan* (`floor`), seulement ce
+  qui est aux *Plafonds* (`ceiling`), un *Mur d'une pièce* (`wall:+KIT:wall2`, aussi un côté d'un
+  mur intérieur `inner1a` ou l'extérieur d'un mur `outside3`) avec ses portes et fenêtres et les
+  appareils à leur place, chacun avec sa hauteur au-dessus du sol en mm, ou une *Façade*
+  (`facade:front`, `right`, `rear`, `left`) : ce côté du bâtiment vu de l'extérieur, tous les
+  niveaux, les murs extérieurs tournés de ce côté avec leurs portes et fenêtres et ce qui y est
+  monté (luminaires, capteurs, caméras, prises extérieures). Les appareils se déplacent sur le
+  plan.
 
 ![Page de plan d'installation d'un appartement : salles avec portes et fenêtres, appareils avec leurs symboles de plan tournés vers leur mur, repères réduits à l'aspect produit](../../images/installation-plan.png)
 

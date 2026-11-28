@@ -1512,9 +1512,11 @@ impl PanelUi {
                     // Dark patch just in front of the plate.
                     (to3(it.x, it.y + it.h, 0.0), to3(it.x + it.w, it.y, 0.3))
                 } else if it.kind == ItemKind::Cutout && it.face.is_wall() {
-                    // Through the wall, a little proud of both of its surfaces.
+                    // Through the wall, a little proud of both of its surfaces; in a
+                    // wall shared with a neighbouring room through all of it.
                     let n = panel::outward(e, it.face);
-                    let (a, b) = ([0, 1, 2].map(|k| b0[k] - n[k].abs() * 0.5), [0, 1, 2].map(|k| b1[k] + n[k].abs() * 0.5));
+                    let extra = if e.is_room() && it.opening != Opening::Cutout { (panel::opening_depth(prj, k, it.face, it.x + it.w / 2.0) - it.d).max(0.0) } else { 0.0 };
+                    let (a, b) = ([0, 1, 2].map(|j| b0[j] - n[j].abs() * 0.5 + n[j].min(0.0) * extra), [0, 1, 2].map(|j| b1[j] + n[j].abs() * 0.5 + n[j].max(0.0) * extra));
                     (up([a[0], b[1], a[2]]), up([b[0], a[1], b[2]]))
                 } else {
                     (up([b0[0], b1[1], b0[2]]), up([b1[0], b0[1], b1[2]]))

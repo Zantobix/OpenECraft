@@ -8,6 +8,8 @@ use super::*;
 use crate::installation::{self, Placed};
 use crate::model::panel::Opening;
 
+mod elevation;
+
 /// Size of a symbol (radius, mm on the page).
 const SYMBOL: f32 = 2.4;
 /// Width of a column of the legend of the circuits at its text height of 2.2 mm.
@@ -49,18 +51,36 @@ fn plant(pose: &panel::SitePose, q: [f32; 2]) -> [f32; 2] {
     [v[0], v[2]]
 }
 
-pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &Page, level: u64, frame: &crate::frame::PlotFrame) {
-    let a = frame.area();
+/// How an installation plan page is laid out: the rooms of its level, those it is about,
+/// the circuits and the installation devices on the level, the area of the plan and the
+/// box of the legend, and where the plant lies on the page.
+struct Arranged<'a> {
+    building: &'a crate::model::panel::Building,
+    level: &'a crate::model::panel::Level,
+    rooms: Vec<usize>,
+    poses: Vec<panel::SitePose>,
+    circuits: Vec<installation::Circuit>,
+    items: Vec<Placed>,
+    shown: Vec<usize>,
+    lbox: Option<(P, usize, f32)>,
+    bottom: f32,
+    area: (P, P),
+    map: Map,
+    fixed: bool,
+}
+
+/// What a page of level `level` shows instead of a plan.
+enum Empty {
+    NoLevel,
+    NoRooms,
+}
+
+fn arrange<'a>(prj: &'a Project, an: &Analysis, page: &Page, level: u64, frame: &crate::frame::PlotFrame) -> Result<Arranged<'a>, Empty> {
     let layout = &prj.layout;
-    let Some((building, lv)) = layout.buildings.iter().find_map(|b| b.levels.iter().find(|l| l.id == level).map(|l| (b, l))) else {
-        let msg = tr("Level not found - choose another one in the page properties");
-        d.text(a.min + p(15.0, 25.0), msg, 4.0, Anchor::Left, VAnchor::Middle, Ink::Error);
-        return;
-    };
+    let (building, lv) = layout.buildings.iter().find_map(|b| b.levels.iter().find(|l| l.id == level).map(|l| (b, l))).ok_or(Empty::NoLevel)?;
     let rooms = panel::buildings::rooms_on(layout, level);
     if rooms.is_empty() {
-        d.text(a.min + p(15.0, 25.0), tr("No rooms on this level"), 4.0, Anchor::Left, VAnchor::Middle, Ink::Text);
-        return;
+        return Err(Empty::NoRooms);
     }
     let poses = panel::site_poses(prj);
     let view = &page.plan;
@@ -80,23 +100,39 @@ pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &P
     }
     let (lo, hi) = panel::bounds(&pts);
     let circuits: Vec<installation::Circuit> = installation::circuits(prj, &an.netlist, &an.connections, None);
-    let items: Vec<Placed> = installation::items(prj, &poses).into_iter().filter(|i| i.level == level).collect();
-    let circuit_of = |item: u64| circuits.iter().position(|c| c.has_item(item));
+    // The ceiling view: only what is mounted on the ceilings.
+    let ceiling = view.projection == crate::model::PlanProjection::Ceiling;
+    let on_ceiling = |i: &Placed| layout.enclosures[i.room].item(i.item).is_some_and(|it| it.face == Face::Roof);
+    let items: Vec<Placed> = installation::items(prj, &poses).into_iter().filter(|i| i.level == level && (!ceiling || on_ceiling(i))).collect();
     let shown: Vec<usize> = (0..circuits.len()).filter(|k| items.iter().any(|i| about.contains(&i.room) && circuits[*k].has_item(i.item))).collect();
-    // The drawing area, beside or above / below the legend.
+    let (lbox, bottom, (x0, y0, x1, y1)) = legend_layout(view, &circuits, &shown, frame);
+    let real = ((hi[0] - lo[0]).max(1.0), (hi[1] - lo[1]).max(1.0));
+    let fixed = page.scale > 1.0;
+    let n = if fixed { page.scale } else { fit_scale(real, (x1 - x0, y1 - y0)) };
+    let origin = p(x0 + ((x1 - x0) - real.0 / n) / 2.0, y0 + ((y1 - y0) - real.1 / n) / 2.0);
+    let map = Map { lo, origin, n };
+    Ok(Arranged { building, level: lv, rooms, poses, circuits, items, shown, lbox, bottom, area: (p(x0, y0), p(x1, y1)), map, fixed })
+}
+
+/// The legend of the circuits `shown` on a page: its box (top left, columns, column
+/// width) and its lowest line, and the drawing area left beside or above / below it.
+#[allow(clippy::type_complexity)]
+fn legend_layout(view: &PlanView, circuits: &[installation::Circuit], shown: &[usize], frame: &crate::frame::PlotFrame) -> (Option<(P, usize, f32)>, f32, (f32, f32, f32, f32)) {
+    let a = frame.area();
     let legend = view.legend && !shown.is_empty();
     let ls = pt_to_mm(view.legend_size) / 2.2;
     let lw = LEGEND * ls;
     let (mut x0, mut y0, mut x1, mut y1) = (a.min.x + 10.0, a.min.y + 10.0, a.max.x - 10.0, a.max.y - 16.0);
-    let band = |cols: usize| 4.0 * ls + legend_rows(view, &circuits, &shown, cols, lw).iter().sum::<f32>() + 4.0;
+    let band = |cols: usize| 4.0 * ls + legend_rows(view, circuits, shown, cols, lw).iter().sum::<f32>() + 4.0;
     let cols = (((a.max.x - a.min.x) - 16.0) / lw).floor().max(1.0) as usize;
     // A band above or below keeps at least half of the area for the plan; what does not
     // fit into it is noted in the legend.
     let band_max = ((a.max.y - a.min.y) - 26.0) / 2.0;
+    let mut bottom = 0.0;
     let lbox = if !legend {
         None
     } else {
-        Some(match view.legend_at {
+        let (at, cols, b) = match view.legend_at {
             LegendAt::Right => {
                 x1 = a.max.x - lw - 2.0;
                 (p(x1 + 4.0, a.min.y + 10.0), 1, a.max.y - 12.0)
@@ -113,18 +149,104 @@ pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &P
                 y1 = a.max.y - 14.0 - band(cols).min(band_max);
                 (p(a.min.x + 8.0, y1 + 4.0), cols, a.max.y - 12.0)
             }
-        })
+        };
+        bottom = b;
+        Some((at, cols, lw))
     };
-    let real = ((hi[0] - lo[0]).max(1.0), (hi[1] - lo[1]).max(1.0));
-    let fixed = page.scale > 1.0;
-    let n = if fixed { page.scale } else { fit_scale(real, (x1 - x0, y1 - y0)) };
-    let origin = p(x0 + ((x1 - x0) - real.0 / n) / 2.0, y0 + ((y1 - y0) - real.1 / n) / 2.0);
-    let map = Map { lo, origin, n };
+    (lbox, bottom, (x0, y0, x1, y1))
+}
+
+/// Where the plant of an installation plan page lies on it: a point of the page (mm)
+/// in the plant (x, z, mm) and back; only inside the area the plan is drawn in.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct PageMap {
+    lo: [f32; 2],
+    origin: P,
+    /// 1 : `n`.
+    pub n: f32,
+    /// The area of the page the plan is drawn in.
+    pub area: (P, P),
+    /// The level the page shows.
+    pub level: u64,
+}
+
+impl PageMap {
+    pub fn page(&self, q: [f32; 2]) -> P {
+        Map { lo: self.lo, origin: self.origin, n: self.n }.at(q)
+    }
+
+    pub fn plant(&self, at: P) -> [f32; 2] {
+        [self.lo[0] + (at.x - self.origin.x) * self.n, self.lo[1] + (at.y - self.origin.y) * self.n]
+    }
+
+    pub fn inside(&self, at: P) -> bool {
+        at.x >= self.area.0.x && at.x <= self.area.1.x && at.y >= self.area.0.y && at.y <= self.area.1.y
+    }
+}
+
+/// Where the plant lies on installation plan page `page_i`; `None` for other pages and
+/// for a page whose level is gone or has no rooms.
+pub fn page_map(prj: &Project, an: &Analysis, page_i: usize) -> Option<PageMap> {
+    let page = prj.pages.get(page_i)?;
+    let PageKind::InstallationPlan(level) = page.kind else { return None };
+    if page.plan.projection.is_elevation() {
+        return None;
+    }
+    let frame = crate::frame::of_page(prj, page_i);
+    let a = arrange(prj, an, page, level, &frame).ok()?;
+    Some(PageMap { lo: a.map.lo, origin: a.map.origin, n: a.map.n, area: a.area, level })
+}
+
+/// The installation device of installation plan page `page_i` whose symbol is at
+/// `at` (page mm): its room and its item id, the nearest one within the size of a
+/// symbol.
+pub fn device_at(prj: &Project, an: &Analysis, page_i: usize, at: P) -> Option<(usize, u64)> {
+    let m = page_map(prj, an, page_i)?;
+    // What lies outside the drawing area is cut off, not drawn: nothing to pick there.
+    if !m.inside(at) {
+        return None;
+    }
+    let page = &prj.pages[page_i];
+    let reach = SYMBOL * page.plan.symbol_scale.clamp(10.0, 1000.0) / 100.0 * 1.2;
+    let poses = panel::site_poses(prj);
+    installation::items(prj, &poses)
+        .into_iter()
+        .filter(|i| i.level == m.level)
+        .map(|i| (m.page(i.at).dist(at), i.room, i.item))
+        .filter(|(d, _, _)| *d <= reach)
+        .min_by(|a, b| a.0.total_cmp(&b.0))
+        .map(|(_, r, i)| (r, i))
+}
+
+pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &Page, level: u64, frame: &crate::frame::PlotFrame) {
+    if page.plan.projection.is_elevation() {
+        return elevation::draw_page(d, prj, an, page, level, frame);
+    }
+    let a = frame.area();
+    let layout = &prj.layout;
+    let ar = match arrange(prj, an, page, level, frame) {
+        Ok(ar) => ar,
+        Err(Empty::NoLevel) => {
+            let msg = tr("Level not found - choose another one in the page properties");
+            d.text(a.min + p(15.0, 25.0), msg, 4.0, Anchor::Left, VAnchor::Middle, Ink::Error);
+            return;
+        }
+        Err(Empty::NoRooms) => {
+            d.text(a.min + p(15.0, 25.0), tr("No rooms on this level"), 4.0, Anchor::Left, VAnchor::Middle, Ink::Text);
+            return;
+        }
+    };
+    let Arranged { building, level: lv, rooms, poses, circuits, items, shown, lbox, bottom, area: (lo_area, hi_area), map, fixed } = ar;
+    let view = &page.plan;
+    let circuit_of = |item: u64| circuits.iter().position(|c| c.has_item(item));
+    let n = map.n;
+    let (x0, y0, x1, y1) = (lo_area.x, lo_area.y, hi_area.x, hi_area.y);
     // What lies outside the drawing area (other rooms, a large scale) is cut off.
     let mut clip = Clip { d: &mut *d, lo: p(x0, y0), hi: p(x1, y1) };
     let d: &mut dyn Draw = &mut clip;
+    let twins: Vec<(usize, u64)> = panel::twin_openings(prj).into_iter().map(|(_, b)| b).collect();
     for &ri in &rooms {
-        draw_room(d, prj, ri, &poses[ri], &map);
+        draw_room(d, prj, ri, &poses, &twins, &map);
     }
     for &ri in &rooms {
         for ci in panel::cabinets_in(layout, ri) {
@@ -175,7 +297,10 @@ pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &P
         }
     }
     let sym = SYMBOL * view.symbol_scale.clamp(10.0, 1000.0) / 100.0;
-    for i in &items {
+    // What is drawn already: the symbols, then every tag set; a tag that would cover
+    // one of them moves to a free place round its symbol (B-31).
+    let mut taken: Vec<(P, P)> = items.iter().map(|i| { let c = map.at(i.at); (p(c.x - sym, c.y - sym), p(c.x + sym, c.y + sym)) }).collect();
+    for (idx, i) in items.iter().enumerate() {
         let k = circuit_of(i.item);
         let c = map.at(i.at);
         let up = i.facing.map(|f| p(-f[0], -f[1]));
@@ -184,23 +309,71 @@ pub(super) fn draw_page(d: &mut dyn Draw, prj: &Project, an: &Analysis, page: &P
         if view.tags && !i.tag.is_empty() {
             let into = up.map_or(p(0.0, 1.0), |u| p(-u.x, -u.y));
             let reach = if up.is_some() { 2.0 * sym + 1.8 } else { sym + 1.8 };
-            let at = p(c.x + into.x * reach, c.y + into.y * reach);
-            let h = if into.x > 0.5 { Anchor::Left } else if into.x < -0.5 { Anchor::Right } else { Anchor::Center };
             let tag = view.tag_parts.apply(&i.tag);
-            d.text(at, &tag, pt_to_mm(view.tag_size), h, VAnchor::Middle, Ink::Text);
+            let size = pt_to_mm(view.tag_size);
+            let (at, h, moved) = tag_place(c, into, reach, (printed_width(&tag, size), size), &taken, idx);
+            if moved {
+                // A thin line leads from the symbol to a tag moved away from it.
+                let r = (at.x - c.x).hypot(at.y - c.y).max(1e-3);
+                d.line(p(c.x + (at.x - c.x) / r * sym, c.y + (at.y - c.y) / r * sym), at, THIN / 2.0, Ink::Line, false);
+            }
+            taken.push(tag_box(at, h, (printed_width(&tag, size), size)));
+            d.text(at, &tag, size, h, VAnchor::Middle, Ink::Text);
         }
         if let Some(page) = k.and_then(|k| circuits[k].page) {
             d.link(p(c.x - sym, c.y - sym), p(c.x + sym, c.y + sym), page);
         }
     }
     let d = clip.d;
-    if let Some((at, cols, bottom)) = lbox {
-        draw_legend(d, view, &circuits, &shown, (at, cols, lw), bottom);
+    if let Some(lb) = lbox {
+        draw_legend(d, view, &circuits, &shown, lb, bottom);
     }
     let n_text = crate::graphics::scale_text(n);
     let scale = if fixed { tr_fmt!("Scale {}", n_text) } else { tr_fmt!("Scale {} (fitted)", n_text) };
     let caption = format!("{} {}  -  {}", building.name, lv.name, scale);
     d.text(p(a.min.x + 8.0, a.max.y - 7.0), &caption, 3.0, Anchor::Left, VAnchor::Middle, Ink::Text);
+}
+
+/// The area a text `size` (width, height mm) written at `at` with anchor `h` takes
+/// (vertically centred), with a small margin.
+fn tag_box(at: P, h: Anchor, (w, t): (f32, f32)) -> (P, P) {
+    let x0 = match h {
+        Anchor::Left => at.x,
+        Anchor::Right => at.x - w,
+        Anchor::Center => at.x - w / 2.0,
+    };
+    let m = t * 0.15;
+    (p(x0 - m, at.y - t / 2.0 - m), p(x0 + w + m, at.y + t / 2.0 + m))
+}
+
+fn overlaps(a: (P, P), b: (P, P)) -> bool {
+    a.0.x < b.1.x && b.0.x < a.1.x && a.0.y < b.1.y && b.0.y < a.1.y
+}
+
+/// Where the tag of a symbol at `c` goes: `reach` away in direction `into` (away from
+/// its wall) when that place is free of `taken`, otherwise the first free place of the
+/// other directions round the symbol, further out step by step; the place of `into`
+/// when none is free. Its own symbol, `taken[own]`, does not count. Gives the point,
+/// its anchor and whether it moved.
+fn tag_place(c: P, into: P, reach: f32, size: (f32, f32), taken: &[(P, P)], own: usize) -> (P, Anchor, bool) {
+    let anchor = |d: P| if d.x > 0.5 { Anchor::Left } else if d.x < -0.5 { Anchor::Right } else { Anchor::Center };
+    let place = |d: P, r: f32| (p(c.x + d.x * r, c.y + d.y * r), anchor(d));
+    let first = place(into, reach);
+    let free = |(at, h): (P, Anchor)| !taken.iter().enumerate().any(|(k, t)| k != own && overlaps(*t, tag_box(at, h, size)));
+    if free(first) {
+        return (first.0, first.1, false);
+    }
+    let turns = [into, p(-into.x, -into.y), p(into.y, -into.x), p(-into.y, into.x), p(0.0, 1.0), p(0.0, -1.0), p(1.0, 0.0), p(-1.0, 0.0)];
+    for step in 0..4 {
+        let r = reach + step as f32 * (size.1 * 1.4);
+        for d in turns {
+            let at = place(d, r);
+            if free(at) {
+                return (at.0, at.1, (at.0.x - first.0.x).abs() + (at.0.y - first.0.y).abs() > 0.01);
+            }
+        }
+    }
+    (first.0, first.1, false)
 }
 
 /// The text of the legend line of circuit `c`: its protective device and function text.
@@ -300,36 +473,58 @@ fn draw_legend(d: &mut dyn Draw, view: &PlanView, circuits: &[installation::Circ
 }
 
 /// The walls of a room with gaps for its doors and windows, the leaves of the doors
-/// and the panes of the windows, and its inner walls.
-fn draw_room(d: &mut dyn Draw, prj: &Project, ri: usize, pose: &panel::SitePose, map: &Map) {
+/// and the panes of the windows, and its inner walls. A wall shared with a neighbouring
+/// room fills the space between both rooms (each draws its half) and opens for the
+/// doors and windows of both sides; a door or window is drawn once, by its room, through
+/// the whole wall.
+fn draw_room(d: &mut dyn Draw, prj: &Project, ri: usize, poses: &[panel::SitePose], twins: &[(usize, u64)], map: &Map) {
     let e = &prj.layout.enclosures[ri];
+    let pose = &poses[ri];
     // Rooms carry thin walls of their own; on paper a wall is at least a line pair.
-    let t = e.wall().max(WALL * map.n);
+    let least = WALL * map.n;
+    let t = e.wall().max(least);
     let to_page = |q: [f32; 2]| map.at(plant(pose, q));
     let walls = panel::walls(e);
+    let shared = panel::shared_walls(prj, poses, ri);
     for (n, w) in walls.iter().enumerate() {
         let (s, r, nm) = (w.start(), w.right(), w.normal);
         let along = |u: f32, into: f32| to_page([s[0] + r[0] * u + nm[0] * into, s[1] + r[1] * u + nm[1] * into]);
         let len = w.length();
-        let mut gaps: Vec<&PanelItem> = e.items.iter().filter(|it| it.face == Face::Wall(n as u16) && matches!(it.opening, Opening::Door | Opening::Window)).collect();
-        gaps.sort_by(|a, b| a.x.total_cmp(&b.x));
+        let here: Vec<&panel::SharedWall> = shared.iter().filter(|sw| sw.wall == n as u16).collect();
+        // How thick the wall is at a place along it: the whole space to the neighbour on
+        // a shared stretch, its own thickness elsewhere.
+        let full = |u: f32| here.iter().find(|sw| u >= sw.from && u <= sw.to).map_or(t, |sw| sw.gap.max(least));
+        let gaps: Vec<panel::WallOpening> = panel::wall_openings(prj, &shared, ri, n as u16).into_iter().filter(|o| o.opening != Opening::Penetration).collect();
         // The pieces of wall between the openings, at the corners as far as the
-        // thickness of the walls.
+        // thickness of the walls, split where a shared stretch begins or ends.
+        let mut cuts: Vec<f32> = here.iter().flat_map(|sw| [sw.from, sw.to]).collect();
+        let mut pieces: Vec<(f32, f32)> = Vec::new();
         let mut from = -t;
         for g in &gaps {
-            band(d, &along, from, g.x.max(from), t);
-            from = g.x + g.w;
+            pieces.push((from, g.x.max(from)));
+            from = from.max(g.x + g.w);
         }
-        band(d, &along, from, len + t, t);
-        for g in &gaps {
-            let (u0, u1) = (g.x, g.x + g.w);
+        pieces.push((from, len + t));
+        cuts.sort_by(f32::total_cmp);
+        for (u0, u1) in pieces {
+            let mut a = u0;
+            for c in cuts.iter().copied().filter(|c| *c > u0 && *c < u1).chain([u1]) {
+                let m = (a + c) / 2.0;
+                let thick = if here.iter().any(|sw| m >= sw.from && m <= sw.to) { full(m) / 2.0 } else { t };
+                band(d, &along, a, c, thick);
+                a = c;
+            }
+        }
+        for g in gaps.iter().filter(|g| g.own && !twins.contains(&(ri, g.item))) {
+            let Some(it) = e.item(g.item) else { continue };
+            let thick = full(g.x + g.w / 2.0);
             match g.opening {
                 Opening::Window => {
-                    for into in [0.0, -t / 2.0, -t] {
-                        d.line(along(u0, into), along(u1, into), THIN, Ink::Line, false);
+                    for into in [0.0, -thick / 2.0, -thick] {
+                        d.line(along(g.x, into), along(g.x + g.w, into), THIN, Ink::Line, false);
                     }
                 }
-                _ => door(d, &along, g, t),
+                _ => door(d, &along, it, thick),
             }
         }
     }

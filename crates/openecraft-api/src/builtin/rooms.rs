@@ -45,6 +45,7 @@ pub static COMMANDS: &[Spec] = &[
             optional("angle", Kind::Num, tr_const!("Turn about the vertical in degrees, counter-clockwise seen from above")),
             optional("building", Kind::Str, tr_const!("Building whose level the room is on; x and z are then measured in its floor plan")),
             optional("level", Kind::Str, tr_const!("Level: its name or number (1 = the lowest)")),
+            optional("wall_thickness", Kind::Num, WALL_THICKNESS),
         ],
         run: add_room,
     },
@@ -59,6 +60,7 @@ pub static COMMANDS: &[Spec] = &[
             optional("x", Kind::Num, tr_const!("Rear left corner in the plant, x in mm")),
             optional("z", Kind::Num, tr_const!("Rear left corner in the plant, z (towards the front) in mm")),
             optional("angle", Kind::Num, tr_const!("Turn about the vertical in degrees, counter-clockwise seen from above")),
+            optional("wall_thickness", Kind::Num, WALL_THICKNESS),
         ],
         run: set_room,
     },
@@ -229,9 +231,12 @@ fn place_arg(a: &Args, old: Option<SitePlace>) -> Option<SitePlace> {
     Some(SitePlace { x: a.num("x").unwrap_or(old.x), z: a.num("z").unwrap_or(old.z), angle: a.num("angle").unwrap_or(old.angle) })
 }
 
+const WALL_THICKNESS: &str = tr_const!("Thickness of its walls in mm (0: thin walls); a wall shared with a neighbouring room is as thick as the space between them");
+
 fn room_json(prj: &Project, ri: usize) -> Value {
     let e = &prj.layout.enclosures[ri];
     let poses = panel::site_poses(prj);
+    let shared = panel::shared_walls(prj, &poses, ri);
     let cabinets: Vec<Value> = panel::cabinets_in(&prj.layout, ri)
         .into_iter()
         .filter_map(|ci| {
@@ -242,7 +247,21 @@ fn room_json(prj: &Project, ri: usize) -> Value {
     let walls: Vec<Value> = panel::walls(e)
         .iter()
         .enumerate()
-        .map(|(i, w)| json!({ "wall": panel::room_face_key(e, panel::Face::Wall(i as u16)), "from": w.a, "to": w.b, "length": w.length() }))
+        .map(|(i, w)| {
+            let mut v = json!({ "wall": panel::room_face_key(e, panel::Face::Wall(i as u16)), "from": w.a, "to": w.b, "length": w.length() });
+            let with: Vec<Value> = shared
+                .iter()
+                .filter(|sw| sw.wall == i as u16)
+                .map(|sw| {
+                    let o = &prj.layout.enclosures[sw.other];
+                    json!({ "room": o.name, "wall": panel::room_face_key(o, panel::Face::Wall(sw.other_wall)), "from": sw.from, "to": sw.to, "thickness": sw.gap })
+                })
+                .collect();
+            if !with.is_empty() {
+                v["shared_with"] = json!(with);
+            }
+            v
+        })
         .collect();
     let inner: Vec<Value> = e
         .inner_walls
@@ -289,6 +308,7 @@ fn room_json(prj: &Project, ri: usize) -> Value {
         "level": level.map(|l| l.1),
         "size": { "width": e.width, "depth": e.depth, "height": e.height },
         "outline": panel::outline(e),
+        "wall_thickness": e.wall(),
         "walls": walls,
         "inner_walls": inner,
         "at": poses[ri].at,
@@ -317,7 +337,14 @@ fn resize(prj: &mut Project, ri: usize, a: &Args) -> Result<(), String> {
             return Err(tr_fmt!("Width, depth and height of a room are at least {} mm", MIN_ROOM));
         }
     }
+    let thickness = a.num("wall_thickness");
+    if thickness.is_some_and(|t| !(0.0..=panel::MAX_WALL_THICKNESS).contains(&t)) {
+        return Err(tr_fmt!("The walls of a room are 0 to {} mm thick", panel::MAX_WALL_THICKNESS));
+    }
     let e = &mut prj.layout.enclosures[ri];
+    if let Some(t) = thickness {
+        e.wall_thickness = t;
+    }
     if a.num("width").is_some() || a.num("depth").is_some() {
         e.outline.clear();
     }

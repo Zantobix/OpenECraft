@@ -363,6 +363,14 @@ Eigenschaften des Raums (Befehle `set_room_outline`, `set_room_wall`).
   gestrichelt, wenn der Flügel vom Betrachter weg öffnet) oder einen Pfeil. Die Prüfung
   hält den Aufschlag einer nach innen öffnenden Tür und den Weg einer Schiebetür vor
   der Wand frei von Schränken.
+- **Wanddicke und gemeinsame Wände:** *Wanddicke* in den Eigenschaften des Raums
+  (`set_room wall_thickness=…`, 0 für dünne Wände) ist die Dicke seiner Wände außerhalb
+  des Umrisses. Zwei Räume einer Ebene, deren Wände sich mit höchstens 500 mm Abstand
+  gegenüberliegen, teilen sich dieses Stück Wand, so dick wie der Abstand zwischen ihnen
+  (`list_rooms` führt es unter `shared_with`): Eine Tür, ein Fenster oder ein
+  Wanddurchbruch in einer Seite geht ganz hindurch, Installationsplan-Seiten zeichnen
+  die Wand zwischen beiden Räumen voll und die Tür einmal, und die Prüfung meldet eine
+  Tür oder ein Fenster, das in beiden Seiten an derselben Stelle angelegt ist.
 - **Schränke** (ihre Anreihungen) stehen darin an einem Platz des Grundrisses, werden
   im Grundriss dorthin gezogen (R dreht den ausgewählten um seine Mitte) und bewegen
   sich mit dem Raum. Ein Schrank außerhalb des Raums, quer über einer Wand, in einer
@@ -941,7 +949,10 @@ von dort gelesen, und die Längen ihrer Kabel sind die der 3D-Verlegung.
   `connections`, `room_names`), und die Kennzeichen auf einige ihrer Aspekte kürzen
   (*BMK anzeigen als*: vollständige BMK, Ort und Gerät, Funktion und Gerät, nur Gerät
   oder benutzerdefiniert; `tag_parts`: nur der Produktaspekt zeigt `-X1.6` von
-  `=SD1+F1-X1.6`).
+  `=SD1+F1-X1.6`). Die Aspekte bleiben in der Reihenfolge, in der sie geschrieben sind
+  (`-X1.6+F1` behält seinen Ort hinten), und ein Kennzeichen, das ein Symbol oder ein
+  anderes Kennzeichen verdecken würde, rückt an einen freien Platz um sein Symbol, mit
+  einer dünnen Linie dorthin.
   Die Legende lässt sich ausschalten oder rechts, links, oben oder unten anordnen
   (`legend`, `legend_at`); ein Raum zeigt sein Ortskennzeichen und dessen Beschreibung
   aus der Strukturkennzeichenverwaltung, z. B. *Küche* (*Beschreibung* in den
@@ -950,6 +961,21 @@ von dort gelesen, und die Längen ihrer Kabel sind die der 3D-Verlegung.
   und Legende (in pt, `tag_size`, `room_size`, `legend_size`) sowie die Größen der
   Geräte- und Schranksymbole (in %, `symbol_scale`, `cabinet_scale`) werden je Seite
   eingestellt.
+  Die Geräte werden auf der Seite selbst bearbeitet (Werkzeug *Auswählen*): Ein Klick
+  wählt eines aus, Ziehen verschiebt es an eine andere Wand oder in einen anderen Raum
+  der Ebene, Entf nimmt es aus seinem Raum (ein Gerät des Schaltplans bleibt dort,
+  nicht platziert), und ein aus den Artikeln auf einen Raum gezogener Artikel wird dort
+  eingesetzt – mit den Funktionen des Fensters *Gebäude* und der Befehle
+  `move_installation` und `remove_installation`, so dass Schaltplan, Lageplan,
+  3D-Ansicht und die anderen Seiten folgen.
+  *Ansicht* (`set_page projection=…`) wählt, was die Seite zeigt: den *Grundriss* (`floor`), nur
+  was an den *Decken* ist (`ceiling`), eine *Wand eines Raums* (`wall:+KIT:wall2`, auch eine Seite
+  einer Innenwand `inner1a` oder die Außenseite einer Wand `outside3`) mit ihren Türen und
+  Fenstern und den Geräten an ihrem Platz, jedes mit seiner Höhe über dem Boden in mm, oder eine
+  *Fassade* (`facade:front`, `right`, `rear`, `left`): diese Seite des Gebäudes von außen, alle
+  Ebenen, die Außenwände in diese Richtung mit ihren Türen und Fenstern und dem, was an ihnen
+  montiert ist (Leuchten, Sensoren, Kameras, Außensteckdosen). Verschoben werden Geräte im
+  Grundriss.
 
 ![Installationsplan-Seite einer Wohnung: Räume mit Türen und Fenstern, Betriebsmittel mit ihren zur Wand gedrehten Plansymbolen, Kennzeichen auf den Produktaspekt gekürzt](../../images/installation-plan.png)
 

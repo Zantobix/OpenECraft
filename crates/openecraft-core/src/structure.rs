@@ -490,7 +490,7 @@ pub struct Template {
 }
 
 use Aspect::{Function as F, Installation as I, Location as L, Product as P};
-pub use crate::model::structure::{Aspect, BoxCorner, BoxLine, Dt, Entry, StructureBox, Structures, WorkArea};
+pub use crate::model::structure::{tag_segments, Aspect, BoxCorner, BoxLine, Dt, Entry, StructureBox, Structures, WorkArea};
 
 pub static TEMPLATES: &[Template] = &[
     Template { name: tr_const!("Function and location"), aspects: &[F, L], entries: &[] },

@@ -185,7 +185,7 @@ pasos siguientes se pueden probar en él.
 
 ## 10. Diseño del armario
 
-- El espacio de trabajo *Diseño del armario* (*Ver › Espacios de trabajo* o el selector
+- El espacio de trabajo *Disposición y edificios* (*Ver › Espacios de trabajo* o el selector
   de la barra de acceso rápido) muestra la pestaña *Espacio de montaje* de la cinta:
   armarios, placas de montaje, carriles, canaletas, pletinas, recortes y los
   dispositivos del esquema; la vista 3D muestra el armario con la puerta, los hilos

@@ -5,6 +5,23 @@ its GitHub release ([docs/releasing.md](docs/releasing.md)).
 
 ## [0.1.4] - unreleased
 
+- **Buildings: shared walls and editing on the installation plan page:** a room has a
+  *Wall thickness* (`set_room wall_thickness=`); two rooms whose walls face each other
+  at most 500 mm apart share one wall, as thick as the space between them: a door,
+  window or wall penetration in one side goes through all of it, installation plan
+  pages draw the wall between both rooms solid and the door once, and the check
+  reports a door entered in both rooms at the same place. On an installation plan
+  page the devices are selected, dragged onto another wall or into another room, taken
+  out with Del (the device of the schematic stays) and put in by dragging a part onto
+  a room (`move_installation`, `remove_installation`). Tags shortened in *Tags shown
+  as* keep their aspects in the order they are written in (`+KIT=SD1-X1`, `-X1.6+F1`),
+  and a tag that would cover a symbol or another tag moves to a free place round its
+  symbol. *View* in the page properties (`set_page projection=`) shows the floor plan, only
+  the ceilings, one wall of a room with the devices at their heights (inside, a side of an
+  inner wall or the outside), or a facade: a side of the building from outside, every level,
+  with the lights, sensors and other devices mounted on it. The workspace *Panel layout* is called *Layout and buildings*
+  ([#277](https://github.com/nilres/OpenECraft/issues/277),
+  [rooms](docs/features/panel-layout.md#rooms)).
 - **Exchange with KiCad and FreeCAD:** a board designed in KiCad becomes a device of
   the project from its netlist (*File › Import › Import KiCad board as device…*,
   `import_kicad`): a device box with a connection point for every pin of its

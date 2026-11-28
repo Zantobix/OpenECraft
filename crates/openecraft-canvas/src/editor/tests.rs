@@ -1477,3 +1477,49 @@ fn ctrl_click_on_a_cross_reference_leads_to_the_counterpart() {
     assert_eq!(press(&mut ed, &mut prj, Modifiers::default()), None, "a plain click only selects");
     assert_eq!(press(&mut ed, &mut prj, Modifiers::COMMAND | Modifiers::CTRL), Some((1, 8)));
 }
+
+/// The office building example with an installation plan page of its ground level.
+fn office_plan() -> (Project, usize, u64) {
+    let mut prj = openecraft_core::sample::example("office_building").expect("example");
+    let b = prj.layout.buildings.iter().position(|b| b.name == "+B3").expect("building");
+    let level = prj.layout.buildings[b].levels[0].id;
+    let id = prj.new_id();
+    prj.pages.push(Page::new(id, "IP1", "", PageKind::InstallationPlan(level)));
+    let i = prj.pages.len() - 1;
+    (prj, i, level)
+}
+
+#[test]
+fn a_plan_selection_belongs_to_its_page() {
+    let mut plan = PlanEdit::default();
+    plan.on_page(7);
+    plan.selected = Some((1, 42));
+    plan.on_page(7);
+    assert_eq!(plan.selected, Some((1, 42)), "kept on the same page");
+    plan.on_page(8);
+    assert_eq!(plan.selected, None, "another page: Delete must not take out what is not shown");
+}
+
+#[test]
+fn a_part_dropped_on_a_plan_page_goes_into_the_room_there() {
+    let (mut prj, i, level) = office_plan();
+    let an = Analysis::with_builtin(&prj);
+    let map = openecraft_core::render::installation_plan::page_map(&prj, &an, i).expect("plan page");
+    let ri = openecraft_core::panel::buildings::rooms_on(&prj.layout, level)[0];
+    let e = &prj.layout.enclosures[ri];
+    let (lo, hi) = openecraft_core::panel::bounds(&openecraft_core::panel::outline(e));
+    // Near the middle of its first wall, inside the room.
+    let w = openecraft_core::panel::walls(e)[0];
+    let q = [(w.a[0] + w.b[0]) / 2.0 + w.normal[0] * 150.0, (w.a[1] + w.b[1]) / 2.0 + w.normal[1] * 150.0];
+    assert!(q[0] > lo[0] && q[0] < hi[0] && q[1] > lo[1] && q[1] < hi[1]);
+    let v = openecraft_core::panel::site_poses(&prj)[ri].apply([q[0], 0.0, q[1]]);
+    let at = map.page([v[0], v[2]]);
+    let before = prj.layout.enclosures[ri].items.len();
+    let mut ed = Editor::default();
+    let msg = ed.plan_put_in(&mut prj, &map, "GEN.SOCKET-F-UP", at);
+    assert_eq!(prj.layout.enclosures[ri].items.len(), before + 1, "{msg}");
+    assert!(ed.plan.selected.is_some_and(|(r, _)| r == ri));
+    // Not a device of the installation: refused, nothing added.
+    let msg = ed.plan_put_in(&mut prj, &map, "GEN.MCB-1P-C6", at);
+    assert_eq!(prj.layout.enclosures[ri].items.len(), before + 1, "{msg}");
+}

@@ -507,3 +507,92 @@ fn doors_open_either_way_or_slide() {
     assert_eq!((d.x, d.w, opening_sill(room, d), d.swing), (500.0, 900.0, 0.0, Swing::SlideRight));
     assert!(set_opening(&mut prj, r, 999_999, Some(Swing::LeftIn), None, None, None).is_err());
 }
+
+/// Two rooms side by side, `gap` mm apart: +R1 4 × 3 m, +R2 3 × 3 m to its right.
+fn two_rooms(gap: f32) -> Project {
+    let mut prj = Project::default();
+    for (name, w, x) in [("+R1", 4000.0, 0.0), ("+R2", 3000.0, 4000.0 + gap)] {
+        let mut room = new_room(&mut prj, name, w, 3000.0, 2800.0);
+        room.site = Some(SitePlace { x, z: 0.0, angle: 0.0 });
+        prj.layout.enclosures.push(room);
+    }
+    prj
+}
+
+#[test]
+fn walls_facing_each_other_are_one_shared_wall() {
+    let prj = two_rooms(115.0);
+    let poses = site_poses(&prj);
+    let shared = shared_walls(&prj, &poses, 0);
+    assert_eq!(shared.len(), 1, "{shared:?}");
+    let sw = shared[0];
+    assert_eq!((sw.wall, sw.other, sw.other_wall), (1, 1, 3));
+    assert!((sw.gap - 115.0).abs() < 0.01 && sw.from.abs() < 0.01 && (sw.to - 3000.0).abs() < 0.01);
+    // Seen from the other room it is the same wall.
+    let back = shared_walls(&prj, &poses, 1);
+    assert_eq!((back[0].wall, back[0].other, back[0].other_wall), (3, 0, 1));
+    // Too far apart: walls of their own.
+    let prj = two_rooms(SHARED_WALL_MAX + 100.0);
+    assert!(shared_walls(&prj, &site_poses(&prj), 0).is_empty());
+}
+
+#[test]
+fn a_door_belongs_to_the_whole_shared_wall() {
+    let mut prj = two_rooms(115.0);
+    let door = add_opening(&mut prj, 0, Opening::Door, Face::Wall(1), Some(1000.0), Some((900.0, 2100.0)), None).unwrap();
+    let poses = site_poses(&prj);
+    // The neighbour's side of the wall has the door at the mirrored place.
+    let theirs = wall_openings(&prj, &shared_walls(&prj, &poses, 1), 1, 3);
+    assert_eq!(theirs.len(), 1);
+    let o = theirs[0];
+    assert_eq!((o.room, o.item, o.own, o.opening), (0, door, false, Opening::Door));
+    assert!((o.x - 1100.0).abs() < 0.01 && (o.w - 900.0).abs() < 0.01, "{o:?}");
+    assert!(twin_openings(&prj).is_empty());
+    // It goes through all of the shared wall (the 3D view draws it so).
+    let it = prj.layout.enclosures[0].item(door).unwrap();
+    assert!((it.d - 115.0).abs() < 0.01 && (it.z + 115.0).abs() < 0.01, "{it:?}");
+    // The same door entered in the other room too is reported.
+    let again = add_opening(&mut prj, 1, Opening::Door, Face::Wall(3), Some(1100.0), Some((900.0, 2100.0)), None).unwrap();
+    assert_eq!(twin_openings(&prj), [((0, door), (1, again))]);
+    let msgs: Vec<String> = crate::panel::validate(&prj, &prj.layout.enclosures[0]).into_iter().map(|f| f.message).collect();
+    assert!(msgs.iter().any(|m| m.contains("same opening")), "{msgs:?}");
+}
+
+#[test]
+fn rooms_have_a_wall_thickness_of_their_own() {
+    let mut prj = two_rooms(600.0);
+    assert_eq!(prj.layout.enclosures[0].wall(), ROOM_WALL);
+    prj.layout.enclosures[0].wall_thickness = 240.0;
+    assert_eq!(prj.layout.enclosures[0].wall(), 240.0);
+    let json = serde_json::to_string(&prj.layout.enclosures[1]).unwrap();
+    assert!(!json.contains("wall_thickness"), "left out when not set");
+    let back: Enclosure = serde_json::from_str(&serde_json::to_string(&prj.layout.enclosures[0]).unwrap()).unwrap();
+    assert_eq!(back.wall_thickness, 240.0);
+}
+
+#[test]
+fn rooms_drawn_wall_to_wall_share_the_wall() {
+    let mut prj = two_rooms(0.0);
+    let shared = shared_walls(&prj, &site_poses(&prj), 0);
+    assert_eq!(shared.len(), 1, "touching rooms share their wall");
+    // A neighbour added after the door: the door reaches through to it (3D view).
+    let mut prj2 = two_rooms(150.0);
+    prj2.layout.enclosures.truncate(1);
+    let door = add_opening(&mut prj2, 0, Opening::Door, Face::Wall(1), Some(1000.0), None, None).unwrap();
+    assert_eq!(opening_depth(&prj2, 0, Face::Wall(1), 1500.0), ROOM_WALL);
+    let mut r2 = new_room(&mut prj2, "+R2", 3000.0, 3000.0, 2800.0);
+    r2.site = Some(SitePlace { x: 4150.0, z: 0.0, angle: 0.0 });
+    prj2.layout.enclosures.push(r2);
+    assert_eq!(opening_depth(&prj2, 0, Face::Wall(1), 1500.0), 150.0);
+    let _ = (door, &mut prj);
+}
+
+#[test]
+fn twins_of_a_room_are_its_part_of_all_twins() {
+    let mut prj = two_rooms(115.0);
+    let a = add_opening(&mut prj, 0, Opening::Window, Face::Wall(1), Some(1000.0), Some((900.0, 1200.0)), None).unwrap();
+    let b = add_opening(&mut prj, 1, Opening::Window, Face::Wall(3), Some(1100.0), Some((900.0, 1200.0)), None).unwrap();
+    let poses = site_poses(&prj);
+    assert_eq!(twins_of(&prj, &poses, 0), [((0, a), (1, b))]);
+    assert!(twins_of(&prj, &poses, 1).is_empty(), "reported once, by the lower room");
+}

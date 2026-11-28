@@ -62,6 +62,7 @@ pub use rooms::{
     add_inner_wall, add_opening, add_pipe_run, add_wall_profile, pipe_run_offset, pipe_run_on_face, PIPE_RUN_WIDTH, inner_sides, moved_inner_wall, remove_inner_wall, side, INNER_WALL, door_zone, opening_sill, set_opening, SLIDE_DEPTH, entries, entry_direction, entry_point, ENTRY_SILL, ENTRY_SIZE, DOOR_SIZE, WINDOW_SILL, WINDOW_SIZE, bounds, cabinet_problems, cabinets_in, check_outline, floor_cells, floor_footprint, floor_problems, footprint, inside_outline, mount_ok, mount_on_wall, moved_wall, new_room, normalize_outline, outline, room_face_from_key, room_face_key, room_face_title, room_faces,
     room_of, room_place, rooms, set_outline, turned_place, set_room, stand_on_floor, at_mounting_height, stands_inside, wall_length_set, walls, Wall, MIN_WALL, ROOM_WALL,
     penetration_link, wall_links, WallLink, Via, MAX_WALL_THICKNESS, PENETRATION_SIZE, PENETRATION_TOP, is_outside, outside_building, through_wall,
+    opening_depth, shared_walls, twin_openings, twins_of, wall_openings, SharedWall, WallOpening, SHARED_WALL_MAX,
 };
 pub(crate) use rooms::inner_footprint;
 pub use system::{apply_system, components, maker_model, outward, sync_part, system_of_part, wall_box, Build, Component, Role, System, SYSTEMS};
@@ -390,6 +391,7 @@ impl Default for Enclosure {
             outline: Vec::new(),
             inner_walls: Vec::new(),
             level: 0,
+            wall_thickness: 0.0,
         }
     }
 }
@@ -500,7 +502,7 @@ impl Enclosure {
     /// Sheet thickness of walls and door.
     pub fn wall(&self) -> f32 {
         if self.is_room() {
-            return ROOM_WALL;
+            return if self.wall_thickness > 0.0 { self.wall_thickness } else { ROOM_WALL };
         }
         self.system().map(|s| s.data.wall).unwrap_or(WALL)
     }

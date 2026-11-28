@@ -43,7 +43,7 @@ impl Workspace {
     pub fn title(self) -> &'static str {
         match self {
             Workspace::Schematic => tr_const!("Schematic"),
-            Workspace::Panel => tr_const!("Panel layout"),
+            Workspace::Panel => tr_const!("Layout and buildings"),
             Workspace::Wiring => tr_const!("Wiring"),
             Workspace::Mounting => tr_const!("Mounting"),
             Workspace::Review => tr_const!("Review"),

@@ -258,7 +258,7 @@ pub fn menu_groups() -> Vec<(&'static str, Vec<Pane>)> {
     vec![
         (tr_const!("Navigators"), LeftTab::ALL.map(Pane::Navigator).to_vec()),
         (tr_const!("Page, Insert center and properties"), vec![Pane::Page, Pane::Library, Pane::Properties, Pane::Tool(T::Find)]),
-        (tr_const!("Panel layout"), vec![Pane::LayoutSpaces, Pane::LayoutView, Pane::LayoutProperties, Pane::Tool(T::Buildings)]),
+        (tr_const!("Layout and buildings"), vec![Pane::LayoutSpaces, Pane::LayoutView, Pane::LayoutProperties, Pane::Tool(T::Buildings)]),
         (tr_const!("Wiring and mounting"), vec![Pane::WiringChecklist, Pane::WiringWorkbench]),
         (tr_const!("Devices"), tools(&[T::TerminalStrips, T::Plugs, T::PlcOverview, T::PlcHardware, T::Structure, T::Preplanning, T::SingleLine])),
         (tr_const!("Connections"), tools(&[T::Cables, T::Potentials, T::Harnesses, T::FieldWiring])),

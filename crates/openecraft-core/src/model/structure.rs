@@ -121,3 +121,39 @@ pub struct Dt {
     #[serde(skip_serializing_if = "String::is_empty")]
     pub name: String,
 }
+
+/// The aspects of a tag in the order they are written in, each with its prefix sign:
+/// `+KIT=SD1-X1` → `+KIT`, `=SD1`, `-X1`; `-X1.6+F1` → `-X1.6`, `+F1`. A sign starts
+/// a new aspect only after the first character of an identifier, so a tag may begin
+/// with any of them; the last `-` part is the device name (see `Dt::parse`).
+pub fn tag_segments(tag: &str) -> Vec<(Aspect, &str)> {
+    let tag = tag.trim();
+    let mut out: Vec<(Aspect, &str)> = Vec::new();
+    let (mut start, mut aspect) = (0, None::<Aspect>);
+    let b = tag.as_bytes();
+    let mut i = 0;
+    while i < b.len() {
+        let sign = match b[i] {
+            b'=' => Some((Aspect::Function, 1)),
+            b'+' if b.get(i + 1) == Some(&b'+') => Some((Aspect::Installation, 2)),
+            b'+' => Some((Aspect::Location, 1)),
+            b'-' => Some((Aspect::Product, 1)),
+            _ => None,
+        };
+        // A sign right after another one belongs to the identifier (`--1`).
+        match sign {
+            Some((a, len)) if i == 0 || i > start + aspect.map_or(0, |a| if a == Aspect::Installation { 2 } else { 1 }) => {
+                if i > start {
+                    out.push((aspect.unwrap_or(Aspect::Product), &tag[start..i]));
+                }
+                (start, aspect) = (i, Some(a));
+                i += len;
+            }
+            _ => i += 1,
+        }
+    }
+    if start < tag.len() {
+        out.push((aspect.unwrap_or(Aspect::Product), &tag[start..]));
+    }
+    out
+}

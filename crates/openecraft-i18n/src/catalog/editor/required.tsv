@@ -340,6 +340,7 @@ Card	Karte	Carte	Tarjeta
 Cards without station: {}	Karten ohne Station: {}	Cartes sans station : {}	Tarjetas sin estación: {}
 Cavity plug	Blindstopfen	Bouchon d'alvéole	Tapón de cavidad
 Ceiling lights, downlights and wall lights	Deckenleuchten, Einbaustrahler und Wandleuchten	Plafonniers, spots encastrés et appliques	Luminarias de techo, downlights y apliques
+Ceilings	Decken	Plafonds	Techos
 Cell temperatures of the strings	Zelltemperaturen der Strings	Températures de cellule des chaînes	Temperaturas de célula de los strings
 Centre	Mitte	Centre	Centro
 Centre curve	Mittellinie	Ligne médiane	Línea central
@@ -942,6 +943,7 @@ Extend guides to canvas edges	Führungslinien bis zu den Zeichenflächenrändern
 Extent of the floor plan; change it by its walls	Ausdehnung des Grundrisses; über seine Wände ändern	Étendue du plan ; à modifier par ses murs	Extensión del plano; se cambia mediante sus paredes
 Extras	Extras	Extras	Extras
 FOR APPROVAL	ZUR FREIGABE	POUR APPROBATION	PARA APROBACIÓN
+Facade	Fassade	Façade	Fachada
 Facing	Ausrichtung	Orientation	Orientación
 Fans, filters, cable glands, lights, handles: choose one, then click where it goes	Lüfter, Filter, Kabelverschraubungen, Leuchten, Griffe: eins wählen, dann an die Einbaustelle klicken	Ventilateurs, filtres, presse-étoupes, éclairages, poignées : en choisir un, puis cliquer à son emplacement	Ventiladores, filtros, prensaestopas, luces, manetas: elija uno y haga clic donde va
 Fastening hardware in the bill of materials	Befestigungsmaterial in der Stückliste	Visserie de fixation dans la nomenclature	Tornillería de fijación en la lista de materiales
@@ -1226,6 +1228,7 @@ Inside temperature	Innentemperatur	Température intérieure	Temperatura interior
 Inside without cooling	Innen ohne Kühlung	Intérieur sans refroidissement	Interior sin refrigeración
 Installation conditions of the conductors	Verlegebedingungen der Leiter	Conditions de pose des conducteurs	Condiciones de instalación de los conductores
 Installation page {}	Installationsseite {}	Page d'installation {}	Página de instalación {}
+Installation plan – drag a device to move it, Delete takes it out of its room, drop a part from the parts onto a room to put it in; the rest via the page properties	Installationsplan – ein Gerät ziehen, um es zu verschieben, Entf nimmt es aus dem Raum, einen Artikel aus den Artikeln auf einen Raum ziehen, um ihn einzusetzen; alles andere über die Seiteneigenschaften	Plan d'installation – faites glisser un appareil pour le déplacer, Suppr le retire de sa pièce, déposez un article des articles sur une pièce pour l'y placer ; le reste via les propriétés de la page	Plano de instalación – arrastre un aparato para moverlo, Supr lo retira de su habitación, suelte un artículo de los artículos sobre una habitación para colocarlo; lo demás en las propiedades de la página
 Installation zones	Installationszonen	Zones d'installation	Zonas de instalación
 Installed plugins	Installierte Plugins	Plugins installés	Plugins instalados
 Instead of user name and password	Statt Benutzername und Passwort	Au lieu du nom d'utilisateur et du mot de passe	En lugar de nombre de usuario y contraseña
@@ -1294,6 +1297,7 @@ Layer: {}	Ebene: {}	Calque : {}	Capa: {}
 Layers of graphics, texts, dimensions and images	Ebenen für Grafik, Texte, Bemaßungen und Bilder	Calques des graphiques, textes, cotes et images	Capas de gráficos, textos, cotas e imágenes
 Laying in rooms	Verlegeart in Räumen	Pose dans les salles	Tendido en las salas
 Laying out the wires, cables and tubes…	Drähte, Kabel und Schläuche werden verlegt…	Disposition des fils, câbles et tuyaux…	Colocando cables, mangueras y tubos…
+Layout and buildings	Aufbau und Gebäude	Implantation et bâtiments	Disposición y edificios
 Layout checks	Aufbauprüfungen	Contrôles d'implantation	Comprobaciones de disposición
 Layout properties	Layout-Eigenschaften	Propriétés de l'implantation	Propiedades del montaje
 Layout space	Layoutbereich	Espace de montage	Espacio de montaje
@@ -1465,6 +1469,7 @@ Move to section	In Abschnitt verschieben	Déplacer vers la section	Mover a la se
 Move to window	In Programmfenster verschieben	Déplacer vers la fenêtre	Mover a la ventana
 Move up	Nach oben	Monter	Subir
 Move up in the 3D view (held)	In der 3D-Ansicht nach oben bewegen (gedrückt halten)	Monter dans la vue 3D (maintenir)	Subir en la vista 3D (mantener pulsado)
+Moved into {}	Verschoben nach {}	Déplacé dans {}	Movido a {}
 Moved symbols pull their wires along and moved wires stay on the connection points they end at. Alt held while dragging reverses it; drag an end of a selected wire to disconnect it	Verschobene Symbole ziehen ihre Verbindungen mit, verschobene Verbindungen bleiben an den Anschlüssen, an denen sie enden. Alt beim Ziehen kehrt es um; das Ende einer ausgewählten Verbindung ziehen trennt es ab	Les symboles déplacés entraînent leurs fils et les fils déplacés restent sur les points de raccordement où ils aboutissent. Alt maintenu pendant le glissement l'inverse ; faire glisser une extrémité d'un fil sélectionné la déconnecte	Los símbolos movidos arrastran sus cables y los cables movidos permanecen en los puntos de conexión donde terminan. Mantener Alt al arrastrar lo invierte; arrastrar un extremo de un cable seleccionado lo desconecta
 Moves this function to the existing device {}	Verschiebt diese Funktion zum vorhandenen Betriebsmittel {}	Déplace cette fonction vers l'appareil existant {}	Mueve esta función al dispositivo existente {}
 Moves this function to the new device {}	Verschiebt diese Funktion zum neuen Betriebsmittel {}	Déplace cette fonction vers le nouvel appareil {}	Mueve esta función al nuevo dispositivo {}
@@ -2538,6 +2543,7 @@ Take selection out of its option	Auswahl aus ihrer Option nehmen	Retirer la sél
 Take the acceptance back	Akzeptanz zurücknehmen	Annuler l'acceptation	Deshacer la aceptación
 Take the room out of the building; it stays where it stands	Raum aus dem Gebäude nehmen; er bleibt, wo er steht	Retirer la pièce du bâtiment ; elle reste où elle est	Sacar la sala del edificio; queda donde está
 Taken into the drawing: drawn faded	In die Zeichnung übernommen: blass dargestellt	Reprise dans le dessin : affichée en pâle	Adoptada en el dibujo: se muestra atenuada
+Taken out of the room	Aus dem Raum genommen	Retiré de la pièce	Retirado de la habitación
 Takes over the layers of a settings scheme, e.g. exported from another project	Übernimmt die Ebenen eines Einstellungsschemas, z. B. aus einem anderen Projekt exportiert	Reprend les calques d'un schéma de paramètres, p. ex. exporté d'un autre projet	Adopta las capas de un esquema de ajustes, p. ej. exportado de otro proyecto
 Takes the comments as function texts (matched by address)	Übernimmt die Kommentare als Funktionstexte (zugeordnet über die Adresse)	Reprend les commentaires comme textes de fonction (associés par l'adresse)	Toma los comentarios como textos de función (asignados por la dirección)
 Takes the connection point designations of all functions of this device from the function templates of its parts	Übernimmt die Anschlussbezeichnungen aller Funktionen dieses Betriebsmittels aus den Funktionsvorlagen seiner Artikel	Reprend les désignations de connexion de toutes les fonctions de cet appareil à partir des modèles de fonction de ses articles	Toma las designaciones de conexión de todas las funciones de este dispositivo de las plantillas de función de sus artículos
@@ -2590,6 +2596,7 @@ The enclosure or room shown (its name) and its view: a face, the floor plan or 3
 The enclosure stands with its left side against the right side of the chosen one; wires run between them through cable passages	Der Schrank steht mit seiner linken Seite an der rechten Seite des gewählten; Drähte laufen durch Kabeldurchführungen hinüber	L'armoire est placée avec son côté gauche contre le côté droit de celle choisie ; les fils passent par des passages de câbles	El armario se coloca con su lado izquierdo contra el lado derecho del elegido; los cables pasan por pasos de cables
 The file could not be opened as an OpenECraft project.	Die Datei konnte nicht als OpenECraft-Projekt geöffnet werden.	Le fichier n'a pas pu être ouvert comme projet OpenECraft.	El archivo no se ha podido abrir como proyecto de OpenECraft.
 The first hour	Die erste Stunde	La première heure	La primera hora
+The floor plan seen from above, only what is on the ceilings, one wall of a room with the devices at their heights, or a side of the building from outside with what is mounted on its facade	Der Grundriss von oben, nur was an den Decken ist, eine Wand eines Raums mit den Geräten in ihrer Höhe oder eine Seite des Gebäudes von außen mit dem, was an der Fassade montiert ist	Le plan vu de dessus, seulement ce qui est au plafond, un mur d'une pièce avec les appareils à leur hauteur, ou un côté du bâtiment vu de l'extérieur avec ce qui est monté sur sa façade	La planta vista desde arriba, solo lo que está en los techos, una pared de una sala con los equipos a su altura, o un lado del edificio desde fuera con lo montado en su fachada
 The horizontal wire	Die waagerechte Leitung	Le fil horizontal	El cable horizontal
 The items are selected and moved together	Die Elemente werden gemeinsam ausgewählt und verschoben	Les éléments sont sélectionnés et déplacés ensemble	Los elementos se seleccionan y se mueven juntos
 The last save failed: the changes are not saved on the project server	Das letzte Speichern ist fehlgeschlagen: Die Änderungen sind nicht auf dem Projektserver gespeichert	Le dernier enregistrement a échoué : les modifications ne sont pas enregistrées sur le serveur de projets	El último guardado falló: los cambios no están guardados en el servidor de proyectos
@@ -2677,6 +2684,7 @@ Their places, sizes and busbars are set in the Buildings pane.	Ihre Orte, Maße 
 Theme	Farbschema	Thème	Tema
 These settings are edited in their panes:	Diese Einstellungen werden in ihren Fenstern bearbeitet:	Ces paramètres se modifient dans leurs panneaux :	Estos ajustes se editan en sus paneles:
 Thickness	Dicke	Épaisseur	Grosor
+Thickness of the walls of the room (0: thin walls); a wall shared with a neighbouring room is as thick as the space between them, its doors and windows go through all of it	Dicke der Wände des Raums (0: dünne Wände); eine mit einem Nachbarraum gemeinsame Wand ist so dick wie der Abstand zwischen beiden, ihre Türen und Fenster gehen ganz hindurch	Épaisseur des murs de la pièce (0 : murs minces) ; un mur commun avec une pièce voisine est aussi épais que l'espace entre elles, ses portes et fenêtres le traversent entièrement	Grosor de las paredes de la habitación (0: paredes finas); una pared compartida con una habitación vecina es tan gruesa como el espacio entre ambas, sus puertas y ventanas la atraviesan por completo
 Thinner air needs more air flow	Dünnere Luft braucht mehr Luftvolumenstrom	Un air plus rare demande plus de débit d'air	El aire más enrarecido necesita más caudal de aire
 This installation is updated by its package manager or by hand: OpenECraft only tells of a new release.	Diese Installation wird von ihrer Paketverwaltung oder von Hand aktualisiert: OpenECraft meldet nur eine neue Version.	Cette installation est mise à jour par son gestionnaire de paquets ou à la main : OpenECraft signale seulement une nouvelle version.	Esta instalación se actualiza con su gestor de paquetes o a mano: OpenECraft solo avisa de una nueva versión.
 This page	Diese Seite	Cette page	Esta página
@@ -2792,8 +2800,10 @@ Voltage at maximum power	Spannung bei maximaler Leistung	Tension à puissance ma
 WGS 84, written into the site of IFC exports	WGS 84, wird in das Grundstück von IFC-Exporten geschrieben	WGS 84, écrite dans le site des exports IFC	WGS 84, se escribe en el emplazamiento de las exportaciones IFC
 Waiting for the previous autosave	Warten auf die vorherige automatische Speicherung	Attente de la sauvegarde automatique précédente	Esperando el guardado automático anterior
 Waiting for the server	Warten auf den Server	En attente du serveur	Esperando al servidor
+Wall of a room	Wand eines Raums	Mur d'une pièce	Pared de una sala
 Wall opacity	Deckkraft der Wände	Opacité des murs	Opacidad de las paredes
 Wall penetration: cables, tubes and pipes pass through it into the room behind the wall; click on an outer wall in the floor plan or in the view of the wall	Wanddurchbruch: Kabel, Schläuche und Rohre führen durch ihn in den Raum hinter der Wand; im Grundriss oder in der Ansicht der Wand auf eine Außenwand klicken	Traversée de mur : câbles, flexibles et tuyaux la traversent vers la salle derrière le mur ; cliquez sur un mur extérieur dans le plan ou dans la vue du mur	Pasamuros: cables, mangueras y tuberías pasan por él a la sala detrás de la pared; haga clic en una pared exterior en la planta o en la vista de la pared
+Wall thickness	Wanddicke	Épaisseur des murs	Grosor de las paredes
 Wall {}, {} m: drag to move it, a double-click shows it to equip it	Wand {}, {} m: ziehen zum Verschieben, Doppelklick zeigt sie zum Bestücken	Mur {}, {} m : faire glisser pour le déplacer, double-clic pour l'afficher et l'équiper	Pared {}, {} m: arrastre para moverla, doble clic para mostrarla y equiparla
 Wall {}, {} m: the wall shown in the wall view (highlighted); drag to move it	Wand {}, {} m: die in der Wandansicht gezeigte Wand (hervorgehoben); ziehen zum Verschieben	Mur {}, {} m : le mur affiché dans la vue du mur (en surbrillance) ; faire glisser pour le déplacer	Pared {}, {} m: la pared mostrada en la vista de pared (resaltada); arrastre para moverla
 Wall {}: moved by {} mm	Wand {}: um {} mm verschoben	Mur {} : déplacé de {} mm	Pared {}: desplazada {} mm
@@ -3106,6 +3116,7 @@ x {} mm, z {} mm	x {} mm, z {} mm	x {} mm, z {} mm	x {} mm, z {} mm
 {} is in the schematic	{} ist im Schaltplan	{} est dans le schéma	{} está en el esquema
 {} is in the schematic: cable {} from {}	{} ist im Schaltplan: Kabel {} von {}	{} est dans le schéma : câble {} depuis {}	{} está en el esquema: cable {} desde {}
 {} is neither in the parts database nor on the parts server	{} ist weder in der Artikeldatenbank noch auf dem Artikelserver	{} n'est ni dans la base d'articles ni sur le serveur d'articles	{} no está ni en la base de datos de artículos ni en el servidor de artículos
+{} is no socket outlet, switch, light or other device of the installation	{} ist keine Steckdose, kein Schalter, keine Leuchte und kein anderes Gerät der Installation	{} n'est ni une prise, ni un interrupteur, ni un luminaire, ni un autre appareil de l'installation	{} no es una toma de corriente, un interruptor, una luminaria ni otro aparato de la instalación
 {} is not an OpenECraft project template.	{} ist keine OpenECraft-Projektvorlage.	{} n'est pas un modèle de projet OpenECraft.	{} no es una plantilla de proyecto de OpenECraft.
 {} is not an enclosure: only enclosures can be dropped here	{} ist kein Gehäuse: hier können nur Gehäuse abgelegt werden	{} n'est pas une enveloppe : seules des enveloppes peuvent être déposées ici	{} no es una envolvente: aquí solo se pueden soltar envolventes
 {} is not in the disk image	{} ist nicht im Disk-Image	{} n'est pas dans l'image disque	{} no está en la imagen de disco
@@ -3175,6 +3186,7 @@ x {} mm, z {} mm	x {} mm, z {} mm	x {} mm, z {} mm	x {} mm, z {} mm
 {} projects on the server	{} Projekte auf dem Server	{} projets sur le serveur	{} proyectos en el servidor
 {} projects selected	{} Projekte ausgewählt	{} projets sélectionnés	{} proyectos seleccionados
 {} property definitions with {} values including the indexed ones	{} Eigenschaftsdefinitionen mit {} Werten einschließlich der indizierten	{} définitions de propriétés avec {} valeurs, indexées comprises	{} definiciones de propiedades con {} valores, incluidos los indexados
+{} put into {}	{} in {} eingesetzt	{} placé dans {}	{} colocado en {}
 {} rails	{} Tragschienen	{} rails	{} carriles
 {} records, {} changes, {} conflicts, {} not found in the project	{} Datensätze, {} Änderungen, {} Konflikte, {} nicht im Projekt gefunden	{} enregistrements, {} modifications, {} conflits, {} introuvables dans le projet	{} registros, {} cambios, {} conflictos, {} no encontrados en el proyecto
 {} renamed: {} pages and devices	{} umbenannt: {} Seiten und Betriebsmittel	{} renommé : {} pages et appareils	{} renombrado: {} páginas y dispositivos
@@ -3189,6 +3201,7 @@ x {} mm, z {} mm	x {} mm, z {} mm	x {} mm, z {} mm	x {} mm, z {} mm
 {} structure identifiers added	{} Strukturkennzeichen hinzugefügt	{} identificateurs de structure ajoutés	{} identificadores de estructura añadidos
 {} symbols added, {} replaced	{} Symbole hinzugefügt, {} ersetzt	{} symboles ajoutés, {} remplacés	{} símbolos añadidos, {} reemplazados
 {} symbols and {} wires generated on page {}	{} Symbole und {} Verbindungen auf Seite {} erzeugt	{} symboles et {} liaisons générés sur la page {}	{} símbolos y {} conexiones generados en la página {}
+{} taken out of the room; it stays in the schematic	{} aus dem Raum genommen; es bleibt im Schaltplan	{} retiré de la pièce ; il reste dans le schéma	{} retirado de la habitación; sigue en el esquema
 {} texts changed	{} Texte geändert	{} textes modifiés	{} textos cambiados
 {} translations imported	{} Übersetzungen importiert	{} traductions importées	{} traducciones importadas
 {} unused entries removed	{} unbenutzte Einträge entfernt	{} entrées inutilisées supprimées	{} entradas no usadas eliminadas

@@ -32,6 +32,7 @@ const BREAKER: &str = tr_const!("Device tag of its protective device (circuit br
 const ROOM: &str = tr_const!("Room (location, e.g. +ROOM1)");
 const X: &str = tr_const!("x in the plant in mm");
 const Z: &str = tr_const!("z in the plant (towards the front) in mm");
+const ITEM: &str = tr_const!("Its id (list_rooms) or device tag");
 
 pub static COMMANDS: &[Spec] = &[
     Spec {
@@ -82,6 +83,22 @@ pub static COMMANDS: &[Spec] = &[
             optional("item", Kind::Int, tr_const!("Id of a socket outlet, switch, light or heating element placed without a device tag to become the device (instead of room, x and z)")),
         ],
         run: place_circuit_device,
+    },
+    Spec {
+        name: "move_installation",
+        help: tr_const!("Moves a socket outlet, switch, light, heating element or other device of the installation to a point of the plant: onto the nearest wall there at its height (a ceiling light on the ceiling), into the room of its level the point lies in; it stays the same device of the schematic"),
+        params: &[
+            param("item", Kind::Str, ITEM),
+            param("x", Kind::Num, X),
+            param("z", Kind::Num, Z),
+        ],
+        run: move_installation,
+    },
+    Spec {
+        name: "remove_installation",
+        help: tr_const!("Takes a socket outlet, switch, light, heating element or other device of the installation out of its room; a device of the schematic stays there, not placed"),
+        params: &[param("item", Kind::Str, ITEM)],
+        run: remove_installation,
     },
     Spec {
         name: "list_breakers",
@@ -157,6 +174,26 @@ fn placed_json(prj: &Project, tag: &str) -> Result<Value, String> {
     let (ri, it) = prj.layout.find_device(tag).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", tag))?;
     let e = &prj.layout.enclosures[ri];
     Ok(json!({ "id": it.id, "device": tag, "part": it.part, "room": e.name, "face": panel::room_face_key(e, it.face), "x": it.x, "y": it.y }))
+}
+
+fn installed_item(prj: &Project, a: &Args) -> Result<(usize, u64), String> {
+    let item = a.req("item");
+    inst::find_item(prj, item).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", item.trim()))
+}
+
+fn move_installation(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let (ri, id) = installed_item(prj, a)?;
+    let to = inst::move_item(prj, ri, id, [a.num("x").unwrap_or(0.0), a.num("z").unwrap_or(0.0)])?;
+    let e = &prj.layout.enclosures[to];
+    let it = e.item(id).ok_or_else(|| tr_fmt!("No socket outlet, switch or light {}", id))?;
+    Ok(json!({ "id": id, "device": it.tag, "part": it.part, "room": e.name, "face": panel::room_face_key(e, it.face), "x": it.x, "y": it.y }))
+}
+
+fn remove_installation(prj: &mut Project, a: &Args) -> Result<Value, String> {
+    let (ri, id) = installed_item(prj, a)?;
+    let room = prj.layout.enclosures[ri].name.clone();
+    let tag = inst::remove_item(prj, ri, id)?;
+    Ok(json!({ "id": id, "device": tag, "room": room }))
 }
 
 fn place_installation(prj: &mut Project, a: &Args) -> Result<Value, String> {

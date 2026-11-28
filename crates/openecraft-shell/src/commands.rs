@@ -616,7 +616,7 @@ pub static ALL: &[Def] = &[
         .tip(tr_const!("Draw wires in their colour (also in PDF and SVG); saved with the project")),
     d(C::Panes, "panes", tr_const!("Panes"), I::Panes).menu().tip(tr_const!("Show or hide panes; drag a tab to dock it elsewhere")),
     d(C::WorkspaceSchematic, "workspace_schematic", tr_const!("Schematic"), I::File).toggle(),
-    d(C::WorkspacePanel, "workspace_panel", tr_const!("Panel layout"), I::Enclosure).toggle(),
+    d(C::WorkspacePanel, "workspace_panel", tr_const!("Layout and buildings"), I::Enclosure).toggle(),
     d(C::WorkspaceWiring, "workspace_wiring", tr_const!("Wiring"), I::Wiring)
         .toggle()
         .tip(tr_const!("Wiring assistant: checklist of the wires with 3D view and progress (tablet: open the web app with #wiring)")),
