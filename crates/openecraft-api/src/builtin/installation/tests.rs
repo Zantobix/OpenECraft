@@ -362,6 +362,11 @@ fn a_switch_keeps_its_schematic_symbol_for_another_circuit() {
     let c = run(&mut s, "set_device_variant", json!({ "device": tag, "values": { "function": "intermediate" } })).unwrap();
     assert_eq!((c["family"].as_str(), c["part"].as_str()), (Some("switch"), Some("GEN.SW-INTER-UP")), "{c}");
     assert_eq!(c["kept_symbols"].as_array().map(Vec::len), Some(1), "{c}");
+    // The part of the variant goes into the project parts, as that of a device placed.
+    let prj = s.project().unwrap();
+    assert!(prj.parts.iter().any(|p| p.number == "GEN.SW-INTER-UP"));
+    let an = openecraft_core::analysis::Analysis::with_builtin(prj);
+    assert!(!an.issues.iter().any(|i| i.message().contains("is not in the project parts")), "{:?}", an.issues.iter().map(|i| i.message()).collect::<Vec<_>>());
 }
 
 #[test]

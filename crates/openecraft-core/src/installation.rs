@@ -1265,6 +1265,10 @@ pub fn set_family(prj: &mut Project, id: u64, choice: crate::model::families::Fa
     let family = crate::model::families::FamilyChoice { family: choice.family.clone(), values: r.values.clone(), text };
     let mut change = FamilyChange { old_part: it.part.clone(), part: r.part.clone(), item: id, ..Default::default() };
     take_part(prj, &r.part);
+    // Into the project parts like the part of a device placed (also one of the generic catalog).
+    if !prj.parts.iter().any(|x| x.number == r.part) {
+        prj.parts.push(new.clone());
+    }
     if it.part != r.part {
         let moves = (it.face == Face::Roof) != on_ceiling(&new);
         if moves {
